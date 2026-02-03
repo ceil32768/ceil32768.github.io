@@ -19,7 +19,7 @@ const CEIL_RECRUIT_SKILLS = [
   { category: 'Art / Game Assets', roleName: 'Digital Sculpting', tools: 'Tripo (AI)', status: 'AI', description: '' },
   { category: 'Art / Game Assets', roleName: 'Skeletal Mesh Retopology', tools: 'Blender', status: 'X', description: 'Static Mesh 我能處理。需協助角色/生物的拓樸，確保關節動畫佈線正確。將拓樸優化為 Game-Ready Assets。' },
   { category: 'Art / Game Assets', roleName: 'Materials & Texturing', tools: 'ElevenLabs (AI)', status: 'AI', description: '' },
-  { category: 'Art / Game Assets', roleName: 'Animation & Rigging', tools: '3D modeling (Blender)', status: 'X', description: '常見動作暫用 Mixamo，需要能處理客製化動作的人。' },
+  { category: 'Art / Game Assets', roleName: 'Animation & Rigging', tools: 'Blender', status: 'X', description: '常見動作暫用 Mixamo，需要能處理客製化動作的人。' },
   { category: 'Art / Game Assets', roleName: 'UI/UX Design', tools: 'Figma / UMG (UE5)', status: 'X', description: '目前暫用 Fab Assets，需能客製化界面者。' },
   { category: 'Art / Game Assets', roleName: 'VFX / Particle effect', tools: 'UE5 Niagara / Material', status: 'X', description: '目前暫用 Fab Assets，需能客製化特效者。' },
   { category: 'Art / Game Assets', roleName: 'BGM Production', tools: 'Suno (AI)', status: 'AI', description: '' },

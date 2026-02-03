@@ -15,7 +15,7 @@ const CEIL_RECRUIT_SKILLS = [
   { category: 'Engineering', roleName: 'Packaging / Optimization', tools: 'UE5 / Platform Policy', status: 'O', description: '' },
   { category: 'Engineering', roleName: 'Release', tools: 'Google Play Console / Steamworks', status: 'O', description: '' },
   // Art / Game Assets
-  { category: 'Art / Game Assets', roleName: 'Hard Surface Modeling (3D Scene)', tools: 'Blender', status: 'O', description: '' },
+  { category: 'Art / Game Assets', roleName: 'Hard Surface Modeling', tools: 'Blender', status: 'O', description: '' },
   { category: 'Art / Game Assets', roleName: 'Digital Sculpting', tools: 'Tripo (AI)', status: 'AI', description: '' },
   { category: 'Art / Game Assets', roleName: 'Skeletal Mesh Retopology', tools: 'Blender', status: 'X', description: 'Static Mesh 我能處理。需協助角色/生物的拓樸，確保關節動畫佈線正確。將拓樸優化為 Game-Ready Assets。' },
   { category: 'Art / Game Assets', roleName: 'Materials & Texturing', tools: 'ElevenLabs (AI)', status: 'AI', description: '' },

@@ -11,7 +11,7 @@ const CEIL_RECRUIT_SKILLS = [
   // Engineering
   { category: 'Engineering', roleName: 'Core Mechanics', tools: 'C++ / Blueprint (UE5)', status: 'O', description: '' },
   { category: 'Engineering', roleName: 'AI / NPC Behavior', tools: 'UE5 Behavior Tree / UE5 EQS', status: 'CO', description: '' },
-  { category: 'Engineering', roleName: 'Multiplayer', tools: 'UE5 Online Subsystem', status: 'X', description: '多人連線同步架構。需熟悉 Git & GitHub。' },
+  { category: 'Engineering', roleName: 'Multiplayer', tools: 'UE5 Online Subsystem', status: 'X', description: '' },
   { category: 'Engineering', roleName: 'Packaging / Optimization', tools: 'UE5 / Platform Policy', status: 'O', description: '' },
   { category: 'Engineering', roleName: 'Release', tools: 'Google Play Console / Steamworks', status: 'O', description: '' },
   // Art / Game Assets

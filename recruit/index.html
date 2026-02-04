@@ -564,6 +564,49 @@
       font-size: 0.9rem;
       margin: 0;
     }
+
+    @media (max-width: 768px) {
+      /* Navbar Layout Change: Lang Switcher below Brand */
+      #ceil-studio-recruit .ceil-nav__inner {
+        display: grid;
+        grid-template-areas: 
+          "brand links"
+          "lang links";
+        grid-template-columns: auto 1fr;
+        gap: 0.25rem 1rem;
+        align-items: center;
+      }
+
+      #ceil-studio-recruit .ceil-nav__brand {
+        grid-area: brand;
+        margin-right: 0;
+      }
+
+      #ceil-studio-recruit .ceil-lang-switch {
+        grid-area: lang;
+        margin-left: 0;
+        justify-self: start;
+        font-size: 0.85rem;
+        padding: 0.2rem 0.6rem;
+      }
+
+      #ceil-studio-recruit .ceil-nav__links {
+        grid-area: links;
+        width: 100%;
+        overflow-x: auto;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        justify-self: stretch;
+        justify-content: flex-start;
+        gap: 1rem;
+        padding-left: 0.5rem;
+      }
+
+      #ceil-studio-recruit .ceil-nav__links::-webkit-scrollbar {
+        display: none;
+      }
+    }
   </style>
 </head>
 <body>

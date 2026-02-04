@@ -729,4 +729,50 @@ section.skills .skills-card .skill-badge:hover {
   }
 }
 
+@media (max-width: 768px) {
+  /* Navbar Layout Change: Lang Switcher below Brand */
+  .ceil-nav__inner {
+    display: grid;
+    grid-template-areas: 
+      "brand links"
+      "lang links";
+    grid-template-columns: auto 1fr;
+    gap: 0.25rem 1rem;
+    align-items: center;
+  }
+
+  .ceil-nav__brand {
+    grid-area: brand;
+    margin-right: 0;
+  }
+
+  .ceil-lang-switch {
+    grid-area: lang;
+    margin-left: 0;
+    justify-self: start;
+    /* Adjust size/padding for compact look under brand */
+    font-size: 0.85rem;
+    padding: 0.2rem 0.6rem;
+  }
+
+  .ceil-nav__links {
+    grid-area: links;
+    width: 100%;
+    /* Enable scrolling */
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    /* Layout */
+    justify-self: stretch;
+    justify-content: flex-start; /* Align left to prevent clipping */
+    gap: 1rem;
+    padding-left: 0.5rem; /* Little separation */
+  }
+
+  .ceil-nav__links::-webkit-scrollbar {
+    display: none;
+  }
+}
+
 /*# sourceMappingURL=style.css.map */

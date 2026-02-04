@@ -26,9 +26,10 @@ const CEIL_RECRUIT_SKILLS = [
   { category: 'Art / Game Assets', roleName: 'SFX Production', tools: 'ElevenLabs (AI)', status: 'AI', description: '' },
   // Marketing
   { category: 'Marketing', roleName: 'Video Production', tools: 'DaVinci Resolve / Any', status: 'CO', description: '負責 Trailer 與 Devlog 剪輯。' },
-  { category: 'Marketing', roleName: 'Voice Over', tools: 'Audacity / iZotope RX', status: 'CO', description: '' },
-  { category: 'Marketing', roleName: 'Web Dev', tools: 'Frontend / Backend', status: 'CO', description: '製作遊戲官網或工作室官網。' },
+  { category: 'Marketing', roleName: 'Voice Over', tools: 'Audacity / iZotope RX', status: 'O', description: '' },
+  { category: 'Marketing', roleName: 'Web Dev', tools: 'Frontend / Backend', status: 'O', description: '製作遊戲官網或工作室官網。' },
   // Misc / Project Ops
+  { category: 'Misc / Project Ops', roleName: 'Financial Management', tools: 'Markdown / Any', status: 'CO', description: '管理現金流並計算貢獻分紅。' },
   { category: 'Misc / Project Ops', roleName: 'Asset Management', tools: 'Markdown for communicate', status: 'CO', description: '整理並尋找專案資產 (Fab)，需善用 Markdown 回報清單。' },
   { category: 'Misc / Project Ops', roleName: 'Playtesting', tools: 'Markdown for communicate', status: 'CO', description: '尋找 Bug 並提供優化建議，需善用 Markdown 撰寫測試報告。' }
 ];

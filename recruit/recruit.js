@@ -1,8 +1,13 @@
 /**
- * Ceil Studio Recruit — 從 recruit-data.js 的 CEIL_RECRUIT_SKILLS 渲染 SkillCard
+ * Ceil Studio Recruit — Render SkillCards from CEIL_RECRUIT_SKILLS / CEIL_RECRUIT_SKILLS_EN
  */
 (function () {
-  if (typeof CEIL_RECRUIT_SKILLS === 'undefined') return;
+  // Determine which data source to use
+  var skillsData = (typeof CEIL_RECRUIT_SKILLS_EN !== 'undefined') 
+    ? CEIL_RECRUIT_SKILLS_EN 
+    : (typeof CEIL_RECRUIT_SKILLS !== 'undefined' ? CEIL_RECRUIT_SKILLS : null);
+
+  if (!skillsData) return;
 
   var container = document.getElementById('ceil-skill-matrix-cards');
   if (!container) return;
@@ -10,7 +15,7 @@
   var statusLabels = { O: 'Solo Able', X: 'Open Role', CO: 'Co-op', AI: 'AI Workflow' };
   var lastCategory = '';
 
-  CEIL_RECRUIT_SKILLS.forEach(function (item) {
+  skillsData.forEach(function (item) {
     if (item.category !== lastCategory) {
       lastCategory = item.category;
       var heading = document.createElement('h3');

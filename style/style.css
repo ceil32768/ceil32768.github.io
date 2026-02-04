@@ -736,14 +736,18 @@ section.skills .skills-card .skill-badge:hover {
     grid-template-areas: 
       "brand links"
       "lang links";
-    grid-template-columns: auto 1fr;
-    gap: 0.25rem 1rem;
+    /* Use min-content to allow shrinking */
+    grid-template-columns: min-content 1fr;
+    gap: 0.25rem 0.75rem; /* Reduce gap slightly */
     align-items: center;
   }
 
   .ceil-nav__brand {
     grid-area: brand;
     margin-right: 0;
+    /* Allow font scaling or shrinking if very tight */
+    font-size: clamp(1rem, 4vw, 1.2rem);
+    white-space: nowrap;
   }
 
   .ceil-lang-switch {
@@ -751,8 +755,14 @@ section.skills .skills-card .skill-badge:hover {
     margin-left: 0;
     justify-self: start;
     /* Adjust size/padding for compact look under brand */
-    font-size: 0.85rem;
-    padding: 0.2rem 0.6rem;
+    font-size: 0.75rem; /* Smaller font */
+    padding: 0.15rem 0.5rem; /* Tighter padding */
+    white-space: nowrap;
+  }
+
+  .ceil-lang-switch svg {
+    width: 0.9em;
+    height: 0.9em;
   }
 
   .ceil-nav__links {
@@ -766,12 +776,50 @@ section.skills .skills-card .skill-badge:hover {
     /* Layout */
     justify-self: stretch;
     justify-content: flex-start; /* Align left to prevent clipping */
-    gap: 1rem;
+    gap: 0.75rem; /* Tighter gap between links */
     padding-left: 0.5rem; /* Little separation */
+  }
+  
+  .ceil-nav__links a {
+    font-size: 0.9rem; /* Slightly smaller links */
   }
 
   .ceil-nav__links::-webkit-scrollbar {
     display: none;
+  }
+}
+
+/* Add Ultra-Small Screen Optimization */
+@media (max-width: 400px) {
+  .ceil-nav__inner {
+    /* Reduce gap even further */
+    gap: 0.2rem 0.5rem; 
+  }
+
+  .ceil-nav__brand {
+    /* Smaller font for very narrow screens */
+    font-size: 1rem; 
+  }
+
+  .ceil-lang-switch {
+    /* Compact the switch */
+    font-size: 0.7rem;
+    padding: 0.15rem 0.4rem;
+  }
+  
+  .ceil-lang-switch svg {
+    width: 0.8em;
+    height: 0.8em;
+  }
+
+  .ceil-nav__links {
+    /* Tighten link spacing */
+    gap: 0.5rem;
+    padding-left: 0.25rem;
+  }
+  
+  .ceil-nav__links a {
+    font-size: 0.85rem;
   }
 }
 

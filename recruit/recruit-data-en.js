@@ -17,7 +17,6 @@ const CEIL_RECRUIT_SKILLS_EN = [
   { category: 'Art / Game Assets', roleName: 'Hard Surface Modeling', tools: 'Blender', status: 'O', description: '' },
   { category: 'Art / Game Assets', roleName: 'Digital Sculpting', tools: 'Tripo (AI)', status: 'AI', description: '' },
   { category: 'Art / Game Assets', roleName: 'Skeletal Mesh Retopology', tools: 'Blender', status: 'X', description: 'I can handle Static Mesh. Need help with character/creature retopology to ensure correct joint animation topology. Optimize topology into Game-Ready Assets.' },
-  { category: 'Art / Game Assets', roleName: 'Materials & Texturing', tools: 'ElevenLabs (AI)', status: 'AI', description: '' },
   { category: 'Art / Game Assets', roleName: 'Animation & Rigging', tools: 'Blender', status: 'X', description: 'Using Mixamo for common actions temporarily, need someone who can handle custom animations.' },
   { category: 'Art / Game Assets', roleName: 'UI/UX Design', tools: 'Figma / UMG (UE5)', status: 'X', description: 'Using Fab Assets temporarily, need someone who can customize interfaces.' },
   { category: 'Art / Game Assets', roleName: 'VFX / Particle effect', tools: 'UE5 Niagara / Material', status: 'X', description: 'Using Fab Assets temporarily, need someone who can customize visual effects.' },

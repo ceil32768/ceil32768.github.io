@@ -3,7 +3,7 @@
  */
 const CEIL_RECRUIT_SKILLS_EN = [
   // Design
-  { category: 'Design', roleName: 'Game Core', tools: 'Markdown (Obsidian)', status: 'O', description: '' },
+  { category: 'Design', roleName: 'Game Director / Core Design', tools: 'Markdown (Obsidian)', status: 'O', description: '' },
   { category: 'Design', roleName: 'Environment Design', tools: 'Concept Art (CSP)', status: 'CO', description: '' },
   { category: 'Design', roleName: 'Character Design', tools: 'Concept Art (CSP)', status: 'O', description: '' },
   { category: 'Design', roleName: 'Level Design', tools: 'Unreal Engine / Blender', status: 'O', description: '' },
@@ -26,9 +26,11 @@ const CEIL_RECRUIT_SKILLS_EN = [
   { category: 'Marketing', roleName: 'Video Production', tools: 'DaVinci Resolve / Any', status: 'CO', description: 'Responsible for Trailer and Devlog editing.' },
   { category: 'Marketing', roleName: 'Voice Over', tools: 'Audacity / iZotope RX', status: 'O', description: '' },
   { category: 'Marketing', roleName: 'Web Dev', tools: 'Frontend / Backend', status: 'O', description: 'Create game website or studio website.' },
-  // Misc / Project Ops
-  { category: 'Misc / Project Ops', roleName: 'Financial Management', tools: 'Markdown / Any', status: 'CO', description: 'Manage cash flow and calculate contribution-based payouts.' },
-  { category: 'Misc / Project Ops', roleName: 'Asset Management', tools: 'Markdown for communicate', status: 'CO', description: 'Organize and find project assets (Fab), must be good at reporting lists using Markdown.' },
-  { category: 'Misc / Project Ops', roleName: 'Playtesting', tools: 'Markdown for communicate', status: 'CO', description: 'Find Bugs and provide optimization suggestions, must be good at writing test reports using Markdown.' }
+  // Project Ops
+  { category: 'Project Ops', roleName: 'Legal Advisor', tools: 'Word / Law Ref.', status: 'X', description: 'Provide legal advice and manage contracts (internal/external) for studio operations, ensuring intellectual property compliance and risk management.' },
+  { category: 'Project Ops', roleName: 'Project Manager (PM)', tools: 'Markdown / Any', status: 'CO', description: 'Responsible for member communication, tracking development progress and removing obstacles.' },
+  { category: 'Project Ops', roleName: 'Financial Management', tools: 'Markdown / Any', status: 'CO', description: 'Manage cash flow and calculate contribution-based payouts.' },
+  { category: 'Project Ops', roleName: 'Asset Management', tools: 'Markdown for communicate', status: 'CO', description: 'Organize and find project assets (Fab), must be good at reporting lists using Markdown.' },
+  { category: 'Project Ops', roleName: 'Playtesting', tools: 'Markdown for communicate', status: 'CO', description: 'Find Bugs and provide optimization suggestions, must be good at writing test reports using Markdown.' }
 ];
 

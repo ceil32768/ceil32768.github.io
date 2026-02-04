@@ -4,7 +4,7 @@
  */
 const CEIL_RECRUIT_SKILLS = [
   // Design
-  { category: 'Design', roleName: 'Game Core', tools: 'Markdown (Obsidian)', status: 'O', description: '' },
+  { category: 'Design', roleName: 'Game Director / Core Design', tools: 'Markdown (Obsidian)', status: 'O', description: '' },
   { category: 'Design', roleName: 'Environment Design', tools: 'Concept Art (CSP)', status: 'CO', description: '' },
   { category: 'Design', roleName: 'Character Design', tools: 'Concept Art (CSP)', status: 'O', description: '' },
   { category: 'Design', roleName: 'Level Design', tools: 'Unreal Engine / Blender', status: 'O', description: '' },
@@ -27,8 +27,10 @@ const CEIL_RECRUIT_SKILLS = [
   { category: 'Marketing', roleName: 'Video Production', tools: 'DaVinci Resolve / Any', status: 'CO', description: '負責 Trailer 與 Devlog 剪輯。' },
   { category: 'Marketing', roleName: 'Voice Over', tools: 'Audacity / iZotope RX', status: 'O', description: '' },
   { category: 'Marketing', roleName: 'Web Dev', tools: 'Frontend / Backend', status: 'O', description: '製作遊戲官網或工作室官網。' },
-  // Misc / Project Ops
-  { category: 'Misc / Project Ops', roleName: 'Financial Management', tools: 'Markdown / Any', status: 'CO', description: '管理現金流並計算貢獻分紅。' },
-  { category: 'Misc / Project Ops', roleName: 'Asset Management', tools: 'Markdown for communicate', status: 'CO', description: '整理並尋找專案資產 (Fab)，需善用 Markdown 回報清單。' },
-  { category: 'Misc / Project Ops', roleName: 'Playtesting', tools: 'Markdown for communicate', status: 'CO', description: '尋找 Bug 並提供優化建議，需善用 Markdown 撰寫測試報告。' }
+  // Project Ops
+  { category: 'Project Ops', roleName: 'Legal Advisor', tools: 'Word / Law Ref.', status: 'X', description: '提供工作室營運法律諮詢、管理合約（內部/外部），並確保智慧財產權合規與風險控管。' },
+  { category: 'Project Ops', roleName: 'Project Manager (PM)', tools: 'Markdown / Any', status: 'CO', description: '負責成員間溝通協調、追蹤開發進度與排除障礙。' },
+  { category: 'Project Ops', roleName: 'Financial Management', tools: 'Markdown / Any', status: 'CO', description: '管理現金流並計算貢獻分紅。' },
+  { category: 'Project Ops', roleName: 'Asset Management', tools: 'Markdown for communicate', status: 'CO', description: '整理並尋找專案資產 (Fab)，需善用 Markdown 回報清單。' },
+  { category: 'Project Ops', roleName: 'Playtesting', tools: 'Markdown for communicate', status: 'CO', description: '尋找 Bug 並提供優化建議，需善用 Markdown 撰寫測試報告。' }
 ];

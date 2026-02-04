@@ -21,8 +21,7 @@ const CEIL_RECRUIT_SKILLS_EN = [
   { category: 'Art / Game Assets', roleName: 'Animation & Rigging', tools: 'Blender', status: 'X', description: 'Using Mixamo for common actions temporarily, need someone who can handle custom animations.' },
   { category: 'Art / Game Assets', roleName: 'UI/UX Design', tools: 'Figma / UMG (UE5)', status: 'X', description: 'Using Fab Assets temporarily, need someone who can customize interfaces.' },
   { category: 'Art / Game Assets', roleName: 'VFX / Particle effect', tools: 'UE5 Niagara / Material', status: 'X', description: 'Using Fab Assets temporarily, need someone who can customize visual effects.' },
-  { category: 'Art / Game Assets', roleName: 'BGM Production', tools: 'Suno (AI)', status: 'AI', description: '' },
-  { category: 'Art / Game Assets', roleName: 'SFX Production', tools: 'ElevenLabs (AI)', status: 'AI', description: '' },
+  { category: 'Art / Game Assets', roleName: 'BGM & SFX Production', tools: 'Suno and ElevenLabs (AI)', status: 'AI', description: '' },
   // Marketing
   { category: 'Marketing', roleName: 'Video Production', tools: 'DaVinci Resolve / Any', status: 'CO', description: 'Responsible for Trailer and Devlog editing.' },
   { category: 'Marketing', roleName: 'Voice Over', tools: 'Audacity / iZotope RX', status: 'O', description: '' },

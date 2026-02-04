@@ -22,8 +22,7 @@ const CEIL_RECRUIT_SKILLS = [
   { category: 'Art / Game Assets', roleName: 'Animation & Rigging', tools: 'Blender', status: 'X', description: '常見動作暫用 Mixamo，需要能處理客製化動作的人。' },
   { category: 'Art / Game Assets', roleName: 'UI/UX Design', tools: 'Figma / UMG (UE5)', status: 'X', description: '目前暫用 Fab Assets，需能客製化界面者。' },
   { category: 'Art / Game Assets', roleName: 'VFX / Particle effect', tools: 'UE5 Niagara / Material', status: 'X', description: '目前暫用 Fab Assets，需能客製化特效者。' },
-  { category: 'Art / Game Assets', roleName: 'BGM Production', tools: 'Suno (AI)', status: 'AI', description: '' },
-  { category: 'Art / Game Assets', roleName: 'SFX Production', tools: 'ElevenLabs (AI)', status: 'AI', description: '' },
+  { category: 'Art / Game Assets', roleName: 'BGM & SFX Production', tools: 'Suno and ElevenLabs (AI)', status: 'AI', description: '' },
   // Marketing
   { category: 'Marketing', roleName: 'Video Production', tools: 'DaVinci Resolve / Any', status: 'CO', description: '負責 Trailer 與 Devlog 剪輯。' },
   { category: 'Marketing', roleName: 'Voice Over', tools: 'Audacity / iZotope RX', status: 'O', description: '' },

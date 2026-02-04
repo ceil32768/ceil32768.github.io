@@ -5,8 +5,8 @@
 const CEIL_RECRUIT_SKILLS = [
   // Design
   { category: 'Design', roleName: 'Game Director / Core Design', tools: 'Markdown (Obsidian)', status: 'O', description: '' },
-  { category: 'Design', roleName: 'Environment Design', tools: 'Concept Art (CSP)', status: 'CO', description: '' },
-  { category: 'Design', roleName: 'Character Design', tools: 'Concept Art (CSP)', status: 'O', description: '' },
+  { category: 'Design', roleName: 'Environment Design', tools: 'Clip Studio Paint', status: 'CO', description: '' },
+  { category: 'Design', roleName: 'Character Design', tools: 'Clip Studio Paint', status: 'O', description: '' },
   { category: 'Design', roleName: 'Level Design', tools: 'Unreal Engine / Blender', status: 'O', description: '' },
   // Engineering
   { category: 'Engineering', roleName: 'Core Mechanics', tools: 'C++ / Blueprint (UE5)', status: 'O', description: '' },

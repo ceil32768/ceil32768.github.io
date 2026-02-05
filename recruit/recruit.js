@@ -45,7 +45,7 @@
     var statusLabel = statusLabels[item.status] || item.status;
     var statusDisplay;
     if (item.status === 'V') {
-      statusDisplay = (htmlLang === 'en') ? 'Filled' : '已招募到';
+      statusDisplay = (htmlLang === 'en') ? 'Filled' : '已確立';
     } else if (item.status === 'O') {
       statusDisplay = (htmlLang === 'en') ? 'Owner' : '由我負責';
     } else if (item.status === 'CO') {

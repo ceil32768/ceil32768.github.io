@@ -27,9 +27,9 @@ const CEIL_RECRUIT_SKILLS = [
   { category: 'Marketing', roleName: 'Voice Over', tools: 'Audacity / iZotope RX', status: 'O', description: '' },
   { category: 'Marketing', roleName: 'Web Dev', tools: 'Frontend / Backend', status: 'O', description: '製作遊戲官網或工作室官網。' },
   // Project Ops
-  { category: 'Project Ops', roleName: 'Legal Advisor', tools: 'Word / Law Ref.', status: 'X', description: '提供工作室營運法律諮詢、管理合約（內部/外部），並確保智慧財產權合規與風險控管。' },
-  { category: 'Project Ops', roleName: 'Project Manager (PM)', tools: 'Markdown / Any', status: 'CO', description: '負責成員間溝通協調、追蹤開發進度與排除障礙。' },
-  { category: 'Project Ops', roleName: 'Financial Management', tools: 'Markdown / Any', status: 'CO', description: '管理現金流並計算貢獻分紅。' },
+  { category: 'Project Ops', roleName: 'Legal Advisor', tools: 'Word / Law Ref.', status: 'V', description: '提供工作室營運法律諮詢、管理合約（內部/外部），並確保智慧財產權合規與風險控管。' },
+  { category: 'Project Ops', roleName: 'Project Manager (PM)', tools: 'Markdown / Any', status: 'V', description: '負責成員間溝通協調、追蹤開發進度與排除障礙。' },
+  { category: 'Project Ops', roleName: 'Financial Management', tools: 'Markdown / Any', status: 'V', description: '管理現金流並計算貢獻分紅。' },
   { category: 'Project Ops', roleName: 'Asset Management', tools: 'Markdown for communicate', status: 'CO', description: '整理並尋找專案資產 (Fab)，需善用 Markdown 回報清單。' },
   { category: 'Project Ops', roleName: 'Playtesting', tools: 'Markdown for communicate', status: 'CO', description: '尋找 Bug 並提供優化建議，需善用 Markdown 撰寫測試報告。' }
 ];

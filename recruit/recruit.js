@@ -12,7 +12,15 @@
   var container = document.getElementById('ceil-skill-matrix-cards');
   if (!container) return;
 
-  var statusLabels = { O: 'Solo Able', X: 'Open Role', CO: 'Co-op', AI: 'AI Workflow' };
+  var statusLabels = {
+    O: 'Solo Able',
+    X: 'Open Role',
+    CO: 'Co-op',
+    AI: 'AI Workflow',
+    V: 'Filled' // internal code; display text depends on page language
+  };
+
+  var htmlLang = (document.documentElement && document.documentElement.lang) || 'zh-Hant';
   var lastCategory = '';
 
   skillsData.forEach(function (item) {
@@ -30,14 +38,23 @@
     else if (item.status === 'CO') statusClass = ' ceil-skill-card--co';
     else if (item.status === 'O') statusClass = ' ceil-skill-card--o';
     else if (item.status === 'AI') statusClass = ' ceil-skill-card--ai';
+    else if (item.status === 'V') statusClass = ' ceil-skill-card--filled';
     card.className = 'ceil-skill-card' + statusClass;
     card.setAttribute('data-status', item.status);
 
     var statusLabel = statusLabels[item.status] || item.status;
+    var statusDisplay;
+    if (item.status === 'V') {
+      statusDisplay = (htmlLang === 'en') ? 'Filled' : '已招募到';
+    } else if (item.status === 'O') {
+      statusDisplay = (htmlLang === 'en') ? 'Owner' : '由我負責';
+    } else {
+      statusDisplay = item.status;
+    }
     card.innerHTML =
       '<div class="ceil-skill-card__header">' +
-        '<span class="ceil-skill-card__role">' + escapeHtml(item.roleName) + '</span>' +
-        '<span class="ceil-skill-card__status" title="' + escapeHtml(statusLabel) + '">' + item.status + '</span>' +
+      '<span class="ceil-skill-card__role">' + escapeHtml(item.roleName) + '</span>' +
+      '<span class="ceil-skill-card__status" title="' + escapeHtml(statusLabel) + '">' + escapeHtml(statusDisplay) + '</span>' +
       '</div>' +
       '<div class="ceil-skill-card__tools">' + escapeHtml(item.tools) + '</div>' +
       (item.description ? '<div class="ceil-skill-card__desc">' + escapeHtml(item.description) + '</div>' : '');

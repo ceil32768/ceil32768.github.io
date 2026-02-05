@@ -21,6 +21,8 @@
       --ceil-o-glow: rgba(22, 163, 74, 0.3);
       --ceil-ai: #7c3aed;
       --ceil-ai-glow: rgba(124, 58, 237, 0.3);
+      --ceil-filled: #f59e0b;
+      --ceil-filled-glow: rgba(245, 158, 11, 0.35);
       background: var(--ceil-bg);
       min-height: 100vh;
       color: var(--ceil-text);
@@ -326,6 +328,9 @@
     #ceil-studio-recruit .ceil-legend tr td:first-child .ceil-legend__symbol--ai {
       color: var(--ceil-ai);
     }
+    #ceil-studio-recruit .ceil-legend tr td:first-child .ceil-legend__symbol--v {
+      color: #f59e0b; /* Gold / Amber */
+    }
 
     /* ---------- SkillMatrix / SkillCard ---------- */
     #ceil-studio-recruit .ceil-matrix-category {
@@ -370,6 +375,10 @@
       border-color: var(--ceil-ai);
       box-shadow: 0 0 0 1px var(--ceil-ai), 0 0 20px var(--ceil-ai-glow);
     }
+    #ceil-studio-recruit .ceil-skill-card--filled {
+      border-color: var(--ceil-filled);
+      box-shadow: 0 0 0 1px var(--ceil-filled), 0 0 20px var(--ceil-filled-glow);
+    }
     #ceil-studio-recruit .ceil-skill-card__header {
       display: flex;
       justify-content: space-between;
@@ -406,6 +415,10 @@
     #ceil-studio-recruit .ceil-skill-card--ai .ceil-skill-card__status {
       background: var(--ceil-ai);
       color: #fff;
+    }
+    #ceil-studio-recruit .ceil-skill-card--filled .ceil-skill-card__status {
+      background: var(--ceil-filled);
+      color: #111827;
     }
     #ceil-studio-recruit .ceil-skill-card__tools {
       font-size: 1rem;
@@ -766,7 +779,7 @@
         </thead>
         <tbody>
           <tr>
-            <td><span class="ceil-legend__symbol--o">O (Solo Able)</span></td>
+            <td><span class="ceil-legend__symbol--o">由我負責</span></td>
             <td>我能獨立完成，暫無招募需求。</td>
           </tr>
           <tr>
@@ -780,6 +793,10 @@
           <tr>
             <td><span class="ceil-legend__symbol--open">X (Open Role)</span></td>
             <td>核心缺口，目前的我無法處理，非常需要你的幫忙</td>
+          </tr>
+          <tr>
+            <td><span class="ceil-legend__symbol--v">已招募到</span></td>
+            <td>代表此職位已經招到主要負責人，目前不是優先招募目標。</td>
           </tr>
         </tbody>
       </table>

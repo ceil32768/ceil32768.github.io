@@ -49,7 +49,7 @@
     } else if (item.status === 'O') {
       statusDisplay = (htmlLang === 'en') ? 'Owner' : '由我負責';
     } else if (item.status === 'CO') {
-      statusDisplay = (htmlLang === 'en') ? 'Co-op' : '協作';
+      statusDisplay = (htmlLang === 'en') ? 'Co-op' : '可協作';
     } else if (item.status === 'X') {
       statusDisplay = (htmlLang === 'en') ? 'Open Role' : '核心缺口';
     } else {

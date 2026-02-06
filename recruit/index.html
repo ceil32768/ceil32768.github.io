@@ -564,6 +564,33 @@
       content: '> ';
       color: var(--ceil-accent);
     }
+    /* CTA 表單按鈕 */
+    #ceil-studio-recruit .ceil-cta-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      border-radius: 0.5rem;
+      background: linear-gradient(135deg, var(--ceil-accent) 0%, #385083 100%);
+      color: #fff !important;
+      font-weight: 600;
+      font-size: 1rem;
+      text-decoration: none !important;
+      border: 1px solid rgba(59, 130, 246, 0.5);
+      box-shadow: 0 4px 14px rgba(59, 130, 246, 0.35);
+      transition: all 0.25s ease;
+    }
+    #ceil-studio-recruit .ceil-cta-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(59, 130, 246, 0.45);
+      background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+    }
+    #ceil-studio-recruit .ceil-cta-btn svg {
+      width: 1.1em;
+      height: 1.1em;
+      flex-shrink: 0;
+    }
 
     /* ---------- Footer ---------- */
     #ceil-studio-recruit .ceil-footer {
@@ -815,9 +842,35 @@
     <!-- 聯絡與交流: Tactical Command Panel -->
     <section id="contact" class="ceil-section">
       <h2 class="ceil-section__title">聯絡與交流 (Let's Connect)</h2>
-      <p class="ceil-section__content" style="margin-bottom: 0;">不需要你很強，只要你有熱情或想一起學習都歡迎！不需要現在決定是否加入！如果你看完覺得有點興趣，歡迎先來「卡個位」。</p>
 
-      <div class="ceil-contact-grid">
+      <div class="ceil-cta-box">
+        <h3 class="ceil-cta-heading">如何登記？</h3>
+        <p class="ceil-cta-instruction">
+          若你有意成為本專案的潛在成員，請優先填寫以下 Google 表單，我會依照表單內容與專案需求進行評估：
+        </p>
+        <p class="ceil-cta-instruction" style="margin-top: 0.75rem;">
+          <a href="https://docs.google.com/forms/d/1Mq3yGbsgCV9Drkl-jhKR9BzEQYQFP_M8gEgR7k9fMHQ/viewform"
+             target="_blank" rel="noopener"
+             class="ceil-cta-btn">
+            <span>前往招募登記表單</span>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+              <polyline points="15 3 21 3 21 9"></polyline>
+              <line x1="10" y1="14" x2="21" y2="3"></line>
+            </svg>
+          </a>
+        </p>
+        <p class="ceil-cta-log">
+          我會先將你列入候選名單。待專案啟動前，我會根據專案需求
+          <strong>評估並主動聯繫合適的人選</strong>，屆時再針對開發細節、彼此的時間與意願，來確認是否正式開啟合作。
+        </p>
+      </div>
+
+      <p class="ceil-section__content" style="margin-bottom: 0; margin-top: 1.5rem;">
+        不需要你很強，只要你有熱情或想一起學習都歡迎！如果你只是想聊聊遊戲開發、問問題或閒聊，也非常歡迎直接用下方 IG / Discord / Email 找我。
+      </p>
+
+      <div class="ceil-contact-grid" style="margin-top: 1rem;">
         <a href="https://instagram.com/ceil32768" target="_blank" rel="noopener" class="ceil-contact-card">
           <span class="ceil-contact-card__label">Instagram</span>
           <span class="ceil-contact-card__handle">@ceil32768</span>
@@ -830,14 +883,6 @@
           <span class="ceil-contact-card__label">Email</span>
           <span class="ceil-contact-card__handle">qerpzzea@gmail.com</span>
         </a>
-      </div>
-
-      <div class="ceil-cta-box">
-        <h3 class="ceil-cta-heading">如何登記？</h3>
-        <p class="ceil-cta-instruction">只要傳訊息跟我說聲 <span class="ceil-cta-tag">「有興趣」</span> 或 <span class="ceil-cta-tag">「想卡位 + 你的專長」</span> 即可。</p>
-        <p class="ceil-cta-log">
-          我會先將你列入候選名單。待專案啟動前，我會根據專案需求
-          <strong>評估並主動聯繫合適的人選</strong>，屆時再針對開發細節、彼此的時間與意願，來確認是否正式開啟合作。</p>
       </div>
     </section>
 

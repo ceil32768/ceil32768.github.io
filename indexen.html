@@ -1,0 +1,710 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ceil Studio — Home</title>
+    <link rel="stylesheet" href="./style/style.css" />
+    <style>
+      /* Game Project Styles */
+      .projects-section {
+        min-height: 90vh;
+        padding: 3rem 2rem;
+      }
+
+      .projects-container {
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .projects-section .section-title {
+        text-align: center;
+        font-size: 2.5rem;
+        color: white;
+        margin-bottom: 3rem;
+        text-shadow: 0 0 20px rgba(173, 35, 194, 0.8);
+      }
+
+      .projects-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 2rem;
+        margin-top: 2rem;
+      }
+
+      .project-card {
+        background: rgba(31, 40, 51, 0.6);
+        border: 1px solid rgba(102, 252, 241, 0.3);
+        border-radius: 16px;
+        padding: 1.8rem;
+        backdrop-filter: blur(4px);
+        transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        gap: 1.2rem;
+        color: white;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .project-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(102, 252, 241, 0.15),
+          transparent
+        );
+        transition: left 0.6s ease;
+        z-index: 0;
+      }
+
+      .project-card:hover {
+        transform: translateY(-12px);
+        border-color: rgba(102, 252, 241, 0.8);
+        box-shadow:
+          0 20px 40px rgba(173, 35, 194, 0.3),
+          0 0 20px rgba(102, 252, 241, 0.2);
+      }
+
+      .project-card:hover::before {
+        left: 100%;
+      }
+
+      .project-card > * {
+        position: relative;
+        z-index: 1;
+      }
+
+      .project-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: start;
+        gap: 1rem;
+        border-bottom: 1px solid rgba(102, 252, 241, 0.2);
+        padding-bottom: 1rem;
+      }
+
+      .project-header h3 {
+        font-size: 1.3rem;
+        margin: 0;
+        color: #66fcf1;
+        flex: 1;
+      }
+
+      .download-badge {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        padding: 0.4rem 0.8rem;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        white-space: nowrap;
+        font-weight: bold;
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+      }
+
+      .project-stats {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        font-size: 0.9rem;
+        color: #aaa;
+      }
+
+      .project-stats span {
+        display: flex;
+        align-items: center;
+      }
+
+      .project-stats span::before {
+        content: "→";
+        margin-right: 0.5rem;
+        color: #66fcf1;
+      }
+
+      .project-desc {
+        font-size: 1rem;
+        color: #ddd;
+        line-height: 1.6;
+        margin: 0;
+        flex: 1;
+      }
+
+      .project-buttons {
+        display: flex;
+        gap: 0.75rem;
+        flex-wrap: wrap;
+      }
+
+      .project-btn {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border: none;
+        color: white;
+        padding: 0.9rem 1.8rem;
+        border-radius: 10px;
+        cursor: pointer;
+        font-weight: bold;
+        font-size: 0.95rem;
+        transition: all 0.3s ease;
+        align-self: flex-start;
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        text-decoration: none;
+        display: inline-block;
+        text-align: center;
+      }
+
+      .project-btn:hover:not(:disabled) {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(102, 126, 234, 0.5);
+      }
+
+      .project-btn:active:not(:disabled) {
+        transform: translateY(-1px);
+      }
+
+      .project-btn:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        background: linear-gradient(135deg, #555 0%, #333 100%);
+      }
+
+      .project-btn-trailer {
+        background: linear-gradient(135deg, #66fcf1 0%, #45b7b8 100%);
+        box-shadow: 0 4px 12px rgba(102, 252, 241, 0.3);
+      }
+
+      .project-btn-trailer:hover {
+        box-shadow: 0 8px 20px rgba(102, 252, 241, 0.5);
+      }
+
+      @media (max-width: 768px) {
+        .projects-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .projects-section .section-title {
+          font-size: 1.8rem;
+        }
+
+        .project-card {
+          padding: 1.5rem;
+          gap: 1rem;
+        }
+
+        .project-header {
+          flex-direction: column;
+        }
+
+        .project-header h3 {
+          margin-bottom: 0.5rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="ceil-nav">
+      <div class="ceil-nav__inner">
+        <a href="./indexen.html" class="ceil-nav__brand">Ceil Studio</a>
+        <ul class="ceil-nav__links">
+          <li><a href="#about" class="active">About</a></li>
+          <li><a href="#games">Games</a></li>
+          <li><a href="#social">Socials</a></li>
+          <li><a href="./recruit/indexen.html">Recruit</a></li>
+        </ul>
+        <a href="./index.html" class="ceil-lang-switch">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="2" y1="12" x2="22" y2="12"></line>
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+          </svg>
+          中文
+        </a>
+      </div>
+    </nav>
+    <main>
+      <section id="about" class="mainarea">
+        <div>
+          <div class="text-content">
+            <h1 class="vlarge">Hi, I'm Ceil</h1>
+            <h2>
+              Name: Yu-Ying Chen (Ceil) <br />Google Play Developer Account: 賽西爾cecill
+              <br />Instagram: @ceil32768
+            </h2>
+            <div class="mainarea-intro">
+              <p>Hi, I am Yu-Ying Chen (Ceil). You might find me online as ceil, cecill, ceil32768, or cecill77777. I am a developer who longs for freedom. For me, there are too many rules in the real world. I refuse to be defined by my environment, and I don't want to live within standard answers. My dream is simple: to create a masterpiece that will leave a mark.</p>
+            </div>
+            <!-- <a href="#contact" class="mainarea-cta">Contact</a> -->
+          </div>
+          <img src="./img/profilepic3.png" alt="Profile Picture" class="profile-pic" />
+        </div>
+      </section>
+      <section class="aboutme modernbackground">
+        <section class="tab glass-card">
+          <table>
+            <tr>
+              <td>Education</td>
+              <td>Freshman, Dept. of CSIE, National Cheng Kung University</td>
+            </tr>
+            <tr>
+              <td>Competitive Programming</td>
+              <td>
+                <ul>
+                  <li>APCS - Implementation 4 / Concept 4</li>
+                  <li>TOI Preliminary Selection: 220 points</li>
+                  <li>NCKU Special Selection Group A Programming Exam: 8th Place</li>
+                  <li>Information Technology Subject Capability Competition Finals: Honorable Mention</li>
+                  <li>CPE: 3 Problems</li>
+                  <li>C++ / Java Syntax Certification</li>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <td>Game Dev Experience</td>
+              <td>
+                <ul>
+                  <li>Survive In Backrooms - Eerie 2 (Downloads > 5000)</li>
+                  <li>Survive In Backrooms - Eerie (Downloads > 10k)</li>
+                  <li>SCP 096 In Backrooms (Downloads > 100k)</li>
+                  <li>Stop The Time (Downloads > 10k)</li>
+                  <li>Level Run - Run For Your Life! (Downloads > 5000)</li>
+                  <li>Killer Runner (Delisted - Outdated Unreal Engine version)</li>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <td>Teaching Experience</td>
+              <td>
+                <ul>
+                  <li>Kaohsiung Chung Cheng High School Competitive Programming Training (> 24hr)</li>
+                  <li>Kaohsiung Information Training Association Tutor (> 24hr)</li>
+                </ul>
+              </td>
+            </tr>
+          </table>
+        </section>
+      </section>
+      <section class="skills modernbackground">
+        <div class="skills-card glass-card">
+          <h2 class="skill-title">Skills</h2>
+          <div class="skill-badges">
+            <span class="skill-badge">🎮 Unreal Engine Game Development (Blueprint and C++)</span>
+            <span class="skill-badge">⚡ Competitive Programming (C++)</span>
+            <span class="skill-badge">🎨 Blender (Hard Surface Modeling)</span>
+            <span class="skill-badge">🌐 Web Frontend (HTML/CSS/JavaScript)</span>
+            <span class="skill-badge">🎨 2D Concept Art</span>
+            <span class="skill-badge">🤖 AI Workflow</span>
+            <span class="skill-badge">📦 Git & GitHub</span>
+            <span class="skill-badge">📱 Google Play Console & Steamworks</span>
+          </div>
+        </div>
+      </section>
+
+      <section id="games" class="projects-section modernbackground">
+        <div class="projects-container">
+          <h1 class="section-title">🎮 My Games</h1>
+
+          <div class="projects-grid" id="projectsGrid">
+            <div class="project-card" data-category="survival">
+              <div class="project-header">
+                <h3>Survive In Backrooms - Eerie 2</h3>
+                <span class="download-badge">Downloads > 5000</span>
+              </div>
+              <div class="project-stats">
+                <span>Engine: Unreal Engine 5</span>
+                <span>Genre: First Person Survival Horror</span>
+              </div>
+              <p class="project-desc">Infinite map. You need to survive in the liminal space.</p>
+              <div class="project-buttons">
+                <a href="https://play.google.com/store/apps/details?id=com.cecill.brev2" target="_blank" rel="noopener" class="project-btn">Learn More</a>
+                <a href="https://www.youtube.com/watch?v=pWkF9mcllNw" target="_blank" rel="noopener" class="project-btn project-btn-trailer">Trailer</a>
+              </div>
+            </div>
+
+            <div class="project-card" data-category="action">
+              <div class="project-header">
+                <h3>Survive In Backrooms - Eerie</h3>
+                <span class="download-badge">Downloads > 10k</span>
+              </div>
+              <div class="project-stats">
+                <span>Engine: Unreal Engine 5</span>
+                <span>Genre: First Person Survival Horror</span>
+              </div>
+              <p class="project-desc">Survive in the Backrooms.</p>
+              <div class="project-buttons">
+                <a href="https://play.google.com/store/apps/details?id=com.YourCompany.Surviveinbackrooms" target="_blank" rel="noopener" class="project-btn">Learn More</a>
+              </div>
+            </div>
+
+            <div class="project-card" data-category="horror">
+              <div class="project-header">
+                <h3>Level Run - Run For Your Life!</h3>
+                <span class="download-badge">Downloads > 5000</span>
+              </div>
+              <div class="project-stats">
+                <span>Engine: Unreal Engine 5</span>
+                <span>Genre: First Person Horror Adventure</span>
+              </div>
+              <p class="project-desc">
+                Run Run Run for your life!
+              </p>
+              <div class="project-buttons">
+                <a href="https://play.google.com/store/apps/details?id=com.cecill.rfyl" target="_blank" rel="noopener" class="project-btn">Learn More</a>
+              </div>
+            </div>
+
+            <div class="project-card" data-category="horror">
+              <div class="project-header">
+                <h3>SCP 096 In Backrooms</h3>
+                <span class="download-badge">Downloads > 100k</span>
+              </div>
+              <div class="project-stats">
+                <span>Engine: Unreal Engine 5</span>
+                <span>Genre: First Person Horror Adventure</span>
+              </div>
+              <p class="project-desc">
+                Escape from the dangerous SCP 096 and survive in the Backrooms.
+              </p>
+              <div class="project-buttons">
+                <a href="https://play.google.com/store/apps/details?id=com.YourCompany.SCP096backroom" target="_blank" rel="noopener" class="project-btn">Learn More</a>
+              </div>
+            </div>
+
+            <div class="project-card" data-category="action">
+              <div class="project-header">
+                <h3>Stop The Time</h3>
+                <span class="download-badge">Downloads > 10k</span>
+              </div>
+              <div class="project-stats">
+                <span>Engine: Unreal Engine 4</span>
+                <span>Genre: Action Puzzle</span>
+              </div>
+              <p class="project-desc">Stop time to defeat enemies.</p>
+              <div class="project-buttons">
+                <a href="https://play.google.com/store/apps/details?id=com.YourCompany.stopthetime" target="_blank" rel="noopener" class="project-btn">Learn More</a>
+                <a href="https://www.youtube.com/watch?v=S65KUswQyeI" target="_blank" rel="noopener" class="project-btn project-btn-trailer">Trailer</a>
+              </div>
+            </div>
+
+            <div class="project-card" data-category="action">
+              <div class="project-header">
+                <h3>Killer Runner</h3>
+                <span class="download-badge">Delisted (Outdated Version)</span>
+              </div>
+              <div class="project-stats">
+                <span>Engine: Unreal Engine 4</span>
+                <span>Genre: Action Parkour</span>
+              </div>
+              <p class="project-desc">Attack and move forward, a parkour game avoiding pursuers.</p>
+              <div class="project-buttons">
+                <button class="project-btn" disabled>Delisted</button>
+                <a href="https://www.youtube.com/watch?v=XXuYUCpT-ww" target="_blank" rel="noopener" class="project-btn project-btn-trailer">Trailer</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="social" class="social-section modernbackground">
+        <div class="social-container">
+          <h2 class="social-section-title">Links</h2>
+          <div class="social-links">
+            <a href="https://play.google.com/store/apps/dev?id=6647403418196319688" target="_blank" rel="noopener noreferrer" class="social-card">
+              <span class="social-icon">📱</span>
+              <h3>Google Play</h3>
+              <p>賽西爾cecill</p>
+              <p class="social-desc">Developer Account</p>
+            </a>
+            <a href="https://www.instagram.com/ceil32768/" target="_blank" rel="noopener noreferrer" class="social-card">
+              <span class="social-icon">📱</span>
+              <h3>Instagram</h3>
+              <p>@ceil32768</p>
+              <p class="social-desc">Personal Account</p>
+            </a>
+            <a href="https://www.youtube.com/@cecillbackrooms/featured" target="_blank" rel="noopener noreferrer" class="social-card">
+              <span class="social-icon">🎥</span>
+              <h3>YouTube</h3>
+              <p>@cecillbackrooms</p>
+              <p class="social-desc">Main Channel</p>
+            </a>
+            <a href="https://www.youtube.com/@cecill2520" target="_blank" rel="noopener noreferrer" class="social-card">
+              <span class="social-icon">🎥</span>
+              <h3>YouTube</h3>
+              <p>@cecill2520</p>
+              <p class="social-desc">Second Channel</p>
+            </a>
+            <a href="mailto:qerpzzea@gmail.com" target="_blank" rel="noopener noreferrer" class="social-card">
+              <span class="social-icon">📧</span>
+              <h3>Contact Email</h3>
+              <p>Via Contact Form</p>
+              <p class="social-desc">Business Inquiries</p>
+            </a>
+          </div>
+        </div>
+      </section>
+    </main>
+    <div class="foot">
+      <p>&copy; 2026 Ceil Studio. All rights reserved.</p>
+    </div>
+
+    <script>
+      // ===== Scroll Spy with Smooth Scroll =====
+      (function() {
+        // Get all navigation links that point to sections
+        const navLinks = document.querySelectorAll('nav a[href^="#"]');
+        const sections = document.querySelectorAll('section[id]');
+        
+        // Map to store section ID -> nav link
+        const sectionToLinkMap = new Map();
+        navLinks.forEach(link => {
+          const href = link.getAttribute('href');
+          if (href && href.startsWith('#')) {
+            const sectionId = href.substring(1);
+            sectionToLinkMap.set(sectionId, link);
+          }
+        });
+
+        // Function to update active state
+        function setActiveLink(targetSectionId) {
+          navLinks.forEach(link => {
+            link.classList.remove('active');
+          });
+          const targetLink = sectionToLinkMap.get(targetSectionId);
+          if (targetLink) {
+            targetLink.classList.add('active');
+          }
+        }
+
+        // Click handler: Immediately set active + smooth scroll
+        navLinks.forEach(link => {
+          link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const href = this.getAttribute('href');
+            if (href && href.startsWith('#')) {
+              const targetId = href.substring(1);
+              const targetSection = document.getElementById(targetId);
+              
+              if (targetSection) {
+                // Immediately set active state (don't wait for scroll)
+                setActiveLink(targetId);
+                
+                // Then smooth scroll
+                targetSection.scrollIntoView({ 
+                  behavior: 'smooth',
+                  block: 'start'
+                });
+              }
+            }
+          });
+        });
+
+        // Scroll Spy: Use IntersectionObserver to detect section in viewport center
+        const observerOptions = {
+          root: null, // viewport
+          rootMargin: '-50% 0px -50% 0px', // Only trigger when section dominates center
+          threshold: 0
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              const sectionId = entry.target.id;
+              if (sectionId && sectionToLinkMap.has(sectionId)) {
+                setActiveLink(sectionId);
+              }
+            }
+          });
+        }, observerOptions);
+
+        // Observe all sections
+        sections.forEach(section => {
+          if (section.id && sectionToLinkMap.has(section.id)) {
+            observer.observe(section);
+          }
+        });
+
+        // Set initial active state based on first visible section
+        const checkInitialSection = () => {
+          const viewportCenter = window.innerHeight / 2;
+          let activeSectionId = null;
+          let minDistance = Infinity;
+
+          sections.forEach(section => {
+            if (section.id && sectionToLinkMap.has(section.id)) {
+              const rect = section.getBoundingClientRect();
+              const sectionCenter = rect.top + rect.height / 2;
+              const distance = Math.abs(sectionCenter - viewportCenter);
+              
+              // Check if section is in viewport
+              if (rect.top < window.innerHeight && rect.bottom > 0) {
+                if (distance < minDistance) {
+                  minDistance = distance;
+                  activeSectionId = section.id;
+                }
+              }
+            }
+          });
+
+          if (activeSectionId) {
+            setActiveLink(activeSectionId);
+          }
+        };
+
+        // Set initial state on page load
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', checkInitialSection);
+        } else {
+          checkInitialSection();
+        }
+      })();
+
+
+      // ===== Table Row Interaction =====
+      const tableRows = document.querySelectorAll(".tab table tr");
+      tableRows.forEach((row, index) => {
+        row.style.cursor = "pointer";
+        row.style.transition = "all 0.3s ease";
+
+        row.addEventListener("mouseenter", function () {
+          this.style.backgroundColor = "rgba(34, 211, 238, 0.1)";
+          this.style.transform = "scale(1.02)";
+          this.style.paddingLeft = "10px";
+        });
+
+        row.addEventListener("mouseleave", function () {
+          this.style.backgroundColor = "transparent";
+          this.style.transform = "scale(1)";
+          this.style.paddingLeft = "0px";
+        });
+      });
+
+      // ===== Animation Definitions =====
+      if (!document.querySelector("style[data-animation]")) {
+        const style = document.createElement("style");
+        style.setAttribute("data-animation", "true");
+        style.textContent = `
+          .skill-badge {
+            animation: slideIn 0.6s ease-out forwards;
+          }
+
+          @keyframes slideIn {
+            from {
+              opacity: 0;
+              transform: translateX(-20px);
+            }
+            to {
+              opacity: 1;
+              transform: translateX(0);
+            }
+          }
+
+          /* Improve Table Interaction */
+          .tab table tr {
+            position: relative;
+          }
+
+          .tab table tr::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #22d3ee, #0891b2);
+            transition: width 0.3s ease;
+          }
+
+          .tab table tr:hover::after {
+            width: 100%;
+          }
+        `;
+        document.head.appendChild(style);
+      }
+
+      // ===== Nav Links Interaction =====
+      const navLinks = document.querySelectorAll("nav a");
+      navLinks.forEach((link) => {
+        link.addEventListener("mouseenter", function () {
+          this.style.textShadow = "0 0 10px rgba(102, 252, 241, 0.8)";
+        });
+
+        link.addEventListener("mouseleave", function () {
+          this.style.textShadow = "none";
+        });
+      });
+
+      // ===== Add Scroll Animation =====
+      function addScrollAnimation() {
+        const elements = document.querySelectorAll(".skill-badge, .tab");
+        const scrollObserver = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry, index) => {
+              if (entry.isIntersecting) {
+                entry.target.style.opacity = "1";
+                entry.target.style.transform = "translateY(0)";
+              }
+            });
+          },
+          { threshold: 0.2 },
+        );
+
+        elements.forEach((el, index) => {
+          el.style.opacity = "0";
+          el.style.transform = "translateY(20px)";
+          el.style.transition = `opacity 0.5s ease ${index * 0.1}s, transform 0.5s ease ${index * 0.1}s`;
+          scrollObserver.observe(el);
+        });
+      }
+
+      addScrollAnimation();
+
+      // ===== Header Area Interaction =====
+      const mainArea = document.querySelector(".mainarea");
+      if (mainArea) {
+        const heading = mainArea.querySelector(".vlarge");
+        if (heading) {
+          heading.style.cursor = "default";
+          heading.style.transition = "text-shadow 0.3s ease";
+
+          mainArea.addEventListener("mouseenter", function () {
+            heading.style.textShadow = "0 0 30px rgba(102, 126, 234, 0.8)";
+          });
+
+          mainArea.addEventListener("mouseleave", function () {
+            heading.style.textShadow = "none";
+          });
+        }
+      }
+
+      // ===== Game Project Scroll Animation =====
+      const projectCards = document.querySelectorAll(".project-card");
+      if (projectCards.length > 0) {
+        const projectObserverOptions = {
+          threshold: 0.2,
+          rootMargin: "0px 0px -50px 0px",
+        };
+
+        const projectObserver = new IntersectionObserver(function (entries) {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.style.opacity = "1";
+              entry.target.style.transform = "translateY(0)";
+            }
+          });
+        }, projectObserverOptions);
+
+        projectCards.forEach((card) => {
+          card.style.opacity = "0";
+          card.style.transform = "translateY(20px)";
+          card.style.transition = "opacity 0.6s ease, transform 0.6s ease";
+          projectObserver.observe(card);
+        });
+      }
+
+    </script>
+  </body>
+</html>

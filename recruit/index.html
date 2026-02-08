@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ceil Studio — 招募</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    #ceil-studio-recruit {
+      --ceil-bg: #0a0a0f;
+      --ceil-surface: #12121a;
+      --ceil-border: #1e1e2e;
+      --ceil-text: #fbfbff;
+      --ceil-muted: #f1eaea;
+      --ceil-accent: #3b82f6;
+      --ceil-open: #dc2626;
+      --ceil-open-glow: rgba(220, 38, 38, 0.4);
+      --ceil-co: #2563eb;
+      --ceil-co-glow: rgba(37, 99, 235, 0.3);
+      --ceil-o: #16a34a;
+      --ceil-o-glow: rgba(22, 163, 74, 0.3);
+      --ceil-ai: #7c3aed;
+      --ceil-ai-glow: rgba(124, 58, 237, 0.3);
+      --ceil-filled: #f59e0b;
+      --ceil-filled-glow: rgba(245, 158, 11, 0.35);
+      background: var(--ceil-bg);
+      min-height: 100vh;
+      color: var(--ceil-text);
+      font-family: ui-sans-serif, system-ui, sans-serif;
+      font-size: 1.275rem;
+      line-height: 1.6;
+      box-sizing: border-box;
+    }
+    #ceil-studio-recruit *,
+    #ceil-studio-recruit *::before,
+    #ceil-studio-recruit *::after { box-sizing: border-box; }
+    #ceil-studio-recruit * { margin: 0; padding: 0; }
+    #ceil-studio-recruit img { max-width: 100%; height: auto; display: block; }
+    #ceil-studio-recruit a { color: var(--ceil-accent); text-decoration: none; }
+    #ceil-studio-recruit a:hover { text-decoration: underline; }
+
+    /* ---------- Navbar ---------- */
+    #ceil-studio-recruit .ceil-nav {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(10, 10, 15, 0.9);
+      border-bottom: 1px solid var(--ceil-border);
+      padding: 0.75rem 1.5rem;
+    }
+    #ceil-studio-recruit .ceil-nav__inner {
+      max-width: 56rem;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 1rem;
+    }
+    #ceil-studio-recruit .ceil-nav__brand {
+      font-weight: 700;
+      color: var(--ceil-text);
+      text-decoration: none;
+      margin-right: auto;
+    }
+    #ceil-studio-recruit .ceil-nav__brand:hover { text-decoration: none; }
+    #ceil-studio-recruit .ceil-nav__links {
+      display: flex;
+      list-style: none;
+      gap: 1.5rem;
+    }
+    #ceil-studio-recruit .ceil-nav__links a {
+      color: var(--ceil-muted);
+      font-size: 0.95rem;
+    }
+    #ceil-studio-recruit .ceil-nav__links a:hover {
+      color: var(--ceil-text);
+    }
+    #ceil-studio-recruit .ceil-nav__links a.active {
+      color: var(--ceil-text);
+      border-bottom: 2px solid #22d3ee;
+      padding-bottom: 0.1rem;
+    }
+
+    /* Language Switcher - Isolated Pill */
+    #ceil-studio-recruit .ceil-lang-switch {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.4rem 1rem;
+      border-radius: 9999px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      color: var(--ceil-muted);
+      font-size: 0.9rem;
+      font-weight: 500;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      margin-left: 1.5rem;
+    }
+
+    #ceil-studio-recruit .ceil-lang-switch:hover {
+      background: rgba(255, 255, 255, 0.2);
+      border-color: rgba(255, 255, 255, 0.4);
+      color: var(--ceil-text);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      text-decoration: none;
+    }
+
+    #ceil-studio-recruit .ceil-lang-switch svg {
+      width: 1.1em;
+      height: 1.1em;
+      fill: currentColor;
+    }
+
+    /* ---------- Hero + Glitch ---------- */
+    #ceil-studio-recruit .ceil-hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2rem;
+      position: relative;
+      overflow: hidden;
+      gap: 4rem;
+    }
+    #ceil-studio-recruit .ceil-hero__title {
+      font-size: clamp(2.5rem, 10vw, 5rem);
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      position: relative;
+      color: var(--ceil-text);
+    }
+    #ceil-studio-recruit .ceil-hero__title.glitch {
+      animation: ceil-glitch 3s infinite;
+    }
+    #ceil-studio-recruit .ceil-hero__title.glitch::before,
+    #ceil-studio-recruit .ceil-hero__title.glitch::after {
+      content: attr(data-text);
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+    }
+    #ceil-studio-recruit .ceil-hero__title.glitch::before {
+      color: #0ff;
+      animation: ceil-glitch-alt 2s infinite;
+      clip-path: polygon(0 0, 100% 0, 100% 35%, 0 35%);
+      transform: translate(-2px, 2px);
+    }
+    #ceil-studio-recruit .ceil-hero__title.glitch::after {
+      color: #f0f;
+      animation: ceil-glitch-alt 2.5s infinite reverse;
+      clip-path: polygon(0 65%, 100% 65%, 100% 100%, 0 100%);
+      transform: translate(2px, -2px);
+    }
+    @keyframes ceil-glitch {
+      0%, 90%, 100% { transform: translate(0); }
+      92% { transform: translate(-2px, 1px); }
+      94% { transform: translate(2px, -1px); }
+      96% { transform: translate(-1px, 2px); }
+      98% { transform: translate(1px, -2px); }
+    }
+    @keyframes ceil-glitch-alt {
+      0% { transform: translate(-2px, 2px); opacity: 0.8; }
+      50% { transform: translate(2px, -2px); opacity: 0.8; }
+      100% { transform: translate(-2px, 2px); opacity: 0.8; }
+    }
+    #ceil-studio-recruit .ceil-hero__content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    #ceil-studio-recruit .ceil-hero__tagline {
+      margin-top: 1rem;
+      color: var(--ceil-muted);
+      font-size: 1.8rem;
+    }
+    #ceil-studio-recruit .ceil-hero__about {
+      max-width: 48rem;
+      width: 100%;
+      padding: 2rem 1.5rem;
+      background: rgba(18, 18, 26, 0.6);
+      border: 1px solid var(--ceil-border);
+      border-radius: 0.75rem;
+      backdrop-filter: blur(10px);
+      text-align: left;
+    }
+    #ceil-studio-recruit .ceil-hero__about-title {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--ceil-text);
+      margin-bottom: 1.5rem;
+      text-align: center;
+      letter-spacing: 0.05em;
+    }
+    #ceil-studio-recruit .ceil-hero__about-content {
+      color: var(--ceil-muted);
+      line-height: 1.8;
+      font-size: 1.1rem;
+    }
+    #ceil-studio-recruit .ceil-hero__about-content p {
+      margin-bottom: 1rem;
+    }
+    #ceil-studio-recruit .ceil-hero__about-content p:last-child {
+      margin-bottom: 0;
+    }
+    #ceil-studio-recruit .ceil-hero__about-content strong {
+      color: var(--ceil-text);
+      font-weight: 600;
+    }
+    @media (max-width: 768px) {
+      #ceil-studio-recruit .ceil-hero {
+        gap: 3rem;
+        padding: 1.5rem;
+      }
+      #ceil-studio-recruit .ceil-hero__about {
+        padding: 1.5rem 1rem;
+      }
+      #ceil-studio-recruit .ceil-hero__about-title {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+      }
+      #ceil-studio-recruit .ceil-hero__about-content {
+        font-size: 1rem;
+      }
+      #ceil-studio-recruit .ceil-section__title {
+        font-size: 1.5rem;
+        padding: 0.6rem 1rem;
+        margin-bottom: 1.5rem;
+      }
+    }
+
+    /* ---------- Sections ---------- */
+    #ceil-studio-recruit .ceil-section {
+      padding: 4rem 1.5rem;
+      max-width: 56rem;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    #ceil-studio-recruit .ceil-section__title {
+      font-size: 1.75rem;
+      font-weight: 700;
+      margin-bottom: 2rem;
+      margin-top: 0;
+      color: var(--ceil-text);
+      letter-spacing: 0.05em;
+      padding: 0.75rem 1.25rem;
+      background: linear-gradient(90deg, rgba(59, 130, 246, 0.25) 0%, rgba(59, 130, 246, 0.1) 100%);
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      border-left: 4px solid var(--ceil-accent);
+      border-radius: 0.5rem 0 0 0.5rem;
+      box-shadow: 0 0 24px rgba(59, 130, 246, 0.15);
+    }
+    #ceil-studio-recruit .ceil-section__content {
+      color: var(--ceil-muted);
+    }
+    #ceil-studio-recruit .ceil-section__content strong { color: var(--ceil-text); }
+
+    /* ---------- BenefitCard ---------- */
+    #ceil-studio-recruit .ceil-benefit-grid {
+      display: grid;
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+    }
+    #ceil-studio-recruit .ceil-benefit-card {
+      background: var(--ceil-surface);
+      border: 1px solid var(--ceil-border);
+      border-radius: 0.75rem;
+      padding: 1.5rem;
+    }
+    #ceil-studio-recruit .ceil-benefit-card__title {
+      font-size: 1.375rem;
+      font-weight: 600;
+      color: var(--ceil-text);
+      margin-bottom: 0.75rem;
+    }
+    #ceil-studio-recruit .ceil-benefit-card__body {
+      color: var(--ceil-muted);
+    }
+    #ceil-studio-recruit .ceil-benefit-card__body ul {
+      list-style: disc;
+      padding-left: 1.25rem;
+      margin-top: 0.5rem;
+    }
+    #ceil-studio-recruit .ceil-benefit-card__body li { margin-top: 0.25rem; }
+
+    /* ---------- Symbol legend (table) ---------- */
+    #ceil-studio-recruit .ceil-legend {
+      margin-top: 1rem;
+      width: 100%;
+      border-collapse: collapse;
+      border: 1px solid var(--ceil-border);
+      border-radius: 0.5rem;
+      overflow: hidden;
+    }
+    #ceil-studio-recruit .ceil-legend th,
+    #ceil-studio-recruit .ceil-legend td {
+      border: 1px solid var(--ceil-border);
+      padding: 0.75rem 1rem;
+      text-align: left;
+      color: var(--ceil-muted);
+    }
+    #ceil-studio-recruit .ceil-legend th {
+      background: var(--ceil-surface);
+      color: var(--ceil-text);
+      font-weight: 600;
+    }
+    #ceil-studio-recruit .ceil-legend td:first-child {
+      font-weight: 600;
+      color: var(--ceil-text);
+      white-space: nowrap;
+    }
+    #ceil-studio-recruit .ceil-legend tr td:first-child .ceil-legend__symbol--open {
+      color: var(--ceil-open);
+    }
+    #ceil-studio-recruit .ceil-legend tr td:first-child .ceil-legend__symbol--co {
+      color: var(--ceil-co);
+    }
+    #ceil-studio-recruit .ceil-legend tr td:first-child .ceil-legend__symbol--o {
+      color: var(--ceil-o);
+    }
+    #ceil-studio-recruit .ceil-legend tr td:first-child .ceil-legend__symbol--ai {
+      color: var(--ceil-ai);
+    }
+    #ceil-studio-recruit .ceil-legend tr td:first-child .ceil-legend__symbol--v {
+      color: #f59e0b; /* Gold / Amber */
+    }
+
+    /* ---------- SkillMatrix / SkillCard ---------- */
+    #ceil-studio-recruit .ceil-matrix-category {
+      font-size: 1.7rem;
+      font-weight: 700;
+      color: var(--ceil-accent);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-top: 2rem;
+      margin-bottom: 0.75rem;
+      padding: 0.75rem 1.25rem;
+      background: linear-gradient(90deg, rgba(59, 130, 246, 0.12) 0%, transparent 100%);
+      border: 1px solid var(--ceil-border);
+      border-left: 4px solid var(--ceil-accent);
+      box-shadow: 0 0 24px rgba(59, 130, 246, 0.08);
+    }
+    #ceil-studio-recruit .ceil-matrix-category:first-child { margin-top: 0; }
+    #ceil-studio-recruit .ceil-skill-cards {
+      display: grid;
+      gap: 1rem;
+    }
+    #ceil-studio-recruit .ceil-skill-card {
+      background: var(--ceil-surface);
+      border: 1px solid var(--ceil-border);
+      border-radius: 0.5rem;
+      padding: 1rem 1.25rem;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    #ceil-studio-recruit .ceil-skill-card--open {
+      border-color: var(--ceil-open);
+      box-shadow: 0 0 0 1px var(--ceil-open), 0 0 20px var(--ceil-open-glow);
+    }
+    #ceil-studio-recruit .ceil-skill-card--co {
+      border-color: var(--ceil-co);
+      box-shadow: 0 0 0 1px var(--ceil-co), 0 0 20px var(--ceil-co-glow);
+    }
+    #ceil-studio-recruit .ceil-skill-card--o {
+      border-color: var(--ceil-o);
+      box-shadow: 0 0 0 1px var(--ceil-o), 0 0 20px var(--ceil-o-glow);
+    }
+    #ceil-studio-recruit .ceil-skill-card--ai {
+      border-color: var(--ceil-ai);
+      box-shadow: 0 0 0 1px var(--ceil-ai), 0 0 20px var(--ceil-ai-glow);
+    }
+    #ceil-studio-recruit .ceil-skill-card--filled {
+      border-color: var(--ceil-filled);
+      box-shadow: 0 0 0 1px var(--ceil-filled), 0 0 20px var(--ceil-filled-glow);
+    }
+    #ceil-studio-recruit .ceil-skill-card__header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 0.75rem;
+      margin-bottom: 0.5rem;
+    }
+    #ceil-studio-recruit .ceil-skill-card__role {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--ceil-text);
+      text-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
+    }
+    #ceil-studio-recruit .ceil-skill-card__status {
+      flex-shrink: 0;
+      font-size: 1.5rem;
+      padding: 0.2rem 0.5rem;
+      border-radius: 0.25rem;
+      background: var(--ceil-border);
+      color: var(--ceil-muted);
+    }
+    #ceil-studio-recruit .ceil-skill-card--open .ceil-skill-card__status {
+      background: var(--ceil-open);
+      color: #fff;
+    }
+    #ceil-studio-recruit .ceil-skill-card--co .ceil-skill-card__status {
+      background: var(--ceil-co);
+      color: #fff;
+    }
+    #ceil-studio-recruit .ceil-skill-card--o .ceil-skill-card__status {
+      background: var(--ceil-o);
+      color: #fff;
+    }
+    #ceil-studio-recruit .ceil-skill-card--ai .ceil-skill-card__status {
+      background: var(--ceil-ai);
+      color: #fff;
+    }
+    #ceil-studio-recruit .ceil-skill-card--filled .ceil-skill-card__status {
+      background: var(--ceil-filled);
+      color: #111827;
+    }
+    #ceil-studio-recruit .ceil-skill-card__tools {
+      font-size: 1rem;
+      font-family: ui-monospace, 'Courier New', monospace;
+      color: #96e7ff;
+      background: rgba(0, 0, 0, 0.3);
+      padding: 0.5rem 0.75rem;
+      border-radius: 0.25rem;
+      margin-top: 0.5rem;
+      margin-bottom: 0.25rem;
+      border-top: 1px solid rgba(30, 30, 46, 0.5);
+    }
+    #ceil-studio-recruit .ceil-skill-card__desc {
+      font-size: 1.2rem;
+      color: var(--ceil-muted);
+    }
+
+    /* ---------- Timeline ---------- */
+    #ceil-studio-recruit .ceil-timeline {
+      position: relative;
+      padding-left: 2rem;
+      max-width: 28rem;
+    }
+    #ceil-studio-recruit .ceil-timeline::before {
+      content: '';
+      position: absolute;
+      left: 0.375rem;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: linear-gradient(to bottom, var(--ceil-accent), var(--ceil-border));
+    }
+    #ceil-studio-recruit .ceil-timeline__item {
+      position: relative;
+      padding-bottom: 2rem;
+    }
+    #ceil-studio-recruit .ceil-timeline__item:last-child { padding-bottom: 0; }
+    #ceil-studio-recruit .ceil-timeline__item::before {
+      content: '';
+      position: absolute;
+      left: -1.625rem;
+      top: 0.4rem;
+      width: 0.75rem;
+      height: 0.75rem;
+      border-radius: 50%;
+      background: var(--ceil-accent);
+      border: 2px solid var(--ceil-bg);
+    }
+    #ceil-studio-recruit .ceil-timeline__year {
+      font-weight: 700;
+      color: var(--ceil-accent);
+      margin-bottom: 0.25rem;
+    }
+    #ceil-studio-recruit .ceil-timeline__label {
+      font-weight: 600;
+      color: var(--ceil-text);
+    }
+    #ceil-studio-recruit .ceil-timeline__desc {
+      font-size: 1.375rem;
+      color: var(--ceil-muted);
+      margin-top: 0.25rem;
+    }
+
+    /* ---------- Contact: Tactical Command Panel ---------- */
+    #ceil-studio-recruit .ceil-contact-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+    @media (max-width: 640px) {
+      #ceil-studio-recruit .ceil-contact-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    #ceil-studio-recruit .ceil-contact-card {
+      background: #18181b;
+      border: 1px solid #27272a;
+      border-radius: 0.5rem;
+      padding: 1rem 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      transition: border-color 0.2s, box-shadow 0.2s, color 0.2s;
+      text-decoration: none;
+      color: var(--ceil-text);
+    }
+    #ceil-studio-recruit .ceil-contact-card:hover {
+      border-color: var(--ceil-accent);
+      box-shadow: 0 0 0 1px var(--ceil-accent), 0 0 20px rgba(59, 130, 246, 0.25);
+      color: #fafafa;
+    }
+    #ceil-studio-recruit .ceil-contact-card:hover .ceil-contact-card__handle {
+      color: var(--ceil-accent);
+    }
+    #ceil-studio-recruit .ceil-contact-card__label {
+      font-size: 1.05rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      color: var(--ceil-muted);
+    }
+    #ceil-studio-recruit .ceil-contact-card__handle {
+      font-size: 1rem;
+      font-weight: 600;
+      word-break: break-all;
+    }
+    #ceil-studio-recruit .ceil-cta-box {
+      margin-top: 1.5rem;
+      padding: 1.25rem 1.5rem;
+      background: rgba(59, 130, 246, 0.08);
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      border-left: 4px solid var(--ceil-accent);
+      border-radius: 0 0.5rem 0.5rem 0;
+      box-shadow: 0 0 24px rgba(59, 130, 246, 0.06);
+    }
+    #ceil-studio-recruit .ceil-cta-box .ceil-cta-heading {
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      color: var(--ceil-accent);
+      margin-bottom: 1rem;
+    }
+    #ceil-studio-recruit .ceil-cta-box .ceil-cta-instruction {
+      color: var(--ceil-text);
+      margin-bottom: 0.75rem;
+    }
+    #ceil-studio-recruit .ceil-cta-box .ceil-cta-tag {
+      font-family: ui-monospace, monospace;
+      font-size: 0.95em;
+      padding: 0.2rem 0.5rem;
+      background: rgba(59, 130, 246, 0.2);
+      color: #60a5fa;
+      border-radius: 0.25rem;
+    }
+    #ceil-studio-recruit .ceil-cta-box .ceil-cta-log {
+      font-family: ui-monospace, monospace;
+      font-size: 1.275rem;
+      color: #cbd5e1;
+      margin-top: 1rem;
+    }
+    #ceil-studio-recruit .ceil-cta-box .ceil-cta-log::before {
+      content: '> ';
+      color: var(--ceil-accent);
+    }
+    /* CTA 表單按鈕 */
+    #ceil-studio-recruit .ceil-cta-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      border-radius: 0.5rem;
+      background: linear-gradient(135deg, var(--ceil-accent) 0%, #385083 100%);
+      color: #fff !important;
+      font-weight: 600;
+      font-size: 1rem;
+      text-decoration: none !important;
+      border: 1px solid rgba(59, 130, 246, 0.5);
+      box-shadow: 0 4px 14px rgba(59, 130, 246, 0.35);
+      transition: all 0.25s ease;
+    }
+    #ceil-studio-recruit .ceil-cta-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(59, 130, 246, 0.45);
+      background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+    }
+    #ceil-studio-recruit .ceil-cta-btn svg {
+      width: 1.1em;
+      height: 1.1em;
+      flex-shrink: 0;
+    }
+
+    /* ---------- Footer ---------- */
+    #ceil-studio-recruit .ceil-footer {
+      padding: 3rem 1.5rem 2rem;
+      text-align: center;
+      border-top: 1px solid var(--ceil-border);
+      margin-top: 4rem;
+    }
+    #ceil-studio-recruit .ceil-footer__copyright {
+      color: var(--ceil-muted);
+      font-size: 0.9rem;
+      margin: 0;
+    }
+
+    @media (max-width: 768px) {
+      /* Navbar Layout Change: Lang Switcher below Brand */
+      #ceil-studio-recruit .ceil-nav__inner {
+        display: grid;
+        grid-template-areas: 
+          "brand links"
+          "lang links";
+        /* Use min-content to allow shrinking */
+        grid-template-columns: min-content 1fr;
+        gap: 0.25rem 0.75rem;
+        align-items: center;
+      }
+
+      #ceil-studio-recruit .ceil-nav__brand {
+        grid-area: brand;
+        margin-right: 0;
+        /* Allow font scaling */
+        font-size: clamp(1rem, 4vw, 1.2rem);
+        white-space: nowrap;
+      }
+
+      #ceil-studio-recruit .ceil-lang-switch {
+        grid-area: lang;
+        margin-left: 0;
+        justify-self: start;
+        /* Adjust size/padding for compact look */
+        font-size: 0.75rem;
+        padding: 0.15rem 0.5rem;
+        white-space: nowrap;
+      }
+      
+      #ceil-studio-recruit .ceil-lang-switch svg {
+        width: 0.9em;
+        height: 0.9em;
+      }
+
+      #ceil-studio-recruit .ceil-nav__links {
+        grid-area: links;
+        width: 100%;
+        overflow-x: auto;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        justify-self: stretch;
+        justify-content: flex-start;
+        gap: 0.75rem;
+        padding-left: 0.5rem;
+      }
+      
+      #ceil-studio-recruit .ceil-nav__links a {
+        font-size: 0.9rem;
+      }
+
+      #ceil-studio-recruit .ceil-nav__links::-webkit-scrollbar {
+        display: none;
+      }
+    }
+
+    /* Add Ultra-Small Screen Optimization */
+    @media (max-width: 400px) {
+      #ceil-studio-recruit .ceil-nav__inner {
+        gap: 0.2rem 0.5rem; 
+      }
+
+      #ceil-studio-recruit .ceil-nav__brand {
+        font-size: 1rem; 
+      }
+
+      #ceil-studio-recruit .ceil-lang-switch {
+        font-size: 0.7rem;
+        padding: 0.15rem 0.4rem;
+      }
+      
+      #ceil-studio-recruit .ceil-lang-switch svg {
+        width: 0.8em;
+        height: 0.8em;
+      }
+
+      #ceil-studio-recruit .ceil-nav__links {
+        gap: 0.5rem;
+        padding-left: 0.25rem;
+      }
+      
+      #ceil-studio-recruit .ceil-nav__links a {
+        font-size: 0.85rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="ceil-studio-recruit">
+    <nav class="ceil-nav">
+      <div class="ceil-nav__inner">
+        <a href="../index.html" class="ceil-nav__brand">Ceil Studio</a>
+        <ul class="ceil-nav__links">
+          <li><a href="../index.html">關於我</a></li>
+          <li><a href="../index.html#games">我的遊戲</a></li>
+          <li><a href="../index.html#social">社群連結</a></li>
+          <li><a href="./" class="active">招募</a></li>
+        </ul>
+        <a href="./indexen.html" class="ceil-lang-switch">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="2" y1="12" x2="22" y2="12"></line>
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+          </svg>
+          English
+        </a>
+      </div>
+    </nav>
+    <!-- HeroSection -->
+    <section class="ceil-hero">
+      <div class="ceil-hero__content">
+        <h1 class="ceil-hero__title glitch" data-text="Ceil Studio">Ceil Studio</h1>
+        <p class="ceil-hero__tagline">當塔防遇上生存恐懼 — 進軍 Steam 市場的野心之作</p>
+      </div>
+      
+      <div class="ceil-hero__about">
+        <h2 class="ceil-hero__about-title">關於計畫</h2>
+        <div class="ceil-hero__about-content">
+          <p>
+            此計畫目前已找到合適人選，目前暫不開放招募，請密切關注本站公告。
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 你為何加入 - BenefitCard x2 -->
+    <section class="ceil-section">
+      <h2 class="ceil-section__title">你為何加入</h2>
+      <div class="ceil-benefit-grid">
+        <div class="ceil-benefit-card">
+          <h3 class="ceil-benefit-card__title">1. 淨利分潤</h3>
+          <div class="ceil-benefit-card__body">
+            <p>這不是免費勞動。雖然在開發階段我們沒有固定薪資，但專案將採用<strong>「淨利潤分成模式」</strong>。</p>
+            <ul>
+              <li>遊戲在 Steam 上架後的每一筆營收（扣除成本），都將依據成員的貢獻權重進行分紅。如果遊戲成功，榮耀與財富我們共享。</li>
+              <li><strong>我們是合夥人，不是雇傭關係。</strong></li>
+            </ul>
+          </div>
+        </div>
+        <div class="ceil-benefit-card">
+          <h3 class="ceil-benefit-card__title">2. 履歷加分</h3>
+          <div class="ceil-benefit-card__body">
+            <p>身為學生，我們往往可能不缺 GPA，缺的是一款<strong>真正上架的商業作品</strong>。</p>
+            <p style="margin-top: 0.5rem;">未來你去面試時，這行經歷的含金量，遠勝過十個課堂作業。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 專案啟動 - Timeline -->
+    <section class="ceil-section">
+      <h2 class="ceil-section__title">專案啟動</h2>
+      <div class="ceil-timeline">
+        <div class="ceil-timeline__item">
+          <div class="ceil-timeline__year">2026 暑假</div>
+          <div class="ceil-timeline__label">暖身期</div>
+          <div class="ceil-timeline__desc">練習協作一款小型的 Steam 專案。</div>
+        </div>
+        <div class="ceil-timeline__item">
+          <div class="ceil-timeline__year">2027 寒假</div>
+          <div class="ceil-timeline__label">暖身期</div>
+          <div class="ceil-timeline__desc">協作一款小型的 Steam 專案。</div>
+        </div>
+        <div class="ceil-timeline__item">
+            <div class="ceil-timeline__year">2027 暑假</div>
+            <div class="ceil-timeline__label">正式期</div>
+            <div class="ceil-timeline__desc">正式啟動恐怖遊戲開發。</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 協作符號說明 -->
+    <section class="ceil-section">
+      <h2 class="ceil-section__title">協作符號說明</h2>
+      <p class="ceil-section__content">我不要求你是大神，只要你不怕踩坑、願意一起鑽研該項技術，這裡或許就有你的位置。</p>
+      <table class="ceil-legend">
+        <thead>
+          <tr>
+            <th>符號</th>
+            <th>說明</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="ceil-legend__symbol--o">由我負責</span></td>
+            <td>我能獨立完成，暫無招募需求。</td>
+          </tr>
+          <tr>
+            <td><span class="ceil-legend__symbol--co">可協作</span></td>
+            <td>我能獨立完成，但你或許可以與我協作，幫助我更快完成。</td>
+          </tr>
+          <tr>
+            <td><span class="ceil-legend__symbol--open">核心缺口</span></td>
+            <td>目前的我無法處理，非常需要你的幫忙。</td>
+          </tr>
+          <tr>
+            <td><span class="ceil-legend__symbol--v">已確立</span></td>
+            <td>代表此職位經過評估後已有合適人選，目前非優先招募項目。</td>
+          </tr>
+          <tr>
+            <td><span class="ceil-legend__symbol--ai">AI</span></td>
+            <td>目前以 AI 提供大部分協助。若你能提供超越 AI 的品質或獨特風格，歡迎加入取代。</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- SkillMatrix (cards 由 recruit.js 從 recruit-data.js 注入) -->
+    <section id="skills" class="ceil-section">
+      <h2 class="ceil-section__title">技能需求</h2>
+      <p class="ceil-section__content" style="margin-bottom: 1.5rem;">
+        開發遊戲最珍貴的，其實是<strong>「跨領域通才」</strong>。<br>
+        如果你發現列表裡有好幾項技能你都點滿了(例如既會寫code又會做特效)，那麼非常歡迎加入!
+      </p>
+      <div id="ceil-skill-matrix-cards" class="ceil-skill-cards"></div>
+    </section>
+
+    <!-- 聯絡與交流: Tactical Command Panel -->
+    <section id="contact" class="ceil-section">
+      <h2 class="ceil-section__title">聯絡與交流 (Let's Connect)</h2>
+
+      <div class="ceil-cta-box">
+        <h3 class="ceil-cta-heading">如何登記？</h3>
+        <p class="ceil-cta-instruction">
+          此計畫已找到合適人選，目前暫不開放招募，請密切關注本站公告。
+        </p>
+        
+      </div>
+
+      <p class="ceil-section__content" style="margin-bottom: 0; margin-top: 1.5rem;">
+        如果你想聊聊遊戲開發、問問題或閒聊，歡迎直接用下方 IG / Discord / Email 找我。
+      </p>
+
+      <div class="ceil-contact-grid" style="margin-top: 1rem;">
+        <a href="https://instagram.com/ceil32768" target="_blank" rel="noopener" class="ceil-contact-card">
+          <span class="ceil-contact-card__label">Instagram</span>
+          <span class="ceil-contact-card__handle">@ceil32768</span>
+        </a>
+        <div class="ceil-contact-card" style="cursor: default;">
+          <span class="ceil-contact-card__label">Discord</span>
+          <span class="ceil-contact-card__handle">.cecill</span>
+        </div>
+        <a href="mailto:qerpzzea@gmail.com" class="ceil-contact-card">
+          <span class="ceil-contact-card__label">Email</span>
+          <span class="ceil-contact-card__handle">qerpzzea@gmail.com</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="ceil-footer">
+      <p class="ceil-footer__copyright">© 2026 Ceil Studio. All rights reserved.</p>
+    </footer>
+  </div>
+
+  <script src="recruit-data.js?v=2026020604"></script>
+  <script src="recruit.js?v=2026020604"></script>
+</body>
+</html>

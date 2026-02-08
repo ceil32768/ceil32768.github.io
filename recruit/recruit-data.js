@@ -13,12 +13,12 @@ const CEIL_RECRUIT_SKILLS = [
   { category: 'Engineering', roleName: 'Packaging / Optimization', tools: 'UE5 / Platform Policy', status: 'O', description: '' },
   { category: 'Engineering', roleName: 'Release', tools: 'Google Play Console / Steamworks', status: 'O', description: '' },
   { category: 'Engineering', roleName: 'AI / NPC Behavior', tools: 'UE5 Behavior Tree / UE5 EQS', status: 'CO', description: '' },
-  { category: 'Engineering', roleName: 'Multiplayer', tools: 'UE5 Online Subsystem', status: 'X', description: '' },
+  { category: 'Engineering', roleName: 'Multiplayer', tools: 'UE5 Online Subsystem', status: 'O', description: '' },
   // Art / Game Assets
   { category: 'Art / Game Assets', roleName: 'Environment & Static Mesh', tools: 'Blender', status: 'O', description: '' },
-  { category: 'Art / Game Assets', roleName: 'Skeletal Mesh Pipeline', tools: 'Blender', status: 'X', description: '負責處理會動的角色/生物：包含從 AI 模型進行Retopology、Rigging 到 Animation(客製化動作)。' },
-  { category: 'Art / Game Assets', roleName: 'UI/UX Design', tools: 'Figma / UMG (UE5)', status: 'X', description: '目前暫用 Fab Assets，需能客製化界面者。' },
-  { category: 'Art / Game Assets', roleName: 'VFX / Particle effect', tools: 'UE5 Niagara / Material', status: 'X', description: '目前暫用 Fab Assets，需能客製化特效者。' },
+  { category: 'Art / Game Assets', roleName: 'Skeletal Mesh Pipeline', tools: 'Blender', status: 'V', description: '負責處理會動的角色/生物：包含從 AI 模型進行Retopology、Rigging 到 Animation(客製化動作)。' },
+  { category: 'Art / Game Assets', roleName: 'UI/UX Design', tools: 'Figma / UMG (UE5)', status: 'V', description: '目前暫用 Fab Assets，需能客製化界面者。' },
+  { category: 'Art / Game Assets', roleName: 'VFX / Particle effect', tools: 'UE5 Niagara / Material', status: 'V', description: '目前暫用 Fab Assets，需能客製化特效者。' },
   { category: 'Art / Game Assets', roleName: 'BGM & SFX Production', tools: 'Suno and ElevenLabs (AI)', status: 'AI', description: '' },
   // Marketing
   { category: 'Marketing', roleName: 'Voice Over', tools: 'Audacity / iZotope RX', status: 'O', description: '' },

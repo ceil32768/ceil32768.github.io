@@ -12,12 +12,12 @@ const CEIL_RECRUIT_SKILLS_EN = [
   { category: 'Engineering', roleName: 'Packaging / Optimization', tools: 'UE5 / Platform Policy', status: 'O', description: '' },
   { category: 'Engineering', roleName: 'Release', tools: 'Google Play Console / Steamworks', status: 'O', description: '' },
   { category: 'Engineering', roleName: 'AI / NPC Behavior', tools: 'UE5 Behavior Tree / UE5 EQS', status: 'CO', description: '' },
-  { category: 'Engineering', roleName: 'Multiplayer', tools: 'UE5 Online Subsystem', status: 'X', description: '' },
+  { category: 'Engineering', roleName: 'Multiplayer', tools: 'UE5 Online Subsystem', status: 'V', description: '' },
   // Art / Game Assets
   { category: 'Art / Game Assets', roleName: 'Environment & Static Mesh', tools: 'Blender', status: 'O', description: '' },
-  { category: 'Art / Game Assets', roleName: 'Skeletal Mesh Pipeline', tools: 'Blender', status: 'X', description: 'Responsible for processing moving characters/creatures: including Retopology, Rigging, and Animation (custom actions) from AI models.' },
-  { category: 'Art / Game Assets', roleName: 'UI/UX Design', tools: 'Figma / UMG (UE5)', status: 'X', description: 'Using Fab Assets temporarily, need someone who can customize interfaces.' },
-  { category: 'Art / Game Assets', roleName: 'VFX / Particle effect', tools: 'UE5 Niagara / Material', status: 'X', description: 'Using Fab Assets temporarily, need someone who can customize visual effects.' },
+  { category: 'Art / Game Assets', roleName: 'Skeletal Mesh Pipeline', tools: 'Blender', status: 'V', description: 'Responsible for processing moving characters/creatures: including Retopology, Rigging, and Animation (custom actions) from AI models.' },
+  { category: 'Art / Game Assets', roleName: 'UI/UX Design', tools: 'Figma / UMG (UE5)', status: 'V', description: 'Using Fab Assets temporarily, need someone who can customize interfaces.' },
+  { category: 'Art / Game Assets', roleName: 'VFX / Particle effect', tools: 'UE5 Niagara / Material', status: 'V', description: 'Using Fab Assets temporarily, need someone who can customize visual effects.' },
   { category: 'Art / Game Assets', roleName: 'BGM & SFX Production', tools: 'Suno and ElevenLabs (AI)', status: 'AI', description: '' },
   // Marketing
   { category: 'Marketing', roleName: 'Voice Over', tools: 'Audacity / iZotope RX', status: 'O', description: '' },

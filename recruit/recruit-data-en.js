@@ -12,7 +12,7 @@ const CEIL_RECRUIT_SKILLS_EN = [
   { category: 'Engineering', roleName: 'Packaging / Optimization', tools: 'UE5 / Platform Policy', status: 'O', description: '' },
   { category: 'Engineering', roleName: 'Release', tools: 'Google Play Console / Steamworks', status: 'O', description: '' },
   { category: 'Engineering', roleName: 'AI / NPC Behavior', tools: 'UE5 Behavior Tree / UE5 EQS', status: 'CO', description: '' },
-  { category: 'Engineering', roleName: 'Multiplayer', tools: 'UE5 Online Subsystem', status: 'V', description: '' },
+  { category: 'Engineering', roleName: 'Multiplayer', tools: 'UE5 Online Subsystem', status: 'O', description: '' },
   // Art / Game Assets
   { category: 'Art / Game Assets', roleName: 'Environment & Static Mesh', tools: 'Blender', status: 'O', description: '' },
   { category: 'Art / Game Assets', roleName: 'Skeletal Mesh Pipeline', tools: 'Blender', status: 'V', description: 'Responsible for processing moving characters/creatures: including Retopology, Rigging, and Animation (custom actions) from AI models.' },

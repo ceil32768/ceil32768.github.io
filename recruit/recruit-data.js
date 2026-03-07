@@ -1,32 +1,500 @@
 /**
- * Ceil Studio — 招募技能資料
- * 修改此陣列即可更新頁面上的技能卡片。status: 'O' | 'X' | 'CO' | 'AI'
+ * Ceil Studio — 核心成員職責與成果交付（最新版）
+ * 每筆: category, roleName, duties[{ label, text }], owner (字串或 null=不顯示)
  */
-const CEIL_RECRUIT_SKILLS = [
-  // Design
-  { category: 'Design', roleName: 'Game Director / Core Design', tools: 'Markdown (Obsidian)', status: 'O', description: '' },
-  { category: 'Design', roleName: 'Level Design', tools: 'Unreal Engine / Blender', status: 'O', description: '' },
-  { category: 'Design', roleName: 'Environment Design', tools: 'Clip Studio Paint', status: 'CO', description: '' },
-  { category: 'Design', roleName: 'Character Design', tools: 'Clip Studio Paint', status: 'CO', description: '' },
-  // Engineering
-  { category: 'Engineering', roleName: 'Core Mechanics', tools: 'C++ / Blueprint (UE5)', status: 'O', description: '' },
-  { category: 'Engineering', roleName: 'Packaging / Optimization', tools: 'UE5 / Platform Policy', status: 'O', description: '' },
-  { category: 'Engineering', roleName: 'Release', tools: 'Google Play Console / Steamworks', status: 'O', description: '' },
-  { category: 'Engineering', roleName: 'AI / NPC Behavior', tools: 'UE5 Behavior Tree / UE5 EQS', status: 'CO', description: '' },
-  { category: 'Engineering', roleName: 'Multiplayer', tools: 'UE5 Online Subsystem', status: 'O', description: '' },
-  // Art / Game Assets
-  { category: 'Art / Game Assets', roleName: 'Environment & Static Mesh', tools: 'Blender', status: 'O', description: '' },
-  { category: 'Art / Game Assets', roleName: 'Skeletal Mesh Pipeline', tools: 'Blender', status: 'V', description: '負責處理會動的角色/生物：包含從 AI 模型進行Retopology、Rigging 到 Animation(客製化動作)。' },
-  { category: 'Art / Game Assets', roleName: 'UI/UX Design', tools: 'Figma / UMG (UE5)', status: 'V', description: '目前暫用 Fab Assets，需能客製化界面者。' },
-  { category: 'Art / Game Assets', roleName: 'VFX / Particle effect', tools: 'UE5 Niagara / Material', status: 'V', description: '目前暫用 Fab Assets，需能客製化特效者。' },
-  { category: 'Art / Game Assets', roleName: 'BGM & SFX Production', tools: 'Suno and ElevenLabs (AI)', status: 'AI', description: '' },
-  // Marketing
-  { category: 'Marketing', roleName: 'Voice Over', tools: 'Audacity / iZotope RX', status: 'O', description: '' },
-  { category: 'Marketing', roleName: 'Web Dev', tools: 'Frontend / Backend', status: 'O', description: '製作遊戲官網或工作室官網。' },
-  { category: 'Marketing', roleName: 'Video Production', tools: 'DaVinci Resolve / Any', status: 'CO', description: '負責 Trailer 與 Devlog 剪輯。' },
-  // Project Ops
-  { category: 'Project Ops', roleName: 'Legal Advisor', tools: 'Word / Law Ref.', status: 'V', description: '提供工作室營運法律諮詢、管理合約（內部/外部），並確保智慧財產權合規與風險控管。' },
-  { category: 'Project Ops', roleName: 'Project Manager (PM)', tools: 'Markdown / Any', status: 'V', description: '負責成員間溝通協調、追蹤開發進度與排除障礙。' },
-  { category: 'Project Ops', roleName: 'Financial Management', tools: 'Markdown / Any', status: 'V', description: '管理現金流並計算貢獻分紅。' },
-  { category: 'Project Ops', roleName: 'Playtesting', tools: 'Markdown for communicate', status: 'CO', description: '尋找 Bug 並提供優化建議，需善用 Markdown 撰寫測試報告。' }
+const CEIL_RECRUIT_ROLES = [
+  // ---------- 經營與管理 ----------
+  {
+    category: '經營與管理',
+    roleName: '工作室總監 (Studio Director / CEO)',
+    owner: null,
+    duties: [
+      {
+        label: '開發舞台建構:',
+        text: '為工作室的「創作環境」負絕對建構責任。主導核心人才招募、資金籌措與技術資源導入；透過制定底層制度與協作規則，將互不相識的個體凝聚為具高度向心力之戰鬥團隊，並在專案中精準分配任務、調度產能與引導成長，確保技術與美術心血最終獲得對等市場財務報酬。'
+      },
+      {
+        label: '願景與方向:',
+        text: '決定工作室的生死存亡與願景，負責尋找資源（資金、軟硬體、人才）、制定工作室大方向與可持續獲利的商業模式，帶領團隊達成「畢業即創業成功」。所有決策與裁定皆以「讓團隊核心成員達成財富自由」為最高準則。'
+      },
+      {
+        label: '建立架構與制度防禦:',
+        text: '制定工作室的制度與商業模型，包括資方與勞務分配邏輯（30% vs 70%）、組織架構、強制退場機制（72 小時失聯棄權）、資產買斷程序等，確保團隊心血與商業利益受到絕對保護。'
+      },
+      {
+        label: '人才招募與深度對接:',
+        text: '確立團隊招募標準與最終用人決策。在 COO 完成初階篩選與壓力測試後，負責與倖存候選人進行「願景對焦」，並為確認加入之成員客製破冰與上線流程，確保價值觀與野心與團隊 100% 吻合。'
+      },
+      {
+        label: '預算決策與資產投資:',
+        text: '統籌開發資金與最終預算分配。憑藉對引擎與開發製程的專業理解，評估付費素材、外包、技術工具與課程之投資報酬率，擁有所有專案支出的最終核准權，確保每一分預算都花在能極大化遊戲品質的刀口上。'
+      },
+      {
+        label: '重大會議之戰略籌備與共識凝聚:',
+        text: '發起、籌備並主持工作室級別之重大會議，負責會議背後的戰略內容與規章架構設計，掌控會議節奏與討論邊界，在嚴謹規範下凝聚團隊共識與執行力。'
+      },
+      {
+        label: '決策與規劃:',
+        text: '負責所有戰略決策，包括團隊分工、培訓與成長、Roadmap 制定與行銷方向。精準分配任務與調度資源，當團隊遇到無法解決之分歧時，擁有最終裁定權。'
+      },
+      {
+        label: '發行平台管理與上架:',
+        text: '管理 Steam、Google Play 等發行平台後台帳號，控管 Build 版本上傳與商店頁面最終確認，並執行最終上架發布操作。'
+      }
+    ]
+  },
+  {
+    category: '經營與管理',
+    roleName: '營運長 (COO)',
+    owner: null,
+    duties: [
+      {
+        label: '戰略落地:',
+        text: '作為 CEO 的核心戰略夥伴與「現實防線」，將願景與 Roadmap 轉化為具體任務、時程與里程碑，持續追蹤進度、資源使用與風險，並定期回報客觀資訊以協助決策與調整方向。'
+      },
+      {
+        label: '內部營運:',
+        text: '處理工作室日常營運摩擦，作為團隊與決策者之緩衝橋樑，分擔 CEO 在行政、進度追討與人事溝通上的消耗，確保 CEO 能將精力專注於遊戲核心開發與大方向。'
+      },
+      {
+        label: '招募初審與壓力測試:',
+        text: '作為人才擴編第一道防線，執行標準化表單海選與初階面試，針對潛在成員進行抗壓性、執行力與規章認同度審查，無情過濾掉心態不正確之候選人。'
+      },
+      {
+        label: '紀律控管與制度執法:',
+        text: '確保團隊開發紀律，主持每週進度會議，當需啟動退場機制或資產處理流程等制度時，依規定執行與記錄，確保制度公平一致。'
+      },
+      {
+        label: '團隊管理:',
+        text: '作為團隊定海神針與心理防線，協助解決成員間溝通摩擦，防止專案因外務或學業壓力而爛尾。'
+      },
+      {
+        label: '金流管控與記帳核銷:',
+        text: '負責日常記帳與金流透明化，執行經 CEO 核准之專案支出與請款核銷，於觸發資金追繳時向出資人收取承諾款項，並定期回報營運準備金水位，避免現金流斷鏈。'
+      }
+    ]
+  },
+  {
+    category: '經營與管理',
+    roleName: '行銷總監 (CMO)',
+    owner: null,
+    duties: [
+      {
+        label: '市場定位與曝光:',
+        text: '在開發早期即確立目標受眾，確保行銷策略精準，而非盲目發文。'
+      },
+      {
+        label: '社群與願望清單:',
+        text: '經營 YouTube、IG、Discord 與官方網站內容，策劃 Steam 商店頁面視覺與文案、對接實況主與媒體，主導願望清單成長策略，透過數據與回饋持續優化轉換表現。'
+      },
+      {
+        label: '發行策略規劃:',
+        text: '規劃宣傳片發布時機、Demo 試玩版釋出策略，以及最終定價與上架日期之市場調查。'
+      },
+      {
+        label: '工作室品牌與頻道經營:',
+        text: '建立並維護工作室官方形象，透過 YouTube、IG 等頻道發布開發者日誌與技術幕後，將單一遊戲玩家轉化為長期追隨者，為未來每款作品建立初始流量。'
+      }
+    ]
+  },
+  {
+    category: '經營與管理',
+    roleName: '首席內容創作者 (Lead Content Creator)',
+    owner: null,
+    duties: [
+      {
+        label: '常態性內容獨立產出:',
+        text: '負責官方頻道日常內容更新，需獨立完成素材研究、腳本撰寫、高品質錄音與完整剪輯後製，為社群流量維持負責。'
+      },
+      {
+        label: '核心專案導流與嚴格執行:',
+        text: '當內容與 Ceil Studio 遊戲專案宣傳或導流相關時，必須嚴格依照 CMO 提供之腳本與戰略方向執行，不得私自竄改核心宣傳訴求。'
+      },
+      {
+        label: '社群秩序與數據回報:',
+        text: '維護 Discord、YouTube 等留言區秩序，回覆制式化問題，整理各平台數據與回饋，形成報表供決策參考。'
+      },
+      {
+        label: '版權合規與格式審核:',
+        text: '確保腳本與畫面無侵權疑慮，若引用 Wiki 等資料需嚴格遵守 CC 協議標註，並確保發布時程準時落地。'
+      },
+      {
+        label: '專屬營運分潤與主權條款:',
+        text: '擔任本職期間，除遊戲專案淨利潤外，額外享有其代為經營之官方 YouTube 頻道每月實質廣告收益的 60% 作為營運績效獎金；頻道帳號與品牌 IP 之所有權與最高權限 100% 歸屬創辦人，專員僅以 Editor 權限操作，離職或解職後該分潤權益即刻終止。'
+      }
+    ]
+  },
+
+  // ---------- 策劃與設計部 ----------
+  {
+    category: '策劃與設計部',
+    roleName: '遊戲總監 (Game Director)',
+    owner: null,
+    duties: [
+      {
+        label: '規格書產出:',
+        text: '撰寫並維護遊戲企劃書 (GDD)，將抽象點子量化為具絕對執行力之規格，明確定義核心玩法、關卡流程與角色／怪物設定，作為全團隊唯一絕對標準。所有程式與美術產出皆須 100% 嚴格遵照最新版 GDD，任何優化建議須經提案與核准後再行更新與實作。'
+      },
+      {
+        label: '數值與平衡設計:',
+        text: '定義遊戲底層數值模型（角色能力、傷害結算、經濟體系等），確保具備高重玩價值與策略深度。'
+      },
+      {
+        label: '機制設計:',
+        text: '設計核心玩法與破局機制，使各系統與元素彼此融合、不顯突兀。'
+      },
+      {
+        label: '靈魂品質與效能把關:',
+        text: '決定遊戲最終視覺與核心體驗，負責 Lighting、Atmosphere 與後期處理，在維持商業級視覺質感的同時嚴格控管效能與幀數穩定。'
+      },
+      {
+        label: '素材統籌與視覺定調:',
+        text: '擁有跨部門素材選用最終決策權，統籌 Unreal Fab、Quixel 等素材庫資產之選擇與分配，交由各部門總監二次加工，確保世界觀一致並極大化預算投報率。'
+      },
+      {
+        label: '靈魂守護與最高品質獨裁:',
+        text: '擁有跨越所有部門的最終退件權，當交付成果與 GDD 所定核心體驗、操作手感或情緒氛圍不符時，有權無情打回並要求重做，守住遊戲靈魂。'
+      }
+    ]
+  },
+  {
+    category: '策劃與設計部',
+    roleName: '關卡設計師 (Level Designer)',
+    owner: null,
+    duties: [
+      {
+        label: '地圖與動線搭建:',
+        text: '在 UE5 中將 3D 美術資產搭建為具沉浸感與遊玩價值的關卡，規劃探索動線、交戰區域與空間尺度，利用地形高低差與掩體配置兼顧視覺張力與玩法需求。'
+      },
+      {
+        label: '節奏控制:',
+        text: '掌控遊戲節奏，讓玩家在每一局遊戲中都能體驗到與企劃預期相符的情緒起伏。'
+      },
+      {
+        label: '視覺引導:',
+        text: '透過燈光與物件擺設引導玩家視線與注意力，營造關卡氛圍與臨場感。'
+      }
+    ]
+  },
+
+  // ---------- 視覺與聽覺部 ----------
+  {
+    category: '視覺與聽覺部',
+    roleName: '3D 美術總監 (3D Art Director)【主將級】',
+    owner: null,
+    duties: [
+      {
+        label: '場景建模:',
+        text: '負責地形、建築與大型場景物件之 3D 搭建，對遊戲世界觀的空間尺度與視覺基礎負絕對建構責任，確保場景具備商業級沉浸感與合理性。'
+      },
+      {
+        label: '角色與物件雕刻:',
+        text: '製作核心角色、敵人與重要視覺資產的高品質高模，決定模型最終立體細節與視覺感受，為專案所有核心 3D 資產之最終品質負責。'
+      },
+      {
+        label: '拓撲與效能優化:',
+        text: '將高面數高模進行 Retopology，對遊戲內渲染效能與面數控管負絕對成敗責任，確保低模關節佈線合理，不因拓撲錯誤導致綁定失敗或進度延宕。'
+      },
+      {
+        label: '拆分 UV:',
+        text: '精準且高效拆分 UV，使貼圖不產生拉伸與解析度浪費，方便後續 2D 上色。'
+      },
+      {
+        label: '素材尋找:',
+        text: '對於極度不客製化物件，優先從素材庫或 AI 工具取得，避免重複造輪子。'
+      },
+      {
+        label: '品質獨裁與任務下放:',
+        text: '制定 3D 視覺管線最高標準並擁有最終退件權，親自處理核心資產，並將周邊場景量產、次要資產拓撲與 UV 等任務精準下放給 3D 美術專員。'
+      }
+    ]
+  },
+  {
+    category: '視覺與聽覺部',
+    roleName: '3D 美術專員 (3D Artist)【執行級】',
+    owner: null,
+    duties: [
+      {
+        label: '物件量產與基礎建模:',
+        text: '在總監定調之視覺與空間基礎下，負責中小型場景物件、周邊道具與消耗性資產的 3D 量產搭建。'
+      },
+      {
+        label: '技術管線代工:',
+        text: '依照佈線與效能規範，承接次要資產之拓撲與 UV 拆分工作。'
+      },
+      {
+        label: '素材庫加工與優化:',
+        text: '對付費素材庫或 AI 生成之物件進行降面、穿模修復與規格統一，確保其能無縫融入專案引擎。'
+      }
+    ]
+  },
+  {
+    category: '視覺與聽覺部',
+    roleName: '2D 美術與 UI/UX 總監 (2D Art & UI/UX Director)【主將級】',
+    owner: null,
+    duties: [
+      {
+        label: '材質與貼圖繪製:',
+        text: '為 3D 白模賦予靈魂，負責高品質 PBR 材質貼圖（粗糙度、金屬度、法線等）的最終呈現，打造極致擬真且符合世界觀的物理質感。'
+      },
+      {
+        label: '使用者介面設計:',
+        text: '規劃並繪製遊戲內 UI/UX，確保血條、選單、升級介面等既直覺好用，又與整體視覺風格高度一致。'
+      },
+      {
+        label: '平面宣傳素材:',
+        text: '負責網站、專案 Logo、Steam 商店頁面等所有對外宣傳主視覺，將抽象定位與文案轉化為具衝擊力之視覺資產，維持品牌於各窗口之美學一致。'
+      },
+      {
+        label: '素材尋找:',
+        text: '對通用 UI 圖示、基礎材質紋理與標準字體等非核心素材，優先使用素材庫或 AI 工具生成，將時間留給核心視覺與主視覺打磨。'
+      },
+      {
+        label: '品質獨裁與任務下放:',
+        text: '制定 2D 與 UI 體驗最高標準並擁有退件權，親自處理主視覺與關鍵 PBR 材質，將通用圖示、UI 切圖與宣傳圖尺寸延伸等任務下放給 2D 美術專員。'
+      }
+    ]
+  },
+  {
+    category: '視覺與聽覺部',
+    roleName: '2D 美術專員 (2D Artist & UI Assistant)【執行級】',
+    owner: null,
+    duties: [
+      {
+        label: 'UI 衍生與圖標量產:',
+        text: '依照總監確立之視覺風格與 UX 邏輯，量產通用 UI 圖示、技能 Icon 與道具圖面，並執行介面切圖與引擎內基本排版。'
+      },
+      {
+        label: '材質輔助與素材庫管理:',
+        text: '協助處理次要 3D 消耗性物件之基礎貼圖繪製，整理並統一付費素材與 AI 生成平面資產之規格後匯入專案備用。'
+      }
+    ]
+  },
+  {
+    category: '視覺與聽覺部',
+    roleName: '首席聽覺體驗總監【主將級】',
+    owner: null,
+    duties: [
+      {
+        label: '聽覺靈魂與情緒定調:',
+        text: '為全遊戲聽覺體驗把關，決定 BGM 情緒起伏、環境音沉浸感與 UI 互動回饋，確保聲音與世界觀 100% 契合。'
+      },
+      {
+        label: '打擊感與品質獨裁:',
+        text: '擁有所有音效資產最終審核與退件權，負責混音平衡與空間音效，確保武器碰撞與技能釋放具備商業級打擊感。'
+      },
+      {
+        label: '建立參考座標與品味校準:',
+        text: '向專員提供具體聲音規格與絕對參考標竿，透過 Tier List 機制持續校準團隊聽覺品味。'
+      }
+    ]
+  },
+  {
+    category: '視覺與聽覺部',
+    roleName: '音效與配樂專員【執行級】',
+    owner: null,
+    duties: [
+      {
+        label: 'Tier List 海選與量產:',
+        text: '依據總監需求與標竿，在各大素材庫廣泛海選音效，所有潛在合格素材皆須保留，並進行降噪與裁切後，以 S/A/B 級 Tier List 呈報供最終挑選。'
+      },
+      {
+        label: '音訊加工與管線代工:',
+        text: '執行選定音檔的長度微調、變調與格式統一，整理成乾淨音效資產交付給引擎端串接。'
+      }
+    ]
+  },
+  {
+    category: '視覺與聽覺部',
+    roleName: '影音剪輯師 (Video Editor)',
+    owner: null,
+    duties: [
+      {
+        label: '宣傳片製作:',
+        text: '製作所有對外動態宣傳素材，精準捕捉遊戲內最具張力之畫面，剪輯為高轉換率的 Steam Trailer。'
+      },
+      {
+        label: '社群短影音:',
+        text: '依照行銷策略，產出適合 YouTube Shorts、TikTok 等平台發布的開發日誌或實機短片。'
+      }
+    ]
+  },
+
+  // ---------- 技術與工程部 ----------
+  {
+    category: '技術與工程部',
+    roleName: '首席遊戲引擎架構師 (Lead Game Engine Architect)',
+    owner: null,
+    duties: [
+      {
+        label: '引擎技術整合:',
+        text: '負責將企劃、2D、3D、美術素材與程式在 UE5 中完美整合，必須極度熟悉引擎運作並具完整遊戲開發視野。'
+      },
+      {
+        label: 'UE5 藍圖實作與封裝:',
+        text: '將 C++ Class 實作為 UE5 Blueprint Class（Actor、Character 等），並串接 Game Mode 與 Game Instance，確保機制在引擎中穩定高效運行。'
+      }
+    ]
+  },
+  {
+    category: '技術與工程部',
+    roleName: '系統架構師 (Systems Engineer)',
+    owner: null,
+    duties: [
+      {
+        label: '架構與設計:',
+        text: '設計遊戲系統 Class Hierarchy 與資料結構，制定穩固的 Base Class 與 Interface，為未來大規模功能擴充打下地基。'
+      },
+      {
+        label: '連線架構與 Online Subsystem:',
+        text: '規劃多人連線底層網路架構，基於 UE5 OSS 處理玩家連線、Session 建立與搜尋，定義 GameMode、GameState、PlayerState 的網路生命週期。'
+      },
+      {
+        label: '專案組織與命名規範:',
+        text: '制定 UE 專案資料夾層級架構與資產命名規範，提升檢索性與開發效率。'
+      },
+      {
+        label: 'Clean Code 與代碼審查:',
+        text: '制定程式開發規範並執行 Code Review，確保代碼乾淨、可讀、可擴充且避免記憶體洩漏。'
+      }
+    ]
+  },
+  {
+    category: '技術與工程部',
+    roleName: '技術營運與發行驗證總監 (Director of TechOps & Release Certification)',
+    owner: null,
+    duties: [
+      {
+        label: '版本生命週期與流水線治理:',
+        text: '掌控專案從代碼到成品之自動化流水線，確保各部門產出能穩定整合與編譯。'
+      },
+      {
+        label: '全球平台技術合規:',
+        text: '主導與 Steam、Google Play 等平台之技術對接（加密、SDK、雲端存檔），確保產品在技術規範上 100% 達標。'
+      },
+      {
+        label: '代碼主權與衝突裁決:',
+        text: '作為 Git 儲存庫最高執行官，制定合併規範與分支策略，於代碼衝突時擁有最終裁定權，維持主幹隨時可交付。'
+      },
+      {
+        label: '穩定性監控與排雷指派:',
+        text: '建立自動崩潰追蹤系統，分析 Crash Logs 並對 Bug 定性，有權指派相關部門限時修復，為產品品質最高法官。'
+      },
+      {
+        label: '技術發行驗證與綠燈授權:',
+        text: '負責發行前最終技術點收，處理壓縮、加密與安裝腳本，簽發《技術合規證明》後專案方可進入發行程序。'
+      }
+    ]
+  },
+  {
+    category: '技術與工程部',
+    roleName: '系統邏輯與 API 主程 (Systems Integration Lead)【主將級】',
+    owner: null,
+    duties: [
+      {
+        label: '代碼最終擔保與排雷:',
+        text: '對專員實作或 AI 產生之所有程式碼負最終除錯與系統整合責任，必須嚴格驗證邏輯與效能邊界，避免記憶體洩漏與專案崩潰。'
+      },
+      {
+        label: 'API 完美封裝與防禦:',
+        text: '將後台邏輯封裝為乾淨、防呆的 API 與 Blueprint Callable／Event Dispatcher，讓製作人與美術在 UMG 或藍圖中能安全接上資產與特效。'
+      },
+      {
+        label: '進階網路同步擔當:',
+        text: '精準掌握 Server Authority，審核並確保 Replication 與 RPC 架構正確，讓防禦塔、技能與多人戰鬥在連線環境下完全同步並具防作弊機制。'
+      }
+    ]
+  },
+  {
+    category: '技術與工程部',
+    roleName: '系統邏輯與 API 專員 (Systems Integration Specialist)【執行級】',
+    owner: null,
+    duties: [
+      {
+        label: 'AI 輔助代碼量產:',
+        text: '全面擁抱 AI 輔助開發，善用工具生成多數系統邏輯與 C++／藍圖基礎腳本，以最高打字效率完成任務。'
+      },
+      {
+        label: '基礎機制實作:',
+        text: '依據底層框架實作具體遊戲機制初版（如防禦塔開火運算、怪物技能邏輯等資料層運算），並進行初步自我測試。'
+      },
+      {
+        label: '版本控制執行:',
+        text: '負責日常 Pull、Commit 與 Push，嚴格遵守分支策略與 Commit 命名規範。'
+      }
+    ]
+  },
+  {
+    category: '技術與工程部',
+    roleName: 'NPC 行為邏輯主程 (NPC Behavior Lead)【主將級】',
+    owner: null,
+    duties: [
+      {
+        label: '進階 AI 架構與效能:',
+        text: '設計極具壓迫感且聰明的敵人大腦，主導 UE5 Behavior Tree 與 EQS 的底層規劃。'
+      },
+      {
+        label: '極端狀況排解:',
+        text: '處理尋路避障、卡牆與多物件碰撞時之邏輯死結，確保 NPC 行為與運算效能穩定，不吃光 CPU 資源。'
+      }
+    ]
+  },
+  {
+    category: '技術與工程部',
+    roleName: 'NPC 行為邏輯專員 (NPC Behavior Specialist)【執行級】',
+    owner: null,
+    duties: [
+      {
+        label: '基礎邏輯實作:',
+        text: '依主程設計在場景中鋪設與實作 UE5 NavMesh，確保路徑網格完整。'
+      },
+      {
+        label: '感官與節點配置:',
+        text: '設定 AI Perception 的視覺與聽覺參數，串接巡邏路線與追擊節點，作為進階行為邏輯之基礎。'
+      }
+    ]
+  },
+  {
+    category: '技術與工程部',
+    roleName: '技術動畫總監 (Tech Animation Director)【主將級】',
+    owner: null,
+    duties: [
+      {
+        label: 'DCC 與引擎管線制定:',
+        text: '制定 Blender 至 UE5 的標準規範（單位、骨架命名、FBX 導出設定），確保資產無縫傳輸。'
+      },
+      {
+        label: '骨架綁定與 Control Rig 實作:',
+        text: '為 3D 模型建立合理 Rig 與 UE5 Control Rig，實作 IK 與高階骨架邏輯。'
+      },
+      {
+        label: '物理與狀態機架構:',
+        text: '建立 Animation Blueprint 與 State Machine 架構，設定 Physics Asset，實作真實的 Ragdoll 物理運算。'
+      },
+      {
+        label: '品質獨裁與任務下放:',
+        text: '制定動畫與物理表現最高標準並擁有退件權，親自處理最複雜動態邏輯與藍圖架構，將刷權重、動作微調等耗時任務下放給技術動畫專員。'
+      }
+    ]
+  },
+  {
+    category: '技術與工程部',
+    roleName: '技術動畫專員 (Tech Animator)【執行級】',
+    owner: null,
+    duties: [
+      {
+        label: 'Blender 手調原創動畫:',
+        text: '在 Blender 內手調具真實重量感、慣性與張力的核心動作（走路、攻擊、受擊），確保關鍵幀具商業級流暢度。'
+      },
+      {
+        label: '蒙皮與權重實作:',
+        text: '依規範執行蒙皮綁定與精準刷權重，避免關節彎曲時破圖。'
+      },
+      {
+        label: '骨架重定向與物理代工:',
+        text: '將外部動作庫重定向至專案骨架，協助生成與調整 UE5 碰撞體與基礎物理設定，交由總監精調。'
+      }
+    ]
+  }
 ];
+

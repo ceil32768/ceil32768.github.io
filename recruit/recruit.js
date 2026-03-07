@@ -1,74 +1,58 @@
 /**
- * Ceil Studio Recruit — Render SkillCards from CEIL_RECRUIT_SKILLS / CEIL_RECRUIT_SKILLS_EN
+ * Ceil Studio Recruit — Render role cards from CEIL_RECRUIT_ROLES / CEIL_RECRUIT_ROLES_EN
+ * State-driven: 已確定負責人 (owner) or 招募中 (CTA to #contact)
  */
-(function () {
-  // Determine which data source to use
-  var skillsData = (typeof CEIL_RECRUIT_SKILLS_EN !== 'undefined') 
-    ? CEIL_RECRUIT_SKILLS_EN 
-    : (typeof CEIL_RECRUIT_SKILLS !== 'undefined' ? CEIL_RECRUIT_SKILLS : null);
+ (function () {
+  var rolesData = (typeof CEIL_RECRUIT_ROLES_EN !== 'undefined')
+    ? CEIL_RECRUIT_ROLES_EN
+    : (typeof CEIL_RECRUIT_ROLES !== 'undefined' ? CEIL_RECRUIT_ROLES : null);
 
-  if (!skillsData) return;
+  if (!rolesData) return;
 
-  var container = document.getElementById('ceil-skill-matrix-cards');
+  var container = document.getElementById('ceil-role-cards');
   if (!container) return;
 
-  var statusLabels = {
-    O: 'Solo Able',
-    X: 'Open Role',
-    CO: 'Co-op',
-    AI: 'AI Workflow',
-    V: 'Filled' // internal code; display text depends on page language
-  };
-
-  var htmlLang = (document.documentElement && document.documentElement.lang) || 'zh-Hant';
   var lastCategory = '';
-
-  skillsData.forEach(function (item) {
-    if (item.category !== lastCategory) {
-      lastCategory = item.category;
+  rolesData.forEach(function (role) {
+    if (role.category !== lastCategory) {
+      lastCategory = role.category;
       var heading = document.createElement('h3');
-      heading.className = 'ceil-matrix-category';
-      heading.textContent = item.category;
+      heading.className = 'ceil-role-category';
+      heading.textContent = role.category;
       container.appendChild(heading);
     }
 
     var card = document.createElement('div');
-    var statusClass = '';
-    if (item.status === 'X') statusClass = ' ceil-skill-card--open';
-    else if (item.status === 'CO') statusClass = ' ceil-skill-card--co';
-    else if (item.status === 'O') statusClass = ' ceil-skill-card--o';
-    else if (item.status === 'AI') statusClass = ' ceil-skill-card--ai';
-    else if (item.status === 'V') statusClass = ' ceil-skill-card--filled';
-    card.className = 'ceil-skill-card' + statusClass;
-    card.setAttribute('data-status', item.status);
+    card.className = 'ceil-role-card';
 
-    var statusLabel = statusLabels[item.status] || item.status;
-    var statusDisplay;
-    if (item.status === 'V') {
-      statusDisplay = (htmlLang === 'en') ? 'Filled' : '已確立';
-    } else if (item.status === 'O') {
-      statusDisplay = (htmlLang === 'en') ? 'Owner' : '由我負責';
-    } else if (item.status === 'CO') {
-      statusDisplay = (htmlLang === 'en') ? 'Co-op' : '可協作';
-    } else if (item.status === 'X') {
-      statusDisplay = (htmlLang === 'en') ? 'Open Role' : '核心缺口';
-    } else {
-      statusDisplay = item.status;
+    var titleEl = document.createElement('h4');
+    titleEl.className = 'ceil-role-card__title';
+    titleEl.textContent = role.roleName;
+    card.appendChild(titleEl);
+
+    var dutiesWrap = document.createElement('div');
+    dutiesWrap.className = 'ceil-role-card__duties';
+    if (role.duties && role.duties.length) {
+      role.duties.forEach(function (d) {
+        var dutyEl = document.createElement('div');
+        dutyEl.className = 'ceil-role-card__duty';
+        var labelSpan = document.createElement('strong');
+        labelSpan.className = 'ceil-role-card__duty-label';
+        labelSpan.textContent = (d.label || '').trim();
+        dutyEl.appendChild(labelSpan);
+        var textSpan = document.createElement('span');
+        textSpan.className = 'ceil-role-card__duty-text';
+        textSpan.textContent = (d.text || '').trim();
+        dutyEl.appendChild(textSpan);
+        dutiesWrap.appendChild(dutyEl);
+      });
     }
-    card.innerHTML =
-      '<div class="ceil-skill-card__header">' +
-      '<span class="ceil-skill-card__role">' + escapeHtml(item.roleName) + '</span>' +
-      '<span class="ceil-skill-card__status" title="' + escapeHtml(statusLabel) + '">' + escapeHtml(statusDisplay) + '</span>' +
-      '</div>' +
-      '<div class="ceil-skill-card__tools">' + escapeHtml(item.tools) + '</div>' +
-      (item.description ? '<div class="ceil-skill-card__desc">' + escapeHtml(item.description) + '</div>' : '');
+    card.appendChild(dutiesWrap);
+
+    var footer = document.createElement('div');
+    footer.className = 'ceil-role-card__footer';
+    card.appendChild(footer);
 
     container.appendChild(card);
   });
-
-  function escapeHtml(text) {
-    var div = document.createElement('div');
-    div.textContent = text;
-    return div.innerHTML;
-  }
 })();

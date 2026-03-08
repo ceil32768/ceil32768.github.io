@@ -1,1062 +1,1361 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Ceil Studio ??Recruit</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    html { scroll-behavior: smooth; }
-    #ceil-studio-recruit {
-      --ceil-bg: #0a0a0f;
-      --ceil-surface: #12121a;
-      --ceil-border: #1e1e2e;
-      --ceil-text: #fbfbff;
-      --ceil-muted: #f1eaea;
-      --ceil-accent: #3b82f6;
-      background: var(--ceil-bg);
-      min-height: 100vh;
-      color: var(--ceil-text);
-      font-family: ui-sans-serif, system-ui, sans-serif;
-      font-size: 1.275rem;
-      line-height: 1.6;
-      box-sizing: border-box;
-    }
-    #ceil-studio-recruit *,
-    #ceil-studio-recruit *::before,
-    #ceil-studio-recruit *::after { box-sizing: border-box; }
-    #ceil-studio-recruit * { margin: 0; padding: 0; }
-    #ceil-studio-recruit img { max-width: 100%; height: auto; display: block; }
-    #ceil-studio-recruit a { color: var(--ceil-accent); text-decoration: none; }
-    #ceil-studio-recruit a:hover { text-decoration: underline; }
-
-    /* ---------- Navbar ---------- */
-    #ceil-studio-recruit .ceil-nav {
-      position: sticky;
-      top: 0;
-      z-index: 50;
-      background: rgba(10, 10, 15, 0.9);
-      border-bottom: 1px solid var(--ceil-border);
-      padding: 0.75rem 1.5rem;
-    }
-    #ceil-studio-recruit .ceil-nav__inner {
-      max-width: 56rem;
-      margin: 0 auto;
-      display: flex;
-      align-items: center;
-      justify-content: flex-start;
-      gap: 1rem;
-    }
-    #ceil-studio-recruit .ceil-nav__brand {
-      font-weight: 700;
-      color: var(--ceil-text);
-      text-decoration: none;
-      margin-right: auto;
-    }
-    #ceil-studio-recruit .ceil-nav__brand:hover { text-decoration: none; }
-    #ceil-studio-recruit .ceil-nav__links {
-      display: flex;
-      list-style: none;
-      gap: 1.5rem;
-    }
-    #ceil-studio-recruit .ceil-nav__links a {
-      color: var(--ceil-muted);
-      font-size: 0.95rem;
-    }
-    #ceil-studio-recruit .ceil-nav__links a:hover {
-      color: var(--ceil-text);
-    }
-    #ceil-studio-recruit .ceil-nav__links a.active {
-      color: var(--ceil-text);
-      border-bottom: 2px solid #22d3ee;
-      padding-bottom: 0.1rem;
-    }
-
-    /* Language Switcher - Isolated Pill */
-    #ceil-studio-recruit .ceil-lang-switch {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.4rem 1rem;
-      border-radius: 9999px;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      background: rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(4px);
-      -webkit-backdrop-filter: blur(4px);
-      color: var(--ceil-muted);
-      font-size: 0.9rem;
-      font-weight: 500;
-      text-decoration: none;
-      transition: all 0.2s ease;
-      margin-left: 1.5rem;
-    }
-
-    #ceil-studio-recruit .ceil-lang-switch:hover {
-      background: rgba(255, 255, 255, 0.2);
-      border-color: rgba(255, 255, 255, 0.4);
-      color: var(--ceil-text);
-      transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      text-decoration: none;
-    }
-
-    #ceil-studio-recruit .ceil-lang-switch svg {
-      width: 1.1em;
-      height: 1.1em;
-      fill: currentColor;
-    }
-
-    /* ---------- Hero + Glitch ---------- */
-    #ceil-studio-recruit .ceil-hero {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 2rem;
-      position: relative;
-      overflow: hidden;
-      gap: 4rem;
-    }
-    #ceil-studio-recruit .ceil-hero__title {
-      font-size: clamp(2.5rem, 10vw, 5rem);
-      font-weight: 800;
-      letter-spacing: 0.05em;
-      position: relative;
-      color: var(--ceil-text);
-    }
-    #ceil-studio-recruit .ceil-hero__title.glitch {
-      animation: ceil-glitch 3s infinite;
-    }
-    #ceil-studio-recruit .ceil-hero__title.glitch::before,
-    #ceil-studio-recruit .ceil-hero__title.glitch::after {
-      content: attr(data-text);
-      position: absolute;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-    }
-    #ceil-studio-recruit .ceil-hero__title.glitch::before {
-      color: #0ff;
-      animation: ceil-glitch-alt 2s infinite;
-      clip-path: polygon(0 0, 100% 0, 100% 35%, 0 35%);
-      transform: translate(-2px, 2px);
-    }
-    #ceil-studio-recruit .ceil-hero__title.glitch::after {
-      color: #f0f;
-      animation: ceil-glitch-alt 2.5s infinite reverse;
-      clip-path: polygon(0 65%, 100% 65%, 100% 100%, 0 100%);
-      transform: translate(2px, -2px);
-    }
-    @keyframes ceil-glitch {
-      0%, 90%, 100% { transform: translate(0); }
-      92% { transform: translate(-2px, 1px); }
-      94% { transform: translate(2px, -1px); }
-      96% { transform: translate(-1px, 2px); }
-      98% { transform: translate(1px, -2px); }
-    }
-    @keyframes ceil-glitch-alt {
-      0% { transform: translate(-2px, 2px); opacity: 0.8; }
-      50% { transform: translate(2px, -2px); opacity: 0.8; }
-      100% { transform: translate(-2px, 2px); opacity: 0.8; }
-    }
-    #ceil-studio-recruit .ceil-hero__content {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    #ceil-studio-recruit .ceil-hero__tagline {
-      margin-top: 1rem;
-      color: var(--ceil-muted);
-      font-size: 1.8rem;
-    }
-    #ceil-studio-recruit .ceil-hero__about {
-      max-width: 56rem;
-      width: 100%;
-      padding: 2rem 1.75rem;
-      background: rgba(18, 18, 26, 0.75);
-      border: 1px solid var(--ceil-border);
-      border-radius: 1rem;
-      backdrop-filter: blur(12px);
-      text-align: left;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-      display: grid;
-      grid-template-columns: 1fr min(280px, 38%);
-      grid-template-rows: auto auto 1fr;
-      gap: 1.5rem 2rem;
-      align-items: start;
-    }
-    #ceil-studio-recruit .ceil-hero__about-title {
-      font-size: 1.75rem;
-      font-weight: 700;
-      color: var(--ceil-text);
-      margin: 0;
-      text-align: left;
-      letter-spacing: 0.05em;
-      grid-column: 1;
-    }
-    #ceil-studio-recruit .ceil-founder {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      grid-column: 1;
-    }
-    #ceil-studio-recruit .ceil-founder__avatar {
-      display: none;
-    }
-    #ceil-studio-recruit .ceil-hero__about-image {
-      grid-column: 2;
-      grid-row: 1 / -1;
-      width: 100%;
-      aspect-ratio: 1;
-      object-fit: cover;
-      border-radius: 0.5rem;
-      align-self: stretch;
-    }
-    #ceil-studio-recruit .ceil-founder__info {
-      display: flex;
-      flex-direction: column;
-      gap: 0.25rem;
-    }
-    #ceil-studio-recruit .ceil-founder__label {
-      font-size: 0.85rem;
-      font-weight: 600;
-      color: var(--ceil-muted);
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-    }
-    #ceil-studio-recruit .ceil-founder__name {
-      font-size: 1.5rem;
-      font-weight: 700;
-      color: var(--ceil-accent);
-      letter-spacing: 0.03em;
-    }
-    #ceil-studio-recruit .ceil-hero__about-content {
-      color: var(--ceil-muted);
-      line-height: 1.85;
-      font-size: 1.1rem;
-      grid-column: 1;
-    }
-    #ceil-studio-recruit .ceil-hero__about-content p {
-      margin-bottom: 1.1rem;
-    }
-    #ceil-studio-recruit .ceil-hero__about-content p:last-child {
-      margin-bottom: 0;
-    }
-    #ceil-studio-recruit .ceil-hero__about-content strong {
-      color: var(--ceil-text);
-      font-weight: 600;
-    }
-    #ceil-studio-recruit .ceil-hero__about-content .ceil-standout {
-      color: var(--ceil-text);
-      font-weight: 600;
-    }
-    @media (max-width: 768px) {
-      #ceil-studio-recruit .ceil-hero {
-        gap: 3rem;
-        padding: 1.5rem;
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ceil Studio ??Recruit</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      html {
+        scroll-behavior: smooth;
       }
-      #ceil-studio-recruit .ceil-hero__about {
-        padding: 1.5rem 1rem;
+      #ceil-studio-recruit {
+        --ceil-bg: #0a0a0f;
+        --ceil-surface: #12121a;
+        --ceil-border: #1e1e2e;
+        --ceil-text: #fbfbff;
+        --ceil-muted: #f1eaea;
+        --ceil-accent: #3b82f6;
+        background: var(--ceil-bg);
+        min-height: 100vh;
+        color: var(--ceil-text);
+        font-family: ui-sans-serif, system-ui, sans-serif;
+        font-size: 1.275rem;
+        line-height: 1.6;
+        box-sizing: border-box;
       }
-      #ceil-studio-recruit .ceil-hero__about {
-        grid-template-columns: 1fr;
-        grid-template-rows: auto auto auto;
+      #ceil-studio-recruit *,
+      #ceil-studio-recruit *::before,
+      #ceil-studio-recruit *::after {
+        box-sizing: border-box;
       }
-      #ceil-studio-recruit .ceil-hero__about-image {
-        grid-column: 1;
-        grid-row: auto;
-        width: auto;
-        max-width: 200px;
+      #ceil-studio-recruit * {
+        margin: 0;
+        padding: 0;
+      }
+      #ceil-studio-recruit img {
+        max-width: 100%;
         height: auto;
-        aspect-ratio: auto;
-        object-fit: contain;
-        justify-self: center;
-      }
-      #ceil-studio-recruit .ceil-hero__about-title {
-        font-size: 1.5rem;
-        margin-bottom: 1rem;
-      }
-      #ceil-studio-recruit .ceil-hero__about-content {
-        font-size: 1rem;
-      }
-      #ceil-studio-recruit .ceil-section__title {
-        font-size: 1.5rem;
-        padding: 0.6rem 1rem;
-        margin-bottom: 1.5rem;
-      }
-    }
-
-    /* ---------- Sections ---------- */
-    #ceil-studio-recruit .ceil-section {
-      padding: 4rem 1.5rem;
-      max-width: 56rem;
-      margin-left: auto;
-      margin-right: auto;
-    }
-    #ceil-studio-recruit .ceil-section__title {
-      font-size: 1.75rem;
-      font-weight: 700;
-      margin-bottom: 2rem;
-      margin-top: 0;
-      color: var(--ceil-text);
-      letter-spacing: 0.05em;
-      padding: 0.75rem 1.25rem;
-      background: linear-gradient(90deg, rgba(59, 130, 246, 0.25) 0%, rgba(59, 130, 246, 0.1) 100%);
-      border: 1px solid rgba(59, 130, 246, 0.3);
-      border-left: 4px solid var(--ceil-accent);
-      border-radius: 0.5rem 0 0 0.5rem;
-      box-shadow: 0 0 24px rgba(59, 130, 246, 0.15);
-    }
-    #ceil-studio-recruit .ceil-section__content {
-      color: var(--ceil-muted);
-    }
-    #ceil-studio-recruit .ceil-section__content strong { color: var(--ceil-text); }
-
-    /* ---------- BenefitCard ---------- */
-    #ceil-studio-recruit .ceil-benefit-grid {
-      display: grid;
-      gap: 1.5rem;
-      margin-top: 1.5rem;
-    }
-    #ceil-studio-recruit .ceil-benefit-card {
-      background: var(--ceil-surface);
-      border: 1px solid var(--ceil-border);
-      border-radius: 0.75rem;
-      padding: 1.5rem;
-    }
-    #ceil-studio-recruit .ceil-benefit-card__title {
-      font-size: 1.1rem;
-      font-weight: 600;
-      color: var(--ceil-text);
-      margin-bottom: 0.75rem;
-    }
-    #ceil-studio-recruit .ceil-benefit-card__body {
-      color: var(--ceil-muted);
-      font-size: 0.95rem;
-      line-height: 1.7;
-    }
-    #ceil-studio-recruit .ceil-benefit-card__body ul {
-      list-style: disc;
-      padding-left: 1.25rem;
-      margin-top: 0.5rem;
-    }
-    #ceil-studio-recruit .ceil-benefit-card__body li { margin-top: 0.25rem; }
-
-    /* ---------- Funding Box ---------- */
-    #ceil-studio-recruit .ceil-funding-box {
-      background: rgba(59, 130, 246, 0.08);
-      border: 1px solid rgba(59, 130, 246, 0.3);
-      border-left: 4px solid var(--ceil-accent);
-      border-radius: 0 0.5rem 0.5rem 0;
-      padding: 1.25rem 1.5rem;
-      margin-top: 1rem;
-    }
-    #ceil-studio-recruit .ceil-funding__item {
-      color: var(--ceil-text);
-      line-height: 1.8;
-      font-size: 1.1rem;
-      margin: 0 0 0.75rem 0;
-    }
-    #ceil-studio-recruit .ceil-funding__item:last-child { margin-bottom: 0; }
-
-    /* ---------- Symbol legend (table) ---------- */
-    #ceil-studio-recruit .ceil-legend {
-      margin-top: 1rem;
-      width: 100%;
-      border-collapse: collapse;
-      border: 1px solid var(--ceil-border);
-      border-radius: 0.5rem;
-      overflow: hidden;
-    }
-    #ceil-studio-recruit .ceil-legend th,
-    #ceil-studio-recruit .ceil-legend td {
-      border: 1px solid var(--ceil-border);
-      padding: 0.75rem 1rem;
-      text-align: left;
-      color: var(--ceil-muted);
-    }
-    #ceil-studio-recruit .ceil-legend th {
-      background: var(--ceil-surface);
-      color: var(--ceil-text);
-      font-weight: 600;
-    }
-    #ceil-studio-recruit .ceil-legend td:first-child {
-      font-weight: 600;
-      color: var(--ceil-text);
-      white-space: nowrap;
-    }
-
-    /* ---------- Role cards ---------- */
-    #ceil-studio-recruit .ceil-role-cards {
-      display: grid;
-      gap: 1.5rem;
-      grid-template-columns: 1fr;
-      margin-top: 1.5rem;
-    }
-    #ceil-studio-recruit .ceil-role-category {
-      font-size: 1.25rem;
-      font-weight: 700;
-      color: var(--ceil-accent);
-      letter-spacing: 0.1em;
-      margin-top: 2rem;
-      margin-bottom: 0.5rem;
-      padding: 0.6rem 1rem;
-      background: linear-gradient(90deg, rgba(59, 130, 246, 0.12) 0%, transparent 100%);
-      border: 1px solid var(--ceil-border);
-      border-left: 4px solid var(--ceil-accent);
-      grid-column: 1 / -1;
-    }
-    #ceil-studio-recruit .ceil-role-category:first-child { margin-top: 0; }
-    #ceil-studio-recruit .ceil-role-card {
-      background: var(--ceil-surface);
-      border: 1px solid var(--ceil-border);
-      border-radius: 0.5rem;
-      padding: 1.25rem 1.5rem;
-      display: flex;
-      flex-direction: column;
-      box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-    }
-    #ceil-studio-recruit .ceil-role-card__title {
-      font-size: 1.4rem;
-      font-weight: 700;
-      color: var(--ceil-text);
-      margin-bottom: 1rem;
-      letter-spacing: 0.03em;
-    }
-    #ceil-studio-recruit .ceil-role-card__duties {
-      flex: 1;
-      margin-bottom: 1rem;
-    }
-    #ceil-studio-recruit .ceil-role-card__duty {
-      margin-bottom: 0.85rem;
-      font-size: 1.1rem;
-      line-height: 1.7;
-      color: var(--ceil-muted);
-    }
-    #ceil-studio-recruit .ceil-role-card__duty:last-child { margin-bottom: 0; }
-    #ceil-studio-recruit .ceil-role-card__duty-label {
-      color: var(--ceil-text);
-      font-weight: 600;
-      display: block;
-      margin-bottom: 0.25em;
-    }
-    #ceil-studio-recruit .ceil-role-card__duty-text { display: block; }
-    #ceil-studio-recruit .ceil-role-card__footer {
-      margin-top: auto;
-      padding-top: 1rem;
-      border-top: 1px solid var(--ceil-border);
-    }
-    #ceil-studio-recruit .ceil-role-card__owner {
-      font-size: 0.9rem;
-      color: var(--ceil-accent);
-      font-weight: 600;
-    }
-    #ceil-studio-recruit .ceil-role-card__cta {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 0.6rem 1.25rem;
-      border-radius: 0.5rem;
-      background: linear-gradient(135deg, var(--ceil-accent) 0%, #2563eb 100%);
-      color: #fff !important;
-      font-weight: 600;
-      font-size: 0.95rem;
-      text-decoration: none !important;
-      border: 1px solid rgba(59, 130, 246, 0.5);
-      box-shadow: 0 4px 14px rgba(59, 130, 246, 0.35);
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-    #ceil-studio-recruit .ceil-role-card__cta:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(59, 130, 246, 0.45);
-    }
-
-    /* ---------- Strategic Roadmap ---------- */
-    #ceil-studio-recruit .ceil-roadmap {
-      display: flex;
-      flex-direction: column;
-      gap: 1.5rem;
-      margin-top: 1.5rem;
-    }
-    #ceil-studio-recruit .ceil-phase-card {
-      background: var(--ceil-surface);
-      border: 1px solid var(--ceil-border);
-      border-left: 4px solid var(--ceil-accent);
-      border-radius: 0.5rem;
-      padding: 1.25rem 1.5rem;
-      box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-    }
-    #ceil-studio-recruit .ceil-phase-card--final {
-      border-left-color: #22d3ee;
-      background: linear-gradient(135deg, rgba(34, 211, 238, 0.08) 0%, var(--ceil-surface) 100%);
-    }
-    #ceil-studio-recruit .ceil-phase__header {
-      font-size: 1.15rem;
-      font-weight: 700;
-      color: var(--ceil-text);
-      margin-bottom: 0.75rem;
-      letter-spacing: 0.02em;
-    }
-    #ceil-studio-recruit .ceil-phase__quote {
-      font-style: italic;
-      color: var(--ceil-accent);
-      border-left: 3px solid var(--ceil-accent);
-      padding-left: 1rem;
-      margin: 0.75rem 0;
-      font-size: 1.1rem;
-    }
-    #ceil-studio-recruit .ceil-phase__desc {
-      color: var(--ceil-muted);
-      line-height: 1.75;
-      font-size: 1.05rem;
-      margin: 0;
-    }
-
-    /* ---------- Contact: Tactical Command Panel ---------- */
-    #ceil-studio-recruit .ceil-contact-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1rem;
-      margin-top: 1.5rem;
-    }
-    @media (max-width: 640px) {
-      #ceil-studio-recruit .ceil-contact-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-    #ceil-studio-recruit .ceil-contact-card {
-      background: #18181b;
-      border: 1px solid #27272a;
-      border-radius: 0.5rem;
-      padding: 1rem 1.25rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1rem;
-      transition: border-color 0.2s, box-shadow 0.2s, color 0.2s;
-      text-decoration: none;
-      color: var(--ceil-text);
-    }
-    #ceil-studio-recruit .ceil-contact-card:hover {
-      border-color: var(--ceil-accent);
-      box-shadow: 0 0 0 1px var(--ceil-accent), 0 0 20px rgba(59, 130, 246, 0.25);
-      color: #fafafa;
-    }
-    #ceil-studio-recruit .ceil-contact-card:hover .ceil-contact-card__handle {
-      color: var(--ceil-accent);
-    }
-    #ceil-studio-recruit .ceil-contact-card__label {
-      font-size: 1.05rem;
-      font-weight: 700;
-      letter-spacing: 0.15em;
-      color: var(--ceil-muted);
-    }
-    #ceil-studio-recruit .ceil-contact-card__handle {
-      font-size: 1rem;
-      font-weight: 600;
-      word-break: break-all;
-    }
-    #ceil-studio-recruit .ceil-cta-box {
-      margin-top: 1.5rem;
-      padding: 1.25rem 1.5rem;
-      background: rgba(59, 130, 246, 0.08);
-      border: 1px solid rgba(59, 130, 246, 0.3);
-      border-left: 4px solid var(--ceil-accent);
-      border-radius: 0 0.5rem 0.5rem 0;
-      box-shadow: 0 0 24px rgba(59, 130, 246, 0.06);
-    }
-    #ceil-studio-recruit .ceil-cta-box .ceil-cta-heading {
-      font-size: 1.5rem;
-      font-weight: 700;
-      letter-spacing: 0.05em;
-      color: var(--ceil-accent);
-      margin-bottom: 1rem;
-    }
-    #ceil-studio-recruit .ceil-cta-box .ceil-cta-instruction {
-      color: var(--ceil-text);
-      margin-bottom: 0.75rem;
-    }
-    #ceil-studio-recruit .ceil-cta-box .ceil-cta-tag {
-      font-family: ui-monospace, monospace;
-      font-size: 0.95em;
-      padding: 0.2rem 0.5rem;
-      background: rgba(59, 130, 246, 0.2);
-      color: #60a5fa;
-      border-radius: 0.25rem;
-    }
-    #ceil-studio-recruit .ceil-cta-box .ceil-cta-log {
-      font-family: ui-monospace, monospace;
-      font-size: 1.275rem;
-      color: #cbd5e1;
-      margin-top: 1rem;
-    }
-    #ceil-studio-recruit .ceil-cta-box .ceil-cta-log::before {
-      content: '> ';
-      color: var(--ceil-accent);
-    }
-
-    /* ---------- Footer ---------- */
-    #ceil-studio-recruit .ceil-footer {
-      padding: 3rem 1.5rem 2rem;
-      text-align: center;
-      border-top: 1px solid var(--ceil-border);
-      margin-top: 4rem;
-    }
-    #ceil-studio-recruit .ceil-footer__copyright {
-      color: var(--ceil-muted);
-      font-size: 0.9rem;
-      margin: 0;
-    }
-
-    @media (max-width: 768px) {
-      /* Navbar Layout Change: Lang Switcher below Brand */
-      #ceil-studio-recruit .ceil-nav__inner {
-        display: grid;
-        grid-template-areas: 
-          "brand links"
-          "lang links";
-        /* Use min-content to allow shrinking */
-        grid-template-columns: min-content 1fr;
-        gap: 0.25rem 0.75rem;
-        align-items: center;
-      }
-
-      #ceil-studio-recruit .ceil-nav__brand {
-        grid-area: brand;
-        margin-right: 0;
-        /* Allow font scaling */
-        font-size: clamp(1rem, 4vw, 1.2rem);
-        white-space: nowrap;
-      }
-
-      #ceil-studio-recruit .ceil-lang-switch {
-        grid-area: lang;
-        margin-left: 0;
-        justify-self: start;
-        /* Adjust size/padding for compact look */
-        font-size: 0.75rem;
-        padding: 0.15rem 0.5rem;
-        white-space: nowrap;
-      }
-      
-      #ceil-studio-recruit .ceil-lang-switch svg {
-        width: 0.9em;
-        height: 0.9em;
-      }
-
-      #ceil-studio-recruit .ceil-nav__links {
-        grid-area: links;
-        width: 100%;
-        overflow-x: auto;
-        white-space: nowrap;
-        -webkit-overflow-scrolling: touch;
-        scrollbar-width: none;
-        justify-self: stretch;
-        justify-content: flex-start;
-        gap: 0.75rem;
-        padding-left: 0.5rem;
-      }
-      
-      #ceil-studio-recruit .ceil-nav__links a {
-        font-size: 0.9rem;
-      }
-
-      #ceil-studio-recruit .ceil-nav__links::-webkit-scrollbar {
-        display: none;
-      }
-    }
-
-    /* Add Ultra-Small Screen Optimization */
-    @media (max-width: 400px) {
-      #ceil-studio-recruit .ceil-nav__inner {
-        gap: 0.2rem 0.5rem; 
-      }
-
-      #ceil-studio-recruit .ceil-nav__brand {
-        font-size: 1rem; 
-      }
-
-      #ceil-studio-recruit .ceil-lang-switch {
-        font-size: 0.7rem;
-        padding: 0.15rem 0.4rem;
-      }
-      
-      #ceil-studio-recruit .ceil-lang-switch svg {
-        width: 0.8em;
-        height: 0.8em;
-      }
-
-      #ceil-studio-recruit .ceil-nav__links {
-        gap: 0.5rem;
-        padding-left: 0.25rem;
-      }
-      
-      #ceil-studio-recruit .ceil-nav__links a {
-        font-size: 0.85rem;
-      }
-    }
-
-    /* ---------- Floating Outline / Scroll Spy (HUD Style) ---------- */
-    #ceil-studio-recruit .ceil-outline-wrap {
-      position: fixed;
-      top: 50%;
-      right: 1rem;
-      transform: translateY(-50%);
-      z-index: 40;
-    }
-    #ceil-studio-recruit .ceil-outline {
-      background: rgba(10, 10, 15, 0.75);
-      border: 1px solid rgba(59, 130, 246, 0.25);
-      border-radius: 0.5rem;
-      padding: 0.75rem 0.5rem;
-      min-width: 10rem;
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05);
-    }
-    #ceil-studio-recruit .ceil-outline__title {
-      font-size: 0.65rem;
-      font-weight: 700;
-      color: var(--ceil-muted);
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      margin-bottom: 0.5rem;
-      padding: 0 0.5rem 0.5rem;
-      border-bottom: 1px solid rgba(59, 130, 246, 0.2);
-    }
-    #ceil-studio-recruit .ceil-outline__list {
-      list-style: none;
-    }
-    #ceil-studio-recruit .ceil-outline__list a {
-      display: block;
-      font-size: 0.8rem;
-      color: var(--ceil-muted);
-      padding: 0.4rem 0.75rem;
-      margin: 0.15rem 0;
-      text-decoration: none;
-      transition: all 0.2s ease;
-      border-left: 3px solid transparent;
-      border-radius: 0 0.25rem 0.25rem 0;
-    }
-    #ceil-studio-recruit .ceil-outline__list a:hover {
-      color: var(--ceil-accent);
-      background: rgba(59, 130, 246, 0.08);
-    }
-    #ceil-studio-recruit .ceil-outline__list a.is-active {
-      color: var(--ceil-accent);
-      font-weight: 600;
-      font-size: 0.85rem;
-      border-left-color: var(--ceil-accent);
-      background: rgba(59, 130, 246, 0.12);
-    }
-    @media (max-width: 1024px) {
-      #ceil-studio-recruit .ceil-outline-wrap {
-        display: none;
-        top: auto;
-        bottom: 5rem;
-        right: 1.5rem;
-        transform: none;
-      }
-      #ceil-studio-recruit .ceil-outline-fab {
-        display: flex;
-        position: fixed;
-        bottom: 1.5rem;
-        right: 1.5rem;
-        z-index: 41;
-        width: 3rem;
-        height: 3rem;
-        align-items: center;
-        justify-content: center;
-        background: rgba(10, 10, 15, 0.9);
-        border: 1px solid rgba(59, 130, 246, 0.4);
-        border-radius: 50%;
-        backdrop-filter: blur(4px);
-        color: var(--ceil-accent);
-        cursor: pointer;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
-        transition: all 0.2s;
-      }
-      #ceil-studio-recruit .ceil-outline-fab:hover {
-        background: rgba(59, 130, 246, 0.2);
-        transform: scale(1.05);
-      }
-      #ceil-studio-recruit .ceil-outline-fab.is-open + .ceil-outline-wrap {
         display: block;
       }
-    }
-    @media (min-width: 1025px) {
-      #ceil-studio-recruit .ceil-outline-fab {
-        display: none !important;
+      #ceil-studio-recruit a {
+        color: var(--ceil-accent);
+        text-decoration: none;
       }
-    }
-  </style>
-</head>
-<body>
-  <div id="ceil-studio-recruit">
-    <nav class="ceil-nav">
-      <div class="ceil-nav__inner">
-        <a href="../indexen.html" class="ceil-nav__brand">Ceil Studio</a>
-        <ul class="ceil-nav__links">
-          <li><a href="../indexen.html">About</a></li>
-          <li><a href="../indexen.html#games">Games</a></li>
-          <li><a href="../indexen.html#social">Socials</a></li>
-          <li><a href="./indexen.html" class="active">Recruit</a></li>
-        </ul>
-        <a href="./index.html" class="ceil-lang-switch">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="10"></circle>
-            <line x1="2" y1="12" x2="22" y2="12"></line>
-            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
-          </svg>
-          Chinese
-        </a>
-      </div>
-    </nav>
+      #ceil-studio-recruit a:hover {
+        text-decoration: underline;
+      }
 
-    <!-- Floating Outline / Scroll Spy -->
-    <button type="button" class="ceil-outline-fab" aria-label="Open navigation" aria-expanded="false" title="Quick Nav">
-      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
-    </button>
-    <div class="ceil-outline-wrap">
-      <nav class="ceil-outline" aria-label="Page navigation">
-        <div class="ceil-outline__title">Quick Nav</div>
-        <ul class="ceil-outline__list">
-          <li><a href="#about" data-target="about">About</a></li>
-          <li><a href="#funding" data-target="funding">Funding</a></li>
-          <li><a href="#roadmap" data-target="roadmap">Ceil Studio Roadmap: Our Vision</a></li>
-          <li><a href="#roles" data-target="roles">Roles</a></li>
-          <li><a href="#benefits" data-target="benefits">Why Join</a></li>
-          <li><a href="#contact" data-target="contact">Contact</a></li>
-        </ul>
+      /* ---------- Navbar ---------- */
+      #ceil-studio-recruit .ceil-nav {
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        background: rgba(10, 10, 15, 0.9);
+        border-bottom: 1px solid var(--ceil-border);
+        padding: 0.75rem 1.5rem;
+      }
+      #ceil-studio-recruit .ceil-nav__inner {
+        max-width: 56rem;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 1rem;
+      }
+      #ceil-studio-recruit .ceil-nav__brand {
+        font-weight: 700;
+        color: var(--ceil-text);
+        text-decoration: none;
+        margin-right: auto;
+      }
+      #ceil-studio-recruit .ceil-nav__brand:hover {
+        text-decoration: none;
+      }
+      #ceil-studio-recruit .ceil-nav__links {
+        display: flex;
+        list-style: none;
+        gap: 1.5rem;
+      }
+      #ceil-studio-recruit .ceil-nav__links a {
+        color: var(--ceil-muted);
+        font-size: 0.95rem;
+      }
+      #ceil-studio-recruit .ceil-nav__links a:hover {
+        color: var(--ceil-text);
+      }
+      #ceil-studio-recruit .ceil-nav__links a.active {
+        color: var(--ceil-text);
+        border-bottom: 2px solid #22d3ee;
+        padding-bottom: 0.1rem;
+      }
+
+      /* Language Switcher - Isolated Pill */
+      #ceil-studio-recruit .ceil-lang-switch {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.4rem 1rem;
+        border-radius: 9999px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
+        color: var(--ceil-muted);
+        font-size: 0.9rem;
+        font-weight: 500;
+        text-decoration: none;
+        transition: all 0.2s ease;
+        margin-left: 1.5rem;
+      }
+
+      #ceil-studio-recruit .ceil-lang-switch:hover {
+        background: rgba(255, 255, 255, 0.2);
+        border-color: rgba(255, 255, 255, 0.4);
+        color: var(--ceil-text);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        text-decoration: none;
+      }
+
+      #ceil-studio-recruit .ceil-lang-switch svg {
+        width: 1.1em;
+        height: 1.1em;
+        fill: currentColor;
+      }
+
+      /* ---------- Hero + Glitch ---------- */
+      #ceil-studio-recruit .ceil-hero {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 2rem;
+        position: relative;
+        overflow: hidden;
+        gap: 4rem;
+      }
+      #ceil-studio-recruit .ceil-hero__title {
+        font-size: clamp(2.5rem, 10vw, 5rem);
+        font-weight: 800;
+        letter-spacing: 0.05em;
+        position: relative;
+        color: var(--ceil-text);
+      }
+      #ceil-studio-recruit .ceil-hero__title.glitch {
+        animation: ceil-glitch 3s infinite;
+      }
+      #ceil-studio-recruit .ceil-hero__title.glitch::before,
+      #ceil-studio-recruit .ceil-hero__title.glitch::after {
+        content: attr(data-text);
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+      }
+      #ceil-studio-recruit .ceil-hero__title.glitch::before {
+        color: #0ff;
+        animation: ceil-glitch-alt 2s infinite;
+        clip-path: polygon(0 0, 100% 0, 100% 35%, 0 35%);
+        transform: translate(-2px, 2px);
+      }
+      #ceil-studio-recruit .ceil-hero__title.glitch::after {
+        color: #f0f;
+        animation: ceil-glitch-alt 2.5s infinite reverse;
+        clip-path: polygon(0 65%, 100% 65%, 100% 100%, 0 100%);
+        transform: translate(2px, -2px);
+      }
+      @keyframes ceil-glitch {
+        0%,
+        90%,
+        100% {
+          transform: translate(0);
+        }
+        92% {
+          transform: translate(-2px, 1px);
+        }
+        94% {
+          transform: translate(2px, -1px);
+        }
+        96% {
+          transform: translate(-1px, 2px);
+        }
+        98% {
+          transform: translate(1px, -2px);
+        }
+      }
+      @keyframes ceil-glitch-alt {
+        0% {
+          transform: translate(-2px, 2px);
+          opacity: 0.8;
+        }
+        50% {
+          transform: translate(2px, -2px);
+          opacity: 0.8;
+        }
+        100% {
+          transform: translate(-2px, 2px);
+          opacity: 0.8;
+        }
+      }
+      #ceil-studio-recruit .ceil-hero__content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      #ceil-studio-recruit .ceil-hero__tagline {
+        margin-top: 1rem;
+        color: var(--ceil-muted);
+        font-size: 1.8rem;
+      }
+      #ceil-studio-recruit .ceil-hero__about {
+        max-width: 56rem;
+        width: 100%;
+        padding: 2rem 1.75rem;
+        background: rgba(18, 18, 26, 0.75);
+        border: 1px solid var(--ceil-border);
+        border-radius: 1rem;
+        backdrop-filter: blur(12px);
+        text-align: left;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        display: grid;
+        grid-template-columns: 1fr min(280px, 38%);
+        grid-template-rows: auto auto 1fr;
+        gap: 1.5rem 2rem;
+        align-items: start;
+      }
+      #ceil-studio-recruit .ceil-hero__about-title {
+        font-size: 1.75rem;
+        font-weight: 700;
+        color: var(--ceil-text);
+        margin: 0;
+        text-align: left;
+        letter-spacing: 0.05em;
+        grid-column: 1;
+      }
+      #ceil-studio-recruit .ceil-founder {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        grid-column: 1;
+      }
+      #ceil-studio-recruit .ceil-founder__avatar {
+        display: none;
+      }
+      #ceil-studio-recruit .ceil-hero__about-image {
+        grid-column: 2;
+        grid-row: 1 / -1;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: top;
+        border-radius: 0.5rem;
+        align-self: stretch;
+      }
+      #ceil-studio-recruit .ceil-founder__info {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+      }
+      #ceil-studio-recruit .ceil-founder__label {
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: var(--ceil-muted);
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+      }
+      #ceil-studio-recruit .ceil-founder__name {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--ceil-accent);
+        letter-spacing: 0.03em;
+      }
+      #ceil-studio-recruit .ceil-hero__about-content {
+        color: var(--ceil-muted);
+        line-height: 1.85;
+        font-size: 1.1rem;
+        grid-column: 1;
+      }
+      #ceil-studio-recruit .ceil-hero__about-content p {
+        margin-bottom: 1.1rem;
+      }
+      #ceil-studio-recruit .ceil-hero__about-content p:last-child {
+        margin-bottom: 0;
+      }
+      #ceil-studio-recruit .ceil-hero__about-content strong {
+        color: var(--ceil-text);
+        font-weight: 600;
+      }
+      #ceil-studio-recruit .ceil-hero__about-content .ceil-standout {
+        color: var(--ceil-text);
+        font-weight: 600;
+      }
+      @media (max-width: 768px) {
+        #ceil-studio-recruit .ceil-hero {
+          gap: 3rem;
+          padding: 1.5rem;
+        }
+        #ceil-studio-recruit .ceil-hero__about {
+          padding: 1.5rem 1rem;
+        }
+        #ceil-studio-recruit .ceil-hero__about {
+          grid-template-columns: 1fr;
+          grid-template-rows: auto auto auto;
+        }
+        #ceil-studio-recruit .ceil-hero__about-image {
+          grid-column: 1;
+          grid-row: auto;
+          width: auto;
+          max-width: 200px;
+          height: auto;
+          aspect-ratio: auto;
+          object-fit: contain;
+          justify-self: center;
+        }
+        #ceil-studio-recruit .ceil-hero__about-title {
+          font-size: 1.5rem;
+          margin-bottom: 1rem;
+        }
+        #ceil-studio-recruit .ceil-hero__about-content {
+          font-size: 1rem;
+        }
+        #ceil-studio-recruit .ceil-section__title {
+          font-size: 1.5rem;
+          padding: 0.6rem 1rem;
+          margin-bottom: 1.5rem;
+        }
+      }
+
+      /* ---------- Sections ---------- */
+      #ceil-studio-recruit .ceil-section {
+        padding: 4rem 1.5rem;
+        max-width: 56rem;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      #ceil-studio-recruit .ceil-section__title {
+        font-size: 1.75rem;
+        font-weight: 700;
+        margin-bottom: 2rem;
+        margin-top: 0;
+        color: var(--ceil-text);
+        letter-spacing: 0.05em;
+        padding: 0.75rem 1.25rem;
+        background: linear-gradient(
+          90deg,
+          rgba(59, 130, 246, 0.25) 0%,
+          rgba(59, 130, 246, 0.1) 100%
+        );
+        border: 1px solid rgba(59, 130, 246, 0.3);
+        border-left: 4px solid var(--ceil-accent);
+        border-radius: 0.5rem 0 0 0.5rem;
+        box-shadow: 0 0 24px rgba(59, 130, 246, 0.15);
+      }
+      #ceil-studio-recruit .ceil-section__content {
+        color: var(--ceil-muted);
+      }
+      #ceil-studio-recruit .ceil-section__content strong {
+        color: var(--ceil-text);
+      }
+
+      /* ---------- BenefitCard ---------- */
+      #ceil-studio-recruit .ceil-benefit-grid {
+        display: grid;
+        gap: 1.5rem;
+        margin-top: 1.5rem;
+      }
+      #ceil-studio-recruit .ceil-benefit-card {
+        background: var(--ceil-surface);
+        border: 1px solid var(--ceil-border);
+        border-radius: 0.75rem;
+        padding: 1.5rem;
+      }
+      #ceil-studio-recruit .ceil-benefit-card__title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: var(--ceil-text);
+        margin-bottom: 0.75rem;
+      }
+      #ceil-studio-recruit .ceil-benefit-card__body {
+        color: var(--ceil-muted);
+        font-size: 0.95rem;
+        line-height: 1.7;
+      }
+      #ceil-studio-recruit .ceil-benefit-card__body ul {
+        list-style: disc;
+        padding-left: 1.25rem;
+        margin-top: 0.5rem;
+      }
+      #ceil-studio-recruit .ceil-benefit-card__body li {
+        margin-top: 0.25rem;
+      }
+
+      /* ---------- Funding Box ---------- */
+      #ceil-studio-recruit .ceil-funding-box {
+        background: rgba(59, 130, 246, 0.08);
+        border: 1px solid rgba(59, 130, 246, 0.3);
+        border-left: 4px solid var(--ceil-accent);
+        border-radius: 0 0.5rem 0.5rem 0;
+        padding: 1.25rem 1.5rem;
+        margin-top: 1rem;
+      }
+      #ceil-studio-recruit .ceil-funding__item {
+        color: var(--ceil-text);
+        line-height: 1.8;
+        font-size: 1.1rem;
+        margin: 0 0 0.75rem 0;
+      }
+      #ceil-studio-recruit .ceil-funding__item:last-child {
+        margin-bottom: 0;
+      }
+
+      /* ---------- Symbol legend (table) ---------- */
+      #ceil-studio-recruit .ceil-legend {
+        margin-top: 1rem;
+        width: 100%;
+        border-collapse: collapse;
+        border: 1px solid var(--ceil-border);
+        border-radius: 0.5rem;
+        overflow: hidden;
+      }
+      #ceil-studio-recruit .ceil-legend th,
+      #ceil-studio-recruit .ceil-legend td {
+        border: 1px solid var(--ceil-border);
+        padding: 0.75rem 1rem;
+        text-align: left;
+        color: var(--ceil-muted);
+      }
+      #ceil-studio-recruit .ceil-legend th {
+        background: var(--ceil-surface);
+        color: var(--ceil-text);
+        font-weight: 600;
+      }
+      #ceil-studio-recruit .ceil-legend td:first-child {
+        font-weight: 600;
+        color: var(--ceil-text);
+        white-space: nowrap;
+      }
+
+      /* ---------- Role cards ---------- */
+      #ceil-studio-recruit .ceil-role-cards {
+        display: grid;
+        gap: 1.5rem;
+        grid-template-columns: 1fr;
+        margin-top: 1.5rem;
+      }
+      #ceil-studio-recruit .ceil-role-category {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: var(--ceil-accent);
+        letter-spacing: 0.1em;
+        margin-top: 2rem;
+        margin-bottom: 0.5rem;
+        padding: 0.6rem 1rem;
+        background: linear-gradient(
+          90deg,
+          rgba(59, 130, 246, 0.12) 0%,
+          transparent 100%
+        );
+        border: 1px solid var(--ceil-border);
+        border-left: 4px solid var(--ceil-accent);
+        grid-column: 1 / -1;
+      }
+      #ceil-studio-recruit .ceil-role-category:first-child {
+        margin-top: 0;
+      }
+      #ceil-studio-recruit .ceil-role-card {
+        background: var(--ceil-surface);
+        border: 1px solid var(--ceil-border);
+        border-radius: 0.5rem;
+        padding: 1.25rem 1.5rem;
+        display: flex;
+        flex-direction: column;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+      }
+      #ceil-studio-recruit .ceil-role-card__title {
+        font-size: 1.4rem;
+        font-weight: 700;
+        color: var(--ceil-text);
+        margin-bottom: 1rem;
+        letter-spacing: 0.03em;
+      }
+      #ceil-studio-recruit .ceil-role-card__duties {
+        flex: 1;
+        margin-bottom: 1rem;
+      }
+      #ceil-studio-recruit .ceil-role-card__duty {
+        margin-bottom: 0.85rem;
+        font-size: 1.1rem;
+        line-height: 1.7;
+        color: var(--ceil-muted);
+      }
+      #ceil-studio-recruit .ceil-role-card__duty:last-child {
+        margin-bottom: 0;
+      }
+      #ceil-studio-recruit .ceil-role-card__duty-label {
+        color: var(--ceil-text);
+        font-weight: 600;
+        display: block;
+        margin-bottom: 0.25em;
+      }
+      #ceil-studio-recruit .ceil-role-card__duty-text {
+        display: block;
+      }
+      #ceil-studio-recruit .ceil-role-card__footer {
+        margin-top: auto;
+        padding-top: 1rem;
+        border-top: 1px solid var(--ceil-border);
+      }
+      #ceil-studio-recruit .ceil-role-card__owner {
+        font-size: 0.9rem;
+        color: var(--ceil-accent);
+        font-weight: 600;
+      }
+      #ceil-studio-recruit .ceil-role-card__cta {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.6rem 1.25rem;
+        border-radius: 0.5rem;
+        background: linear-gradient(
+          135deg,
+          var(--ceil-accent) 0%,
+          #2563eb 100%
+        );
+        color: #fff !important;
+        font-weight: 600;
+        font-size: 0.95rem;
+        text-decoration: none !important;
+        border: 1px solid rgba(59, 130, 246, 0.5);
+        box-shadow: 0 4px 14px rgba(59, 130, 246, 0.35);
+        transition:
+          transform 0.2s,
+          box-shadow 0.2s;
+      }
+      #ceil-studio-recruit .ceil-role-card__cta:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(59, 130, 246, 0.45);
+      }
+
+      /* ---------- Strategic Roadmap ---------- */
+      #ceil-studio-recruit .ceil-roadmap {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        margin-top: 1.5rem;
+      }
+      #ceil-studio-recruit .ceil-phase-card {
+        background: var(--ceil-surface);
+        border: 1px solid var(--ceil-border);
+        border-left: 4px solid var(--ceil-accent);
+        border-radius: 0.5rem;
+        padding: 1.25rem 1.5rem;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+      }
+      #ceil-studio-recruit .ceil-phase-card--final {
+        border-left-color: #22d3ee;
+        background: linear-gradient(
+          135deg,
+          rgba(34, 211, 238, 0.08) 0%,
+          var(--ceil-surface) 100%
+        );
+      }
+      #ceil-studio-recruit .ceil-phase__header {
+        font-size: 1.15rem;
+        font-weight: 700;
+        color: var(--ceil-text);
+        margin-bottom: 0.75rem;
+        letter-spacing: 0.02em;
+      }
+      #ceil-studio-recruit .ceil-phase__quote {
+        font-style: italic;
+        color: var(--ceil-accent);
+        border-left: 3px solid var(--ceil-accent);
+        padding-left: 1rem;
+        margin: 0.75rem 0;
+        font-size: 1.1rem;
+      }
+      #ceil-studio-recruit .ceil-phase__desc {
+        color: var(--ceil-muted);
+        line-height: 1.75;
+        font-size: 1.05rem;
+        margin: 0;
+      }
+
+      /* ---------- Contact: Tactical Command Panel ---------- */
+      #ceil-studio-recruit .ceil-contact-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1rem;
+        margin-top: 1.5rem;
+      }
+      @media (max-width: 640px) {
+        #ceil-studio-recruit .ceil-contact-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+      #ceil-studio-recruit .ceil-contact-card {
+        background: #18181b;
+        border: 1px solid #27272a;
+        border-radius: 0.5rem;
+        padding: 1rem 1.25rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        transition:
+          border-color 0.2s,
+          box-shadow 0.2s,
+          color 0.2s;
+        text-decoration: none;
+        color: var(--ceil-text);
+      }
+      #ceil-studio-recruit .ceil-contact-card:hover {
+        border-color: var(--ceil-accent);
+        box-shadow:
+          0 0 0 1px var(--ceil-accent),
+          0 0 20px rgba(59, 130, 246, 0.25);
+        color: #fafafa;
+      }
+      #ceil-studio-recruit .ceil-contact-card:hover .ceil-contact-card__handle {
+        color: var(--ceil-accent);
+      }
+      #ceil-studio-recruit .ceil-contact-card__label {
+        font-size: 1.05rem;
+        font-weight: 700;
+        letter-spacing: 0.15em;
+        color: var(--ceil-muted);
+      }
+      #ceil-studio-recruit .ceil-contact-card__handle {
+        font-size: 1rem;
+        font-weight: 600;
+        word-break: break-all;
+      }
+      #ceil-studio-recruit .ceil-cta-box {
+        margin-top: 1.5rem;
+        padding: 1.25rem 1.5rem;
+        background: rgba(59, 130, 246, 0.08);
+        border: 1px solid rgba(59, 130, 246, 0.3);
+        border-left: 4px solid var(--ceil-accent);
+        border-radius: 0 0.5rem 0.5rem 0;
+        box-shadow: 0 0 24px rgba(59, 130, 246, 0.06);
+      }
+      #ceil-studio-recruit .ceil-cta-box .ceil-cta-heading {
+        font-size: 1.5rem;
+        font-weight: 700;
+        letter-spacing: 0.05em;
+        color: var(--ceil-accent);
+        margin-bottom: 1rem;
+      }
+      #ceil-studio-recruit .ceil-cta-box .ceil-cta-instruction {
+        color: var(--ceil-text);
+        margin-bottom: 0.75rem;
+      }
+      #ceil-studio-recruit .ceil-cta-box .ceil-cta-tag {
+        font-family: ui-monospace, monospace;
+        font-size: 0.95em;
+        padding: 0.2rem 0.5rem;
+        background: rgba(59, 130, 246, 0.2);
+        color: #60a5fa;
+        border-radius: 0.25rem;
+      }
+      #ceil-studio-recruit .ceil-cta-box .ceil-cta-log {
+        font-family: ui-monospace, monospace;
+        font-size: 1.275rem;
+        color: #cbd5e1;
+        margin-top: 1rem;
+      }
+      #ceil-studio-recruit .ceil-cta-box .ceil-cta-log::before {
+        content: "> ";
+        color: var(--ceil-accent);
+      }
+
+      /* ---------- Footer ---------- */
+      #ceil-studio-recruit .ceil-footer {
+        padding: 3rem 1.5rem 2rem;
+        text-align: center;
+        border-top: 1px solid var(--ceil-border);
+        margin-top: 4rem;
+      }
+      #ceil-studio-recruit .ceil-footer__copyright {
+        color: var(--ceil-muted);
+        font-size: 0.9rem;
+        margin: 0;
+      }
+
+      @media (max-width: 768px) {
+        /* Navbar Layout Change: Lang Switcher below Brand */
+        #ceil-studio-recruit .ceil-nav__inner {
+          display: grid;
+          grid-template-areas:
+            "brand links"
+            "lang links";
+          /* Use min-content to allow shrinking */
+          grid-template-columns: min-content 1fr;
+          gap: 0.25rem 0.75rem;
+          align-items: center;
+        }
+
+        #ceil-studio-recruit .ceil-nav__brand {
+          grid-area: brand;
+          margin-right: 0;
+          /* Allow font scaling */
+          font-size: clamp(1rem, 4vw, 1.2rem);
+          white-space: nowrap;
+        }
+
+        #ceil-studio-recruit .ceil-lang-switch {
+          grid-area: lang;
+          margin-left: 0;
+          justify-self: start;
+          /* Adjust size/padding for compact look */
+          font-size: 0.75rem;
+          padding: 0.15rem 0.5rem;
+          white-space: nowrap;
+        }
+
+        #ceil-studio-recruit .ceil-lang-switch svg {
+          width: 0.9em;
+          height: 0.9em;
+        }
+
+        #ceil-studio-recruit .ceil-nav__links {
+          grid-area: links;
+          width: 100%;
+          overflow-x: auto;
+          white-space: nowrap;
+          -webkit-overflow-scrolling: touch;
+          scrollbar-width: none;
+          justify-self: stretch;
+          justify-content: flex-start;
+          gap: 0.75rem;
+          padding-left: 0.5rem;
+        }
+
+        #ceil-studio-recruit .ceil-nav__links a {
+          font-size: 0.9rem;
+        }
+
+        #ceil-studio-recruit .ceil-nav__links::-webkit-scrollbar {
+          display: none;
+        }
+      }
+
+      /* Add Ultra-Small Screen Optimization */
+      @media (max-width: 400px) {
+        #ceil-studio-recruit .ceil-nav__inner {
+          gap: 0.2rem 0.5rem;
+        }
+
+        #ceil-studio-recruit .ceil-nav__brand {
+          font-size: 1rem;
+        }
+
+        #ceil-studio-recruit .ceil-lang-switch {
+          font-size: 0.7rem;
+          padding: 0.15rem 0.4rem;
+        }
+
+        #ceil-studio-recruit .ceil-lang-switch svg {
+          width: 0.8em;
+          height: 0.8em;
+        }
+
+        #ceil-studio-recruit .ceil-nav__links {
+          gap: 0.5rem;
+          padding-left: 0.25rem;
+        }
+
+        #ceil-studio-recruit .ceil-nav__links a {
+          font-size: 0.85rem;
+        }
+      }
+
+      /* ---------- Floating Outline / Scroll Spy (HUD Style) ---------- */
+      #ceil-studio-recruit .ceil-outline-wrap {
+        position: fixed;
+        top: 50%;
+        right: 1rem;
+        transform: translateY(-50%);
+        z-index: 40;
+      }
+      #ceil-studio-recruit .ceil-outline {
+        background: rgba(10, 10, 15, 0.75);
+        border: 1px solid rgba(59, 130, 246, 0.25);
+        border-radius: 0.5rem;
+        padding: 0.75rem 0.5rem;
+        min-width: 10rem;
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        box-shadow:
+          0 4px 24px rgba(0, 0, 0, 0.4),
+          inset 0 1px 0 rgba(255, 255, 255, 0.05);
+      }
+      #ceil-studio-recruit .ceil-outline__title {
+        font-size: 0.65rem;
+        font-weight: 700;
+        color: var(--ceil-muted);
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        margin-bottom: 0.5rem;
+        padding: 0 0.5rem 0.5rem;
+        border-bottom: 1px solid rgba(59, 130, 246, 0.2);
+      }
+      #ceil-studio-recruit .ceil-outline__list {
+        list-style: none;
+      }
+      #ceil-studio-recruit .ceil-outline__list a {
+        display: block;
+        font-size: 0.8rem;
+        color: var(--ceil-muted);
+        padding: 0.4rem 0.75rem;
+        margin: 0.15rem 0;
+        text-decoration: none;
+        transition: all 0.2s ease;
+        border-left: 3px solid transparent;
+        border-radius: 0 0.25rem 0.25rem 0;
+      }
+      #ceil-studio-recruit .ceil-outline__list a:hover {
+        color: var(--ceil-accent);
+        background: rgba(59, 130, 246, 0.08);
+      }
+      #ceil-studio-recruit .ceil-outline__list a.is-active {
+        color: var(--ceil-accent);
+        font-weight: 600;
+        font-size: 0.85rem;
+        border-left-color: var(--ceil-accent);
+        background: rgba(59, 130, 246, 0.12);
+      }
+      @media (max-width: 1024px) {
+        #ceil-studio-recruit .ceil-outline-wrap {
+          display: none;
+          top: auto;
+          bottom: 5rem;
+          right: 1.5rem;
+          transform: none;
+        }
+        #ceil-studio-recruit .ceil-outline-fab {
+          display: flex;
+          position: fixed;
+          bottom: 1.5rem;
+          right: 1.5rem;
+          z-index: 41;
+          width: 3rem;
+          height: 3rem;
+          align-items: center;
+          justify-content: center;
+          background: rgba(10, 10, 15, 0.9);
+          border: 1px solid rgba(59, 130, 246, 0.4);
+          border-radius: 50%;
+          backdrop-filter: blur(4px);
+          color: var(--ceil-accent);
+          cursor: pointer;
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+          transition: all 0.2s;
+        }
+        #ceil-studio-recruit .ceil-outline-fab:hover {
+          background: rgba(59, 130, 246, 0.2);
+          transform: scale(1.05);
+        }
+        #ceil-studio-recruit .ceil-outline-fab.is-open + .ceil-outline-wrap {
+          display: block;
+        }
+      }
+      @media (min-width: 1025px) {
+        #ceil-studio-recruit .ceil-outline-fab {
+          display: none !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="ceil-studio-recruit">
+      <nav class="ceil-nav">
+        <div class="ceil-nav__inner">
+          <a href="../indexen.html" class="ceil-nav__brand">Ceil Studio</a>
+          <ul class="ceil-nav__links">
+            <li><a href="../indexen.html">About</a></li>
+            <li><a href="../indexen.html#games">Games</a></li>
+            <li><a href="../indexen.html#social">Socials</a></li>
+            <li><a href="./indexen.html" class="active">Recruit</a></li>
+          </ul>
+          <a href="./index.html" class="ceil-lang-switch">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="2" y1="12" x2="22" y2="12"></line>
+              <path
+                d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"
+              ></path>
+            </svg>
+            Chinese
+          </a>
+        </div>
       </nav>
+
+      <!-- Floating Outline / Scroll Spy -->
+      <button
+        type="button"
+        class="ceil-outline-fab"
+        aria-label="Open navigation"
+        aria-expanded="false"
+        title="Quick Nav"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <line x1="8" y1="6" x2="21" y2="6" />
+          <line x1="8" y1="12" x2="21" y2="12" />
+          <line x1="8" y1="18" x2="21" y2="18" />
+          <line x1="3" y1="6" x2="3.01" y2="6" />
+          <line x1="3" y1="12" x2="3.01" y2="12" />
+          <line x1="3" y1="18" x2="3.01" y2="18" />
+        </svg>
+      </button>
+      <div class="ceil-outline-wrap">
+        <nav class="ceil-outline" aria-label="Page navigation">
+          <div class="ceil-outline__title">Quick Nav</div>
+          <ul class="ceil-outline__list">
+            <li><a href="#about" data-target="about">About</a></li>
+            <li><a href="#funding" data-target="funding">Funding</a></li>
+            <li>
+              <a href="#roadmap" data-target="roadmap"
+                >Ceil Studio Roadmap: Our Vision</a
+              >
+            </li>
+            <li><a href="#roles" data-target="roles">Roles</a></li>
+            <li><a href="#benefits" data-target="benefits">Why Join</a></li>
+            <li><a href="#contact" data-target="contact">Contact</a></li>
+          </ul>
+        </nav>
+      </div>
+
+      <!-- HeroSection -->
+      <section id="about" class="ceil-hero">
+        <div class="ceil-hero__content">
+          <h1 class="ceil-hero__title glitch" data-text="Ceil Studio">
+            Ceil Studio
+          </h1>
+          <p class="ceil-hero__tagline">
+            When Tower Defense meets Survival Horror ??An ambitious project
+            aiming for Steam
+          </p>
+        </div>
+
+        <div class="ceil-hero__about">
+          <h2 class="ceil-hero__about-title">About the Project</h2>
+          <img
+            src="../img/profile.png"
+            alt="Ceil"
+            class="ceil-hero__about-image"
+          />
+          <div class="ceil-founder">
+            <div class="ceil-founder__info">
+              <span class="ceil-founder__label">Founder</span>
+              <span class="ceil-founder__name">Ceil</span>
+            </div>
+          </div>
+          <div class="ceil-hero__about-content">
+            <p>I'm Ceil, founder and Game Director of Ceil Studio.</p>
+            <p>
+              In founding this studio, we don't just talk about dreams ? we also
+              talk about
+              <span class="ceil-standout">commercial standards</span> and
+              <span class="ceil-standout">exceptional experience</span>.
+              Carrying the trust of our angel investors, I want to gather the
+              most pure and driven creators in the industry. Our goal is
+              singular: build a flagship horror game IP that stands on Steam's
+              global market, and lead the team to financial freedom.
+            </p>
+            <p>
+              <strong
+                >We're not here to play games. We're here to create
+                them.</strong
+              >
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Funding Assurance -->
+      <section id="funding" class="ceil-section">
+        <h2 class="ceil-section__title">Development Funding Assurance</h2>
+        <div class="ceil-funding-box">
+          <p class="ceil-funding__item">
+            The studio has received early-stage angel investment and maintains a
+            solid development funding base.
+          </p>
+          <p class="ceil-funding__item">
+            The project is backed by external capital; all core development
+            hardware, software, and commercial paid assets are fully provided by
+            the studio.
+          </p>
+          <p class="ceil-funding__item">
+            Milestone-based phased funding ensures the project can advance to
+            Steam commercial release without financial concerns.
+          </p>
+        </div>
+      </section>
+
+      <!-- Strategic Roadmap -->
+      <section id="roadmap" class="ceil-section">
+        <h2 class="ceil-section__title">
+          Ceil Studio Strategic Roadmap: Our Vision & Endgame
+        </h2>
+        <div class="ceil-roadmap">
+          <div class="ceil-phase-card">
+            <div class="ceil-phase__header">
+              ?? Phase 1: Elite Selection & Preparation (Now ??2027.02.04)
+            </div>
+            <blockquote class="ceil-phase__quote">
+              "This is your ticket to a commercial hit ??but you must prove you
+              can carry it."
+            </blockquote>
+            <p class="ceil-phase__desc">
+              This phase is the team's preparation core. We will run multiple
+              high-intensity Game Jams as live stress tests. It's a
+              survival-of-the-fittest trial: only developers who show absolute
+              growth in both skill and mindset will earn a core member seat and
+              future profit share.
+            </p>
+          </div>
+          <div class="ceil-phase-card">
+            <div class="ceil-phase__header">
+              ?? Phase 2: Pipeline Validation & First Ship (2027.02.04
+              ??2027.05.04)
+            </div>
+            <blockquote class="ceil-phase__quote">
+              "No theory ??we validate our edge in the market."
+            </blockquote>
+            <p class="ceil-phase__desc">
+              Surviving core members will sign the Core Member Commitment. In
+              three months, we will start and complete our first Steam indie
+              game from development to launch. The goal is not profit yet ??it's
+              to fully validate our commercial development workflow.
+            </p>
+          </div>
+          <div class="ceil-phase-card">
+            <div class="ceil-phase__header">
+              ?? Phase 3: Commercial-Grade Polish (2027.05.04 ??2027.07.01)
+            </div>
+            <blockquote class="ceil-phase__quote">
+              "From 'can make games' to 'can make hits'."
+            </blockquote>
+            <p class="ceil-phase__desc">
+              Retrospective on market feedback and team collaboration from the
+              first game. Over two months, we will run intensive iteration to
+              align our tech, art quality, and execution with international hit
+              standards.
+            </p>
+          </div>
+          <div class="ceil-phase-card">
+            <div class="ceil-phase__header">
+              ?? Phase 4: Flagship Horror Title Launch (2027.07.01 ??2028.07.01)
+            </div>
+            <blockquote class="ceil-phase__quote">
+              "Sharpening done. Main event begins."
+            </blockquote>
+            <p class="ceil-phase__desc">
+              With the team battle-ready, we officially kick off full
+              development of Ceil Studio's first commercial horror game. We will
+              pour in all funding, tech, and marketing to create a landmark
+              title that makes waves on Steam.
+            </p>
+          </div>
+          <div class="ceil-phase-card">
+            <div class="ceil-phase__header">
+              ?? Phase 5: IP Universe Expansion (2028.07.01 ??2030.07.01)
+            </div>
+            <blockquote class="ceil-phase__quote">
+              "Replicate hits with hits ??scale the profit."
+            </blockquote>
+            <p class="ceil-phase__desc">
+              Building on the first horror game's success and reach, we directly
+              start development of the IP's second installment. With a mature
+              pipeline and fan base, we aim for exponential profit growth.
+            </p>
+          </div>
+          <div class="ceil-phase-card ceil-phase-card--final">
+            <div class="ceil-phase__header">
+              ??? Phase 6: Financial Freedom & Legendary Exit (2031)
+            </div>
+            <blockquote class="ceil-phase__quote">
+              "We're not here to be wage slaves forever ??we're here to flip the
+              script."
+            </blockquote>
+            <p class="ceil-phase__desc">
+              Core members achieve financial freedom through game profit share.
+              Ceil Studio will formally dissolve. We don't aim to be a
+              century-old company ??we aim to be the most legendary dev squad in
+              the industry. Mission complete. Honorably retired.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Core Member Duties (injected by recruit.js) -->
+      <section id="roles" class="ceil-section">
+        <h2 class="ceil-section__title">Core Member Duties & Deliverables</h2>
+        <p class="ceil-section__content" style="margin-bottom: 1rem">
+          Roles and full duties as defined in the commitment; the content will
+          continue to evolve with the studio and project roadmap.
+        </p>
+        <div id="ceil-role-cards" class="ceil-role-cards"></div>
+      </section>
+
+      <!-- Why Join -->
+      <section id="benefits" class="ceil-section">
+        <h2 class="ceil-section__title">Why Join?</h2>
+        <div class="ceil-benefit-grid">
+          <div class="ceil-benefit-card">
+            <h3 class="ceil-benefit-card__title">
+              1. Shareholder-Level Wealth Distribution
+            </h3>
+            <div class="ceil-benefit-card__body">
+              <p>
+                We're not looking for free labor ? we're looking for future
+                <strong>"business partners"</strong>.
+              </p>
+              <ul>
+                <li>
+                  Every revenue generated after the game is released on Steam
+                  (after deducting costs) will be distributed based on core
+                  members' contribution weight.
+                </li>
+                <li>
+                  We don't pay fixed salaries because our goal is to help our
+                  teammates achieve financial freedom. Glory and profit, we
+                  share.
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="ceil-benefit-card">
+            <h3 class="ceil-benefit-card__title">
+              2. Absolute Commercial Combat Readiness
+            </h3>
+            <div class="ceil-benefit-card__body">
+              <p>
+                Capital and the market don't care about your potential ? they
+                care about
+                <strong>"what products you've successfully shipped"</strong>.
+              </p>
+              <p style="margin-top: 0.5rem">
+                Here, you'll experience industry-standard development workflow
+                at its highest level. This isn't practice ? it's live market
+                combat. When the project ships, you'll hold the industry's
+                hardest credential: a real commercial hit that actually makes
+                money.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Contact -->
+      <section id="contact" class="ceil-section">
+        <h2 class="ceil-section__title">Connect & Contact</h2>
+
+        <div class="ceil-cta-box">
+          <h3 class="ceil-cta-heading">How to Join Us?</h3>
+          <p class="ceil-cta-instruction">
+            Ceil Studio's Phase 1 development roster is full. But we always keep
+            our doors open for passionate creators.
+          </p>
+          <p
+            class="ceil-cta-instruction"
+            style="
+              margin-top: 0.5rem;
+              color: var(--ceil-muted);
+              font-size: 0.95rem;
+              margin-bottom: 1.5rem;
+            "
+          >
+            We know that tomorrow's top talent often comes from pure passion for
+            games and the drive to grow. You don't have to be max-level—if our
+            vision resonates with you and you want to build something cool with
+            us, we welcome you to share your portfolio.<br /><br />
+            Fill out the form below so we can get to know you. You'll be added
+            to our priority talent pool; when we expand and new challenges
+            arise, we'll reach out first!
+          </p>
+          <a
+            href="https://docs.google.com/forms/d/e/1FAIpQLSfDcpPcqpS6X0mxttfDxIAfrrh6M0WnORjPUJp0H8ZUqwgFgw/viewform?usp=dialog"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="ceil-cta-btn"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path
+                d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+              ></path>
+              <polyline points="14 2 14 8 20 8"></polyline>
+              <line x1="16" y1="13" x2="8" y2="13"></line>
+              <line x1="16" y1="17" x2="8" y2="17"></line>
+              <polyline points="10 9 9 9 8 9"></polyline>
+            </svg>
+            Fill Out Talent Pool Registration Form
+          </a>
+        </div>
+
+        <p
+          class="ceil-section__content"
+          style="margin-bottom: 0; margin-top: 1.5rem"
+        >
+          If you'd like to chat about game dev, ask questions, or just hang out,
+          feel free to reach out via IG / Discord / Email below.
+        </p>
+
+        <div class="ceil-contact-grid" style="margin-top: 1rem">
+          <a
+            href="https://instagram.com/ceil32768"
+            target="_blank"
+            rel="noopener"
+            class="ceil-contact-card"
+          >
+            <span class="ceil-contact-card__label">Instagram</span>
+            <span class="ceil-contact-card__handle">@ceil32768</span>
+          </a>
+          <div class="ceil-contact-card" style="cursor: default">
+            <span class="ceil-contact-card__label">Discord</span>
+            <span class="ceil-contact-card__handle">.cecill</span>
+          </div>
+          <a href="mailto:qerpzzea@gmail.com" class="ceil-contact-card">
+            <span class="ceil-contact-card__label">Email</span>
+            <span class="ceil-contact-card__handle">qerpzzea@gmail.com</span>
+          </a>
+        </div>
+      </section>
+
+      <!-- Footer -->
+      <footer class="ceil-footer">
+        <p class="ceil-footer__copyright">
+          ? 2026 Ceil Studio. All rights reserved.
+        </p>
+      </footer>
     </div>
 
-    <!-- HeroSection -->
-    <section id="about" class="ceil-hero">
-      <div class="ceil-hero__content">
-        <h1 class="ceil-hero__title glitch" data-text="Ceil Studio">Ceil Studio</h1>
-        <p class="ceil-hero__tagline">When Tower Defense meets Survival Horror ??An ambitious project aiming for Steam</p>
-      </div>
-      
-      <div class="ceil-hero__about">
-        <h2 class="ceil-hero__about-title">About the Project</h2>
-        <img src="../img/profile.png" alt="Ceil" class="ceil-hero__about-image" />
-        <div class="ceil-founder">
-          <div class="ceil-founder__info">
-            <span class="ceil-founder__label">Founder</span>
-            <span class="ceil-founder__name">Ceil</span>
-          </div>
-        </div>
-        <div class="ceil-hero__about-content">
-          <p>I'm Ceil, founder and Game Director of Ceil Studio.</p>
-          <p>In founding this studio, we don't just talk about dreams ? we also talk about <span class="ceil-standout">commercial standards</span> and <span class="ceil-standout">exceptional experience</span>. Carrying the trust of our angel investors, I want to gather the most pure and driven creators in the industry. Our goal is singular: build a flagship horror game IP that stands on Steam's global market, and lead the team to financial freedom.</p>
-          <p><strong>We're not here to play games. We're here to create them.</strong></p>
-        </div>
-      </div>
-    </section>
+    <script src="recruit-data-en.js?v=2026020606"></script>
+    <script src="recruit.js?v=2026020606"></script>
+    <script>
+      (function () {
+        var sectionIds = [
+          "about",
+          "funding",
+          "roadmap",
+          "roles",
+          "benefits",
+          "contact",
+        ];
+        var links = document.querySelectorAll(
+          "#ceil-studio-recruit .ceil-outline__list a[data-target]",
+        );
+        var fab = document.querySelector(
+          "#ceil-studio-recruit .ceil-outline-fab",
+        );
+        var wrap = document.querySelector(
+          "#ceil-studio-recruit .ceil-outline-wrap",
+        );
 
-    <!-- Funding Assurance -->
-    <section id="funding" class="ceil-section">
-      <h2 class="ceil-section__title">Development Funding Assurance</h2>
-      <div class="ceil-funding-box">
-        <p class="ceil-funding__item">The studio has received early-stage angel investment and maintains a solid development funding base.</p>
-        <p class="ceil-funding__item">The project is backed by external capital; all core development hardware, software, and commercial paid assets are fully provided by the studio.</p>
-        <p class="ceil-funding__item">Milestone-based phased funding ensures the project can advance to Steam commercial release without financial concerns.</p>
-      </div>
-    </section>
-
-    <!-- Strategic Roadmap -->
-    <section id="roadmap" class="ceil-section">
-      <h2 class="ceil-section__title">Ceil Studio Strategic Roadmap: Our Vision & Endgame</h2>
-      <div class="ceil-roadmap">
-        <div class="ceil-phase-card">
-          <div class="ceil-phase__header">?? Phase 1: Elite Selection & Preparation (Now ??2027.02.04)</div>
-          <blockquote class="ceil-phase__quote">"This is your ticket to a commercial hit ??but you must prove you can carry it."</blockquote>
-          <p class="ceil-phase__desc">This phase is the team's preparation core. We will run multiple high-intensity Game Jams as live stress tests. It's a survival-of-the-fittest trial: only developers who show absolute growth in both skill and mindset will earn a core member seat and future profit share.</p>
-        </div>
-        <div class="ceil-phase-card">
-          <div class="ceil-phase__header">?? Phase 2: Pipeline Validation & First Ship (2027.02.04 ??2027.05.04)</div>
-          <blockquote class="ceil-phase__quote">"No theory ??we validate our edge in the market."</blockquote>
-          <p class="ceil-phase__desc">Surviving core members will sign the Core Member Commitment. In three months, we will start and complete our first Steam indie game from development to launch. The goal is not profit yet ??it's to fully validate our commercial development workflow.</p>
-        </div>
-        <div class="ceil-phase-card">
-          <div class="ceil-phase__header">?? Phase 3: Commercial-Grade Polish (2027.05.04 ??2027.07.01)</div>
-          <blockquote class="ceil-phase__quote">"From 'can make games' to 'can make hits'."</blockquote>
-          <p class="ceil-phase__desc">Retrospective on market feedback and team collaboration from the first game. Over two months, we will run intensive iteration to align our tech, art quality, and execution with international hit standards.</p>
-        </div>
-        <div class="ceil-phase-card">
-          <div class="ceil-phase__header">?? Phase 4: Flagship Horror Title Launch (2027.07.01 ??2028.07.01)</div>
-          <blockquote class="ceil-phase__quote">"Sharpening done. Main event begins."</blockquote>
-          <p class="ceil-phase__desc">With the team battle-ready, we officially kick off full development of Ceil Studio's first commercial horror game. We will pour in all funding, tech, and marketing to create a landmark title that makes waves on Steam.</p>
-        </div>
-        <div class="ceil-phase-card">
-          <div class="ceil-phase__header">?? Phase 5: IP Universe Expansion (2028.07.01 ??2030.07.01)</div>
-          <blockquote class="ceil-phase__quote">"Replicate hits with hits ??scale the profit."</blockquote>
-          <p class="ceil-phase__desc">Building on the first horror game's success and reach, we directly start development of the IP's second installment. With a mature pipeline and fan base, we aim for exponential profit growth.</p>
-        </div>
-        <div class="ceil-phase-card ceil-phase-card--final">
-          <div class="ceil-phase__header">??? Phase 6: Financial Freedom & Legendary Exit (2031)</div>
-          <blockquote class="ceil-phase__quote">"We're not here to be wage slaves forever ??we're here to flip the script."</blockquote>
-          <p class="ceil-phase__desc">Core members achieve financial freedom through game profit share. Ceil Studio will formally dissolve. We don't aim to be a century-old company ??we aim to be the most legendary dev squad in the industry. Mission complete. Honorably retired.</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- Core Member Duties (injected by recruit.js) -->
-    <section id="roles" class="ceil-section">
-      <h2 class="ceil-section__title">Core Member Duties & Deliverables</h2>
-      <p class="ceil-section__content" style="margin-bottom: 1rem;">
-        Roles and full duties as defined in the commitment; the content will continue to evolve with the studio and project roadmap.
-      </p>
-      <div id="ceil-role-cards" class="ceil-role-cards"></div>
-    </section>
-
-    <!-- Why Join -->
-    <section id="benefits" class="ceil-section">
-      <h2 class="ceil-section__title">Why Join?</h2>
-      <div class="ceil-benefit-grid">
-        <div class="ceil-benefit-card">
-          <h3 class="ceil-benefit-card__title">1. Shareholder-Level Wealth Distribution</h3>
-          <div class="ceil-benefit-card__body">
-            <p>We're not looking for free labor ? we're looking for future <strong>"business partners"</strong>.</p>
-            <ul>
-              <li>Every revenue generated after the game is released on Steam (after deducting costs) will be distributed based on core members' contribution weight.</li>
-              <li>We don't pay fixed salaries because our goal is to help our teammates achieve financial freedom. Glory and profit, we share.</li>
-            </ul>
-          </div>
-        </div>
-        <div class="ceil-benefit-card">
-          <h3 class="ceil-benefit-card__title">2. Absolute Commercial Combat Readiness</h3>
-          <div class="ceil-benefit-card__body">
-            <p>Capital and the market don't care about your potential ? they care about <strong>"what products you've successfully shipped"</strong>.</p>
-            <p style="margin-top: 0.5rem;">Here, you'll experience industry-standard development workflow at its highest level. This isn't practice ? it's live market combat. When the project ships, you'll hold the industry's hardest credential: a real commercial hit that actually makes money.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Contact -->
-    <section id="contact" class="ceil-section">
-      <h2 class="ceil-section__title">Connect & Contact</h2>
-
-      <div class="ceil-cta-box">
-        <h3 class="ceil-cta-heading">How to Join Us?</h3>
-        <p class="ceil-cta-instruction">
-          Ceil Studio's Phase 1 development roster is full. But we always keep our doors open for passionate creators.
-        </p>
-        <p class="ceil-cta-instruction" style="margin-top: 0.5rem; color: var(--ceil-muted); font-size: 0.95rem; margin-bottom: 1.5rem;">
-          We know that tomorrow's top talent often comes from pure passion for games and the drive to grow. You don't have to be max-level—if our vision resonates with you and you want to build something cool with us, we welcome you to share your portfolio.<br><br>
-          Fill out the form below so we can get to know you. You'll be added to our priority talent pool; when we expand and new challenges arise, we'll reach out first!
-        </p>
-        <a href="https://docs.google.com/forms/d/e/1FAIpQLSfDcpPcqpS6X0mxttfDxIAfrrh6M0WnORjPUJp0H8ZUqwgFgw/viewform?usp=dialog" target="_blank" rel="noopener noreferrer" class="ceil-cta-btn">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-            <polyline points="14 2 14 8 20 8"></polyline>
-            <line x1="16" y1="13" x2="8" y2="13"></line>
-            <line x1="16" y1="17" x2="8" y2="17"></line>
-            <polyline points="10 9 9 9 8 9"></polyline>
-          </svg>
-          Fill Out Talent Pool Registration Form
-        </a>
-      </div>
-
-      <p class="ceil-section__content" style="margin-bottom: 0; margin-top: 1.5rem;">
-        If you'd like to chat about game dev, ask questions, or just hang out, feel free to reach out via IG / Discord / Email below.
-      </p>
-
-      <div class="ceil-contact-grid" style="margin-top: 1rem;">
-        <a href="https://instagram.com/ceil32768" target="_blank" rel="noopener" class="ceil-contact-card">
-          <span class="ceil-contact-card__label">Instagram</span>
-          <span class="ceil-contact-card__handle">@ceil32768</span>
-        </a>
-        <div class="ceil-contact-card" style="cursor: default;">
-          <span class="ceil-contact-card__label">Discord</span>
-          <span class="ceil-contact-card__handle">.cecill</span>
-        </div>
-        <a href="mailto:qerpzzea@gmail.com" class="ceil-contact-card">
-          <span class="ceil-contact-card__label">Email</span>
-          <span class="ceil-contact-card__handle">qerpzzea@gmail.com</span>
-        </a>
-      </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="ceil-footer">
-      <p class="ceil-footer__copyright">? 2026 Ceil Studio. All rights reserved.</p>
-    </footer>
-  </div>
-
-  <script src="recruit-data-en.js?v=2026020606"></script>
-  <script src="recruit.js?v=2026020606"></script>
-  <script>
-    (function() {
-      var sectionIds = ['about', 'funding', 'roadmap', 'roles', 'benefits', 'contact'];
-      var links = document.querySelectorAll('#ceil-studio-recruit .ceil-outline__list a[data-target]');
-      var fab = document.querySelector('#ceil-studio-recruit .ceil-outline-fab');
-      var wrap = document.querySelector('#ceil-studio-recruit .ceil-outline-wrap');
-
-      function setActive(id) {
-        links.forEach(function(a) {
-          a.classList.toggle('is-active', a.getAttribute('data-target') === id);
-        });
-      }
-
-      function getCurrentSection() {
-        var trigger = window.innerHeight * 0.35;
-        var current = sectionIds[0];
-        for (var i = 0; i < sectionIds.length; i++) {
-          var el = document.getElementById(sectionIds[i]);
-          if (!el) continue;
-          var top = el.getBoundingClientRect().top;
-          if (top <= trigger) current = sectionIds[i];
-        }
-        return current;
-      }
-
-      function updateActive() {
-        setActive(getCurrentSection());
-      }
-
-      var ticking = false;
-      window.addEventListener('scroll', function() {
-        if (!ticking) {
-          requestAnimationFrame(function() {
-            updateActive();
-            ticking = false;
+        function setActive(id) {
+          links.forEach(function (a) {
+            a.classList.toggle(
+              "is-active",
+              a.getAttribute("data-target") === id,
+            );
           });
-          ticking = true;
         }
-      }, { passive: true });
-      updateActive();
 
-      links.forEach(function(a) {
-        a.addEventListener('click', function(e) {
-          e.preventDefault();
-          var id = a.getAttribute('data-target');
-          var el = document.getElementById(id);
-          if (el) {
-            setActive(id);
-            el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        function getCurrentSection() {
+          var trigger = window.innerHeight * 0.35;
+          var current = sectionIds[0];
+          for (var i = 0; i < sectionIds.length; i++) {
+            var el = document.getElementById(sectionIds[i]);
+            if (!el) continue;
+            var top = el.getBoundingClientRect().top;
+            if (top <= trigger) current = sectionIds[i];
           }
-        });
-      });
+          return current;
+        }
 
-      if (fab && wrap) {
-        fab.addEventListener('click', function() {
-          fab.classList.toggle('is-open');
-          fab.setAttribute('aria-expanded', fab.classList.contains('is-open'));
+        function updateActive() {
+          setActive(getCurrentSection());
+        }
+
+        var ticking = false;
+        window.addEventListener(
+          "scroll",
+          function () {
+            if (!ticking) {
+              requestAnimationFrame(function () {
+                updateActive();
+                ticking = false;
+              });
+              ticking = true;
+            }
+          },
+          { passive: true },
+        );
+        updateActive();
+
+        links.forEach(function (a) {
+          a.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = a.getAttribute("data-target");
+            var el = document.getElementById(id);
+            if (el) {
+              setActive(id);
+              el.scrollIntoView({ behavior: "smooth", block: "start" });
+            }
+          });
         });
-        document.addEventListener('click', function(e) {
-          if (fab.classList.contains('is-open') && !fab.contains(e.target) && !wrap.contains(e.target)) {
-            fab.classList.remove('is-open');
-            fab.setAttribute('aria-expanded', 'false');
-          }
-        });
-      }
-    })();
-  </script>
-</body>
+
+        if (fab && wrap) {
+          fab.addEventListener("click", function () {
+            fab.classList.toggle("is-open");
+            fab.setAttribute(
+              "aria-expanded",
+              fab.classList.contains("is-open"),
+            );
+          });
+          document.addEventListener("click", function (e) {
+            if (
+              fab.classList.contains("is-open") &&
+              !fab.contains(e.target) &&
+              !wrap.contains(e.target)
+            ) {
+              fab.classList.remove("is-open");
+              fab.setAttribute("aria-expanded", "false");
+            }
+          });
+        }
+      })();
+    </script>
+  </body>
 </html>

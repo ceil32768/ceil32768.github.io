@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Ceil Studio — 招募</title>
+    <title>Ceilusion — 招募</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
       html {
@@ -138,68 +138,99 @@
         gap: 4rem;
       }
       #ceil-studio-recruit .ceil-hero__title {
-        font-size: clamp(2.5rem, 10vw, 5rem);
+        font-size: clamp(3rem, 8vw, 5rem);
         font-weight: 800;
-        letter-spacing: 0.05em;
+        letter-spacing: 0.32em;
         position: relative;
-        color: var(--ceil-text);
-      }
-      #ceil-studio-recruit .ceil-hero__title.glitch {
-        animation: ceil-glitch 3s infinite;
+        text-transform: uppercase;
+        color: #f5f5f5;
+        text-shadow: 0 0 6px rgba(0, 0, 0, 0.75);
+        overflow: hidden;
+        animation: ceilusion-rift-base 7s infinite;
+        transition:
+          letter-spacing 0.6s ease,
+          filter 0.6s ease,
+          text-shadow 0.6s ease;
       }
       #ceil-studio-recruit .ceil-hero__title.glitch::before,
       #ceil-studio-recruit .ceil-hero__title.glitch::after {
         content: attr(data-text);
         position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
+        inset: 0;
+        pointer-events: none;
       }
       #ceil-studio-recruit .ceil-hero__title.glitch::before {
-        color: #0ff;
-        animation: ceil-glitch-alt 2s infinite;
-        clip-path: polygon(0 0, 100% 0, 100% 35%, 0 35%);
-        transform: translate(-2px, 2px);
+        color: #00f7ff;
+        text-shadow: 1px 0 2px rgba(0, 247, 255, 0.65);
+        clip-path: inset(46% 0 40% 0);
+        transform: translateX(1px);
+        mix-blend-mode: screen;
+        animation: ceilusion-rift-band 7s infinite;
       }
       #ceil-studio-recruit .ceil-hero__title.glitch::after {
-        color: #f0f;
-        animation: ceil-glitch-alt 2.5s infinite reverse;
-        clip-path: polygon(0 65%, 100% 65%, 100% 100%, 0 100%);
-        transform: translate(2px, -2px);
+        color: #ff2b2b;
+        text-shadow: -1px 0 2px rgba(255, 43, 43, 0.7);
+        clip-path: inset(40% 0 46% 0);
+        transform: translateX(-1px);
+        mix-blend-mode: screen;
+        animation: ceilusion-rift-band 7s infinite reverse;
       }
-      @keyframes ceil-glitch {
+      @keyframes ceilusion-rift-base {
         0%,
-        90%,
-        100% {
-          transform: translate(0);
+        48% {
+          transform: translate3d(0, 0, 0);
+          filter: none;
         }
-        92% {
-          transform: translate(-2px, 1px);
-        }
-        94% {
-          transform: translate(2px, -1px);
-        }
-        96% {
-          transform: translate(-1px, 2px);
-        }
-        98% {
-          transform: translate(1px, -2px);
-        }
-      }
-      @keyframes ceil-glitch-alt {
-        0% {
-          transform: translate(-2px, 2px);
-          opacity: 0.8;
+        49% {
+          transform: translate3d(-1px, 0, 0);
+          filter: blur(0.5px);
         }
         50% {
-          transform: translate(2px, -2px);
-          opacity: 0.8;
+          transform: translate3d(0, 0, 0);
+          filter: none;
+        }
+        51%,
+        98% {
+          transform: translate3d(0, 0, 0);
+          filter: none;
+        }
+        99% {
+          transform: translate3d(1px, 0, 0);
+          filter: blur(0.5px);
         }
         100% {
-          transform: translate(-2px, 2px);
-          opacity: 0.8;
+          transform: translate3d(0, 0, 0);
+          filter: none;
         }
+      }
+      @keyframes ceilusion-rift-band {
+        0%,
+        48%,
+        51%,
+        98%,
+        100% {
+          transform: translateX(0);
+          filter: none;
+        }
+        49% {
+          transform: translateX(-3px) skewX(-6deg);
+          filter: blur(1px);
+        }
+        50% {
+          transform: translateX(2px) skewX(4deg);
+          filter: blur(0.6px);
+        }
+        99% {
+          transform: translateX(3px) skewX(5deg);
+          filter: blur(1px);
+        }
+      }
+      #ceil-studio-recruit .ceil-hero__title.glitch:hover {
+        letter-spacing: 0.38em;
+        filter: blur(0.6px);
+        text-shadow:
+          0 0 10px rgba(0, 0, 0, 0.8),
+          0 0 22px rgba(10, 10, 20, 0.7);
       }
       #ceil-studio-recruit .ceil-hero__content {
         display: flex;
@@ -907,7 +938,7 @@
     <div id="ceil-studio-recruit">
       <nav class="ceil-nav">
         <div class="ceil-nav__inner">
-          <a href="../index.html" class="ceil-nav__brand">Ceil Studio</a>
+          <a href="../index.html" class="ceil-nav__brand">Ceilusion</a>
           <ul class="ceil-nav__links">
             <li><a href="../index.html">關於我</a></li>
             <li><a href="../index.html#games">我的遊戲</a></li>
@@ -970,7 +1001,7 @@
             <li><a href="#funding" data-target="funding">開發資金</a></li>
             <li>
               <a href="#roadmap" data-target="roadmap"
-                >Ceil Studio Roadmap:我們的願景</a
+                >Ceilusion Roadmap:我們的願景</a
               >
             </li>
             <li><a href="#roles" data-target="roles">團隊分工</a></li>
@@ -983,8 +1014,8 @@
       <!-- HeroSection -->
       <section id="about" class="ceil-hero">
         <div class="ceil-hero__content">
-          <h1 class="ceil-hero__title glitch" data-text="Ceil Studio">
-            Ceil Studio
+          <h1 class="ceil-hero__title glitch" data-text="Ceilusion">
+            Ceilusion
           </h1>
           <p class="ceil-hero__tagline">在恐懼中構築防線，在絕望裡尋找微光。</p>
         </div>
@@ -1003,7 +1034,7 @@
             </div>
           </div>
           <div class="ceil-hero__about-content">
-            <p>我是 Ceil，Ceil Studio 的創辦人兼遊戲總監。</p>
+            <p>我是 Ceil，Ceilusion 的創辦人兼遊戲總監。</p>
             <p>
               我相信，遊戲是世界上最強大的情緒載體，是第九藝術。成立這間工作室，是因為我有一個跨越極端的創作野心：我們不只要做讓人<span
                 class="ceil-standout"
@@ -1043,7 +1074,7 @@
 
       <!-- 戰略藍圖 -->
       <section id="roadmap" class="ceil-section">
-        <h2 class="ceil-section__title">Ceil Studio Roadmap:我們的願景</h2>
+        <h2 class="ceil-section__title">Ceilusion Roadmap:我們的願景</h2>
         <div class="ceil-roadmap">
           <div class="ceil-phase-card">
             <div class="ceil-phase__header">
@@ -1089,7 +1120,7 @@
               「磨刀結束，正片開始。」
             </blockquote>
             <p class="ceil-phase__desc">
-              團隊戰力成型，正式啟動 Ceil Studio
+              團隊戰力成型，正式啟動 Ceilusion
               第一款「商業級恐怖遊戲」的全面開發。我們將挹注所有的資金、技術與行銷資源，打造一款能在
               Steam 市場上引起轟動的指標性作品。
             </p>
@@ -1114,7 +1145,7 @@
               「我們來這裡不是為了當一輩子社畜，是為了翻轉人生。」
             </blockquote>
             <p class="ceil-phase__desc">
-              團隊核心成員透過遊戲分潤達成「財富自由」之目標。Ceil Studio
+              團隊核心成員透過遊戲分潤達成「財富自由」之目標。Ceilusion
               將正式宣告解散。我們不追求成為百年企業，我們只做遊戲圈最傳奇的開發部隊。任務完成，光榮退役。
             </p>
           </div>
@@ -1125,7 +1156,7 @@
       <section id="roles" class="ceil-section">
         <h2 class="ceil-section__title">團隊分工與戰力藍圖</h2>
         <p class="ceil-section__content" style="margin-bottom: 1rem">
-          以下為 Ceil Studio
+          以下為 Ceilusion
           為了實現商業級開發，所構築的核心成員組織架構。這裡明定了各位置的完整職責與絕對的交付標準；此架構將隨專案推進與戰略需求持續進化。
         </p>
         <div id="ceil-role-cards" class="ceil-role-cards"></div>
@@ -1174,7 +1205,7 @@
         <div class="ceil-cta-box">
           <h3 class="ceil-cta-heading">如何加入我們？</h3>
           <p class="ceil-cta-instruction">
-            目前 Ceil Studio
+            目前 Ceilusion
             第一階段的開發編制已經滿員，但我們的大門永遠為充滿熱情的創作者敞開。
           </p>
           <p
@@ -1248,7 +1279,7 @@
       <!-- Footer -->
       <footer class="ceil-footer">
         <p class="ceil-footer__copyright">
-          © 2026 Ceil Studio. All rights reserved.
+          © 2026 Ceilusion. All rights reserved.
         </p>
       </footer>
     </div>

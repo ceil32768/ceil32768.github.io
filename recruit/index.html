@@ -946,66 +946,11 @@
         }
       }
 
-      /* Canvas 暴雨層：固定滿版、背景最底層、不擋互動 */
-      #ceil-studio-recruit .ceil-rain-canvas,
-      .ceil-rain-canvas {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh;
-        z-index: 0;
-        pointer-events: none;
-        display: block;
-      }
-
-      /* Phase 4 星光層：多顆發光星點照亮畫面 */
-      #ceil-moon {
-        position: fixed;
-        left: 50%;
-        top: 50%;
-        transform: translateX(-50%) translateY(0);
-        width: 1px;
-        height: 1px;
-        border-radius: 50%;
-        background: transparent;
-        /* 一個小點 + 大量 box-shadow 當作星群 */
-        box-shadow:
-          -40vw -30vh 0 0 rgba(248, 250, 252, 0.7),
-          -10vw -35vh 2px 1px rgba(191, 219, 254, 0.9),
-          20vw -32vh 0 0 rgba(226, 232, 240, 0.85),
-          35vw -28vh 3px 2px rgba(148, 163, 184, 0.9),
-          -30vw -15vh 1px 1px rgba(226, 232, 240, 0.8),
-          -5vw -18vh 0 0 rgba(248, 250, 252, 0.6),
-          18vw -20vh 2px 1px rgba(191, 219, 254, 0.8),
-          32vw -16vh 0 0 rgba(226, 232, 240, 0.7),
-          -25vw 0vh 1px 1px rgba(148, 163, 184, 0.8),
-          -8vw -2vh 0 0 rgba(248, 250, 252, 0.7),
-          10vw -4vh 2px 1px rgba(191, 219, 254, 0.75),
-          28vw -1vh 0 0 rgba(226, 232, 240, 0.7),
-          -35vw 12vh 2px 1px rgba(148, 163, 184, 0.85),
-          -12vw 10vh 0 0 rgba(248, 250, 252, 0.6),
-          6vw 14vh 1px 1px rgba(191, 219, 254, 0.75),
-          24vw 10vh 0 0 rgba(226, 232, 240, 0.7),
-          38vw 16vh 3px 2px rgba(148, 163, 184, 0.9),
-          -28vw 24vh 1px 1px rgba(226, 232, 240, 0.8),
-          -6vw 22vh 0 0 rgba(248, 250, 252, 0.6),
-          16vw 26vh 2px 1px rgba(191, 219, 254, 0.8),
-          30vw 22vh 0 0 rgba(226, 232, 240, 0.7);
-        filter: blur(0.6px);
-        opacity: 0;
-        pointer-events: none;
-        z-index: 0;
-        transition:
-          transform 0.2s linear,
-          opacity 0.3s ease-out;
-      }
+      /* （Phase / 雨水特效已移除，保留簡約純黑背景） */
     </style>
   </head>
   <body>
-    <div id="ceil-studio-recruit">
-      <canvas id="ceil-rain-canvas" class="ceil-rain-canvas" aria-hidden="true"></canvas>
-      <div id="ceil-moon" aria-hidden="true"></div>
+      <div id="ceil-studio-recruit">
       <nav class="ceil-nav">
         <div class="ceil-nav__inner">
           <a href="../index.html" class="ceil-nav__brand">Ceilusion</a>

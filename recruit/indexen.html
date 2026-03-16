@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Ceil Studio ??Recruit</title>
+    <title>Ceilusion — Recruit</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
       html {
@@ -138,68 +138,99 @@
         gap: 4rem;
       }
       #ceil-studio-recruit .ceil-hero__title {
-        font-size: clamp(2.5rem, 10vw, 5rem);
+        font-size: clamp(3rem, 8vw, 5rem);
         font-weight: 800;
-        letter-spacing: 0.05em;
+        letter-spacing: 0.32em;
         position: relative;
-        color: var(--ceil-text);
-      }
-      #ceil-studio-recruit .ceil-hero__title.glitch {
-        animation: ceil-glitch 3s infinite;
+        text-transform: uppercase;
+        color: #f5f5f5;
+        text-shadow: 0 0 6px rgba(0, 0, 0, 0.75);
+        overflow: hidden;
+        animation: ceilusion-rift-base 7s infinite;
+        transition:
+          letter-spacing 0.6s ease,
+          filter 0.6s ease,
+          text-shadow 0.6s ease;
       }
       #ceil-studio-recruit .ceil-hero__title.glitch::before,
       #ceil-studio-recruit .ceil-hero__title.glitch::after {
         content: attr(data-text);
         position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
+        inset: 0;
+        pointer-events: none;
       }
       #ceil-studio-recruit .ceil-hero__title.glitch::before {
-        color: #0ff;
-        animation: ceil-glitch-alt 2s infinite;
-        clip-path: polygon(0 0, 100% 0, 100% 35%, 0 35%);
-        transform: translate(-2px, 2px);
+        color: #00f7ff;
+        text-shadow: 1px 0 2px rgba(0, 247, 255, 0.65);
+        clip-path: inset(46% 0 40% 0);
+        transform: translateX(1px);
+        mix-blend-mode: screen;
+        animation: ceilusion-rift-band 7s infinite;
       }
       #ceil-studio-recruit .ceil-hero__title.glitch::after {
-        color: #f0f;
-        animation: ceil-glitch-alt 2.5s infinite reverse;
-        clip-path: polygon(0 65%, 100% 65%, 100% 100%, 0 100%);
-        transform: translate(2px, -2px);
+        color: #ff2b2b;
+        text-shadow: -1px 0 2px rgba(255, 43, 43, 0.7);
+        clip-path: inset(40% 0 46% 0);
+        transform: translateX(-1px);
+        mix-blend-mode: screen;
+        animation: ceilusion-rift-band 7s infinite reverse;
       }
-      @keyframes ceil-glitch {
+      @keyframes ceilusion-rift-base {
         0%,
-        90%,
-        100% {
-          transform: translate(0);
+        48% {
+          transform: translate3d(0, 0, 0);
+          filter: none;
         }
-        92% {
-          transform: translate(-2px, 1px);
-        }
-        94% {
-          transform: translate(2px, -1px);
-        }
-        96% {
-          transform: translate(-1px, 2px);
-        }
-        98% {
-          transform: translate(1px, -2px);
-        }
-      }
-      @keyframes ceil-glitch-alt {
-        0% {
-          transform: translate(-2px, 2px);
-          opacity: 0.8;
+        49% {
+          transform: translate3d(-1px, 0, 0);
+          filter: blur(0.5px);
         }
         50% {
-          transform: translate(2px, -2px);
-          opacity: 0.8;
+          transform: translate3d(0, 0, 0);
+          filter: none;
+        }
+        51%,
+        98% {
+          transform: translate3d(0, 0, 0);
+          filter: none;
+        }
+        99% {
+          transform: translate3d(1px, 0, 0);
+          filter: blur(0.5px);
         }
         100% {
-          transform: translate(-2px, 2px);
-          opacity: 0.8;
+          transform: translate3d(0, 0, 0);
+          filter: none;
         }
+      }
+      @keyframes ceilusion-rift-band {
+        0%,
+        48%,
+        51%,
+        98%,
+        100% {
+          transform: translateX(0);
+          filter: none;
+        }
+        49% {
+          transform: translateX(-3px) skewX(-6deg);
+          filter: blur(1px);
+        }
+        50% {
+          transform: translateX(2px) skewX(4deg);
+          filter: blur(0.6px);
+        }
+        99% {
+          transform: translateX(3px) skewX(5deg);
+          filter: blur(1px);
+        }
+      }
+      #ceil-studio-recruit .ceil-hero__title.glitch:hover {
+        letter-spacing: 0.38em;
+        filter: blur(0.6px);
+        text-shadow:
+          0 0 10px rgba(0, 0, 0, 0.8),
+          0 0 22px rgba(10, 10, 20, 0.7);
       }
       #ceil-studio-recruit .ceil-hero__content {
         display: flex;
@@ -289,9 +320,22 @@
         color: var(--ceil-text);
         font-weight: 600;
       }
+      #ceil-studio-recruit .ceil-hero__about-content .ceil-quote-line {
+        display: inline-block;
+        padding: 0.35rem 0.9rem;
+        margin-top: 0.5rem;
+        border-left: 3px solid #f97373;
+        background: rgba(15, 23, 42, 0.85);
+        border-radius: 0 999px 999px 0;
+        font-style: italic;
+        letter-spacing: 0.04em;
+      }
       #ceil-studio-recruit .ceil-hero__about-content .ceil-standout {
-        color: var(--ceil-text);
-        font-weight: 600;
+        display: inline-block;
+        color: #f97373;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
       }
       @media (max-width: 768px) {
         #ceil-studio-recruit .ceil-hero {
@@ -870,48 +914,14 @@
         }
       }
 
-      /* Canvas torrential rain: fixed full-screen, bottom layer, no pointer capture */
-      #ceil-studio-recruit .ceil-rain-canvas,
-      .ceil-rain-canvas {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh;
-        z-index: 0;
-        pointer-events: none;
-        display: block;
-      }
-
-      /* Sun & lens flare (fixed, scroll-driven translateY) */
-      #ceil-sun {
-        position: fixed;
-        left: 50%;
-        bottom: -40vh;
-        transform: translateX(-50%) translateY(0);
-        width: 40vmin;
-        height: 40vmin;
-        border-radius: 50%;
-        background:
-          radial-gradient(circle at 50% 50%, rgba(255, 255, 220, 0.9) 0%, rgba(255, 200, 120, 0.4) 30%, transparent 60%),
-          radial-gradient(circle at 20% 10%, rgba(255, 255, 255, 0.25) 0%, transparent 40%);
-        filter: blur(2px);
-        opacity: 0;
-        pointer-events: none;
-        z-index: 0;
-        transition:
-          transform 0.2s linear,
-          opacity 0.3s ease-out;
-      }
+      /* (Rain / sun effects removed; keep simple black background) */
     </style>
   </head>
   <body>
     <div id="ceil-studio-recruit">
-      <canvas id="ceil-rain-canvas" class="ceil-rain-canvas" aria-hidden="true"></canvas>
-      <div id="ceil-sun" aria-hidden="true"></div>
       <nav class="ceil-nav">
         <div class="ceil-nav__inner">
-          <a href="../indexen.html" class="ceil-nav__brand">Ceil Studio</a>
+          <a href="../indexen.html" class="ceil-nav__brand">Ceilusion</a>
           <ul class="ceil-nav__links">
             <li><a href="../indexen.html">About</a></li>
             <li><a href="../indexen.html#games">Games</a></li>
@@ -974,7 +984,7 @@
             <li><a href="#funding" data-target="funding">Funding</a></li>
             <li>
               <a href="#roadmap" data-target="roadmap"
-                >Ceil Studio Roadmap: Our Vision</a
+                >Ceilusion Roadmap: Our Vision</a
               >
             </li>
             <li><a href="#roles" data-target="roles">Roles</a></li>
@@ -987,13 +997,10 @@
       <!-- HeroSection -->
       <section id="about" class="ceil-hero">
         <div class="ceil-hero__content">
-          <h1 class="ceil-hero__title glitch" data-text="Ceil Studio">
-            Ceil Studio
+          <h1 class="ceil-hero__title glitch" data-text="Ceilusion">
+            Ceilusion
           </h1>
-          <p class="ceil-hero__tagline">
-            When Tower Defense meets Survival Horror ??An ambitious project
-            aiming for Steam
-          </p>
+          <p class="ceil-hero__tagline">Building a dev squad for games worth bleeding for.</p>
         </div>
 
         <div class="ceil-hero__about">
@@ -1010,7 +1017,7 @@
             </div>
           </div>
           <div class="ceil-hero__about-content">
-            <p>I'm Ceil, founder and Game Director of Ceil Studio.</p>
+            <p>I'm Ceil, founder and Game Director of Ceilusion.</p>
             <p>
               In founding this studio, we don't just talk about dreams ? we also
               talk about
@@ -1292,7 +1299,7 @@
       <!-- Footer -->
       <footer class="ceil-footer">
         <p class="ceil-footer__copyright">
-          ? 2026 Ceil Studio. All rights reserved.
+          © 2026 Ceilusion. All rights reserved.
         </p>
       </footer>
     </div>
@@ -1391,243 +1398,6 @@
             }
           });
         }
-      })();
-
-      /* Torrential downpour + ground splash + ground fog: Canvas + Vanilla JS, 60 FPS, no memory leak */
-      (function () {
-        var canvas = document.getElementById("ceil-rain-canvas");
-        if (!canvas) return;
-        var ctx = canvas.getContext("2d");
-        var dpr = Math.min(window.devicePixelRatio || 1, 2);
-        var w = 0,
-          h = 0;
-        var windAngle = (20 * Math.PI) / 180;
-        var windDir = -1;
-        var layers = [
-          { n: 500, vyMin: 15, vyMax: 22, lengthMul: 1.8, alphaMin: 0.03, alphaMax: 0.06, vxMul: 0.38 },
-          { n: 400, vyMin: 22, vyMax: 28, lengthMul: 1.7, alphaMin: 0.06, alphaMax: 0.10, vxMul: 0.38 },
-          { n: 250, vyMin: 28, vyMax: 38, lengthMul: 1.6, alphaMin: 0.10, alphaMax: 0.15, vxMul: 0.38 },
-        ];
-        var particles = [];
-        var splashes = [];
-        var SPLASH_MAX = 600;
-        var GRAVITY = 0.42;
-        var SPLASH_LIFE = 12;
-        var SPLASH_RADIUS = 1.2;
-
-        var rainIntensity = 1;
-
-        window.__ceilusionSetRainIntensity = function (v) {
-          rainIntensity = Math.max(0, Math.min(1, v));
-        };
-
-        function rand(a, b) {
-          return a + Math.random() * (b - a);
-        }
-
-        function spawnSplash(x, y) {
-          var n = Math.floor(rand(2, 4.99));
-          var i, s;
-          for (i = 0; i < n && splashes.length < SPLASH_MAX; i++) {
-            s = {
-              x: x + rand(-3, 3),
-              y: y,
-              vx: rand(-2.2, 2.2),
-              vy: rand(-8, -3.2),
-              alpha: rand(0.08, 0.14),
-              life: 0,
-              maxLife: SPLASH_LIFE,
-            };
-            splashes.push(s);
-          }
-        }
-
-        function resize() {
-          w = window.innerWidth;
-          h = window.innerHeight;
-          canvas.width = w * dpr;
-          canvas.height = h * dpr;
-          canvas.style.width = w + "px";
-          canvas.style.height = h + "px";
-          ctx.scale(dpr, dpr);
-          particles = [];
-          splashes = [];
-          var j, i, cfg, vy, vx, len, a, p;
-          for (j = 0; j < layers.length; j++) {
-            cfg = layers[j];
-            for (i = 0; i < cfg.n; i++) {
-              vy = rand(cfg.vyMin, cfg.vyMax);
-              vx = windDir * vy * Math.tan(windAngle) * cfg.vxMul;
-              len = vy * rand(cfg.lengthMul * 0.9, cfg.lengthMul * 1.1);
-              a = rand(cfg.alphaMin, cfg.alphaMax);
-              p = { x: rand(-50, w + 50), y: rand(-h, h), vy: vy, vx: vx, length: len, alpha: a };
-              particles.push(p);
-            }
-          }
-        }
-
-        function tick() {
-          ctx.clearRect(0, 0, w, h);
-          var i, p, x2, y2, norm, triggerY;
-          triggerY = h * 0.5;
-
-          for (i = 0; i < particles.length; i++) {
-            p = particles[i];
-            p.x += p.vx;
-            p.y += p.vy;
-            if (p.y > h + p.length) {
-              spawnSplash(p.x, h);
-              p.y = -p.length;
-              p.x = rand(-50, w + 50);
-            } else if (p.y > triggerY && Math.random() < 0.0012) {
-              spawnSplash(p.x, p.y);
-            }
-            if (p.y < -p.length) {
-              p.y = h + p.length;
-              p.x = rand(-50, w + 50);
-            }
-            if (p.x < -100) p.x = w + 50;
-            if (p.x > w + 100) p.x = -50;
-          }
-
-          i = 0;
-          while (i < splashes.length) {
-            p = splashes[i];
-            p.vy += GRAVITY;
-            p.x += p.vx;
-            p.y += p.vy;
-            p.life += 1;
-            p.alpha = p.alpha * (1 - p.life / p.maxLife);
-            if (p.life >= p.maxLife || p.alpha <= 0) {
-              splashes.splice(i, 1);
-              continue;
-            }
-            i++;
-          }
-
-          ctx.save();
-          ctx.globalAlpha = rainIntensity;
-
-          for (i = 0; i < particles.length; i++) {
-            p = particles[i];
-            norm = Math.sqrt(p.vx * p.vx + p.vy * p.vy) || 1;
-            x2 = p.x + (p.vx / norm) * p.length;
-            y2 = p.y + (p.vy / norm) * p.length;
-            ctx.beginPath();
-            ctx.moveTo(p.x, p.y);
-            ctx.lineTo(x2, y2);
-            ctx.strokeStyle = "rgba(255,255,255," + p.alpha + ")";
-            ctx.lineWidth = 1;
-            ctx.stroke();
-          }
-
-          for (i = 0; i < splashes.length; i++) {
-            p = splashes[i];
-            ctx.beginPath();
-            ctx.arc(p.x, p.y, SPLASH_RADIUS, 0, Math.PI * 2);
-            ctx.fillStyle = "rgba(255,255,255," + p.alpha + ")";
-            ctx.fill();
-          }
-
-          var fogTop = h * 0.85;
-          var grad = ctx.createLinearGradient(0, fogTop, 0, h);
-          grad.addColorStop(0, "rgba(255,255,255,0)");
-          grad.addColorStop(1, "rgba(255,255,255,0.05)");
-          ctx.fillStyle = grad;
-          ctx.fillRect(0, fogTop, w, h - fogTop);
-
-          ctx.restore();
-
-          requestAnimationFrame(tick);
-        }
-
-        resize();
-        window.addEventListener("resize", resize);
-        requestAnimationFrame(tick);
-      })();
-
-      /* Scroll-driven transition: storm → sunrise → sun in sky */
-      (function () {
-        var root = document.getElementById("ceil-studio-recruit");
-        var sun = document.getElementById("ceil-sun");
-        if (!root || !sun) return;
-
-        var ticking = false;
-
-        function lerp(a, b, t) {
-          return a + (b - a) * t;
-        }
-
-        function lerpColor(c1, c2, t) {
-          return (
-            "rgb(" +
-            Math.round(lerp(c1[0], c2[0], t)) +
-            "," +
-            Math.round(lerp(c1[1], c2[1], t)) +
-            "," +
-            Math.round(lerp(c1[2], c2[2], t)) +
-            ")"
-          );
-        }
-
-        function onScroll() {
-          if (!ticking) {
-            window.requestAnimationFrame(update);
-            ticking = true;
-          }
-        }
-
-        function update() {
-          ticking = false;
-
-          var doc = document.documentElement;
-          var scrollTop = window.pageYOffset || doc.scrollTop || 0;
-          var maxScroll = (doc.scrollHeight || 1) - window.innerHeight;
-          var p = maxScroll > 0 ? scrollTop / maxScroll : 0;
-          if (p < 0) p = 0;
-          if (p > 1) p = 1;
-
-          // 1) Rain intensity: 0% → 40% fade out
-          var rainFactor;
-          if (p <= 0.0) rainFactor = 1;
-          else if (p >= 0.4) rainFactor = 0;
-          else rainFactor = 1 - p / 0.4;
-          if (typeof window.__ceilusionSetRainIntensity === "function") {
-            window.__ceilusionSetRainIntensity(rainFactor);
-          }
-
-          // 2) Background: 0%~60% from black → deep orange → soft blue
-          var bg;
-          if (p <= 0.3) {
-            var t1 = p / 0.3;
-            bg = lerpColor([0, 0, 0], [42, 18, 8], t1);
-          } else if (p <= 0.6) {
-            var t2 = (p - 0.3) / 0.3;
-            bg = lerpColor([42, 18, 8], [200, 228, 255], t2);
-          } else {
-            bg = "rgb(200,228,255)";
-          }
-          root.style.backgroundColor = bg;
-
-          // 3) Sun rise: 40%~100%
-          var sunAlpha, sunY;
-          if (p <= 0.4) {
-            sunAlpha = 0;
-            sunY = 0;
-          } else {
-            var tSun = (p - 0.4) / 0.6;
-            if (tSun < 0) tSun = 0;
-            if (tSun > 1) tSun = 1;
-            sunAlpha = tSun;
-            sunY = lerp(0, -60, tSun);
-          }
-          sun.style.opacity = String(sunAlpha);
-          sun.style.transform =
-            "translateX(-50%) translateY(" + sunY + "vh)";
-        }
-
-        window.addEventListener("scroll", onScroll, { passive: true });
-        update();
       })();
     </script>
   </body>

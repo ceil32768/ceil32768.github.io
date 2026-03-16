@@ -10,13 +10,13 @@
         scroll-behavior: smooth;
       }
       #ceil-studio-recruit {
-        --ceil-bg: #0a0a0f;
+        --ceil-bg: #000000;
         --ceil-surface: #12121a;
         --ceil-border: #1e1e2e;
         --ceil-text: #fbfbff;
         --ceil-muted: #f1eaea;
         --ceil-accent: #3b82f6;
-        background: var(--ceil-bg);
+        background: #000000;
         min-height: 100vh;
         color: var(--ceil-text);
         font-family: ui-sans-serif, system-ui, sans-serif;
@@ -320,9 +320,22 @@
         color: var(--ceil-text);
         font-weight: 600;
       }
+      #ceil-studio-recruit .ceil-hero__about-content .ceil-quote-line {
+        display: inline-block;
+        padding: 0.35rem 0.9rem;
+        margin-top: 0.5rem;
+        border-left: 3px solid #f97373;
+        background: rgba(15, 23, 42, 0.85);
+        border-radius: 0 999px 999px 0;
+        font-style: italic;
+        letter-spacing: 0.04em;
+      }
       #ceil-studio-recruit .ceil-hero__about-content .ceil-standout {
-        color: var(--ceil-text);
-        font-weight: 600;
+        display: inline-block;
+        color: #f97373;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
       }
       @media (max-width: 768px) {
         #ceil-studio-recruit .ceil-hero {
@@ -932,10 +945,67 @@
           display: none !important;
         }
       }
+
+      /* Canvas 暴雨層：固定滿版、背景最底層、不擋互動 */
+      #ceil-studio-recruit .ceil-rain-canvas,
+      .ceil-rain-canvas {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        z-index: 0;
+        pointer-events: none;
+        display: block;
+      }
+
+      /* Phase 4 星光層：多顆發光星點照亮畫面 */
+      #ceil-moon {
+        position: fixed;
+        left: 50%;
+        top: 50%;
+        transform: translateX(-50%) translateY(0);
+        width: 1px;
+        height: 1px;
+        border-radius: 50%;
+        background: transparent;
+        /* 一個小點 + 大量 box-shadow 當作星群 */
+        box-shadow:
+          -40vw -30vh 0 0 rgba(248, 250, 252, 0.7),
+          -10vw -35vh 2px 1px rgba(191, 219, 254, 0.9),
+          20vw -32vh 0 0 rgba(226, 232, 240, 0.85),
+          35vw -28vh 3px 2px rgba(148, 163, 184, 0.9),
+          -30vw -15vh 1px 1px rgba(226, 232, 240, 0.8),
+          -5vw -18vh 0 0 rgba(248, 250, 252, 0.6),
+          18vw -20vh 2px 1px rgba(191, 219, 254, 0.8),
+          32vw -16vh 0 0 rgba(226, 232, 240, 0.7),
+          -25vw 0vh 1px 1px rgba(148, 163, 184, 0.8),
+          -8vw -2vh 0 0 rgba(248, 250, 252, 0.7),
+          10vw -4vh 2px 1px rgba(191, 219, 254, 0.75),
+          28vw -1vh 0 0 rgba(226, 232, 240, 0.7),
+          -35vw 12vh 2px 1px rgba(148, 163, 184, 0.85),
+          -12vw 10vh 0 0 rgba(248, 250, 252, 0.6),
+          6vw 14vh 1px 1px rgba(191, 219, 254, 0.75),
+          24vw 10vh 0 0 rgba(226, 232, 240, 0.7),
+          38vw 16vh 3px 2px rgba(148, 163, 184, 0.9),
+          -28vw 24vh 1px 1px rgba(226, 232, 240, 0.8),
+          -6vw 22vh 0 0 rgba(248, 250, 252, 0.6),
+          16vw 26vh 2px 1px rgba(191, 219, 254, 0.8),
+          30vw 22vh 0 0 rgba(226, 232, 240, 0.7);
+        filter: blur(0.6px);
+        opacity: 0;
+        pointer-events: none;
+        z-index: 0;
+        transition:
+          transform 0.2s linear,
+          opacity 0.3s ease-out;
+      }
     </style>
   </head>
   <body>
     <div id="ceil-studio-recruit">
+      <canvas id="ceil-rain-canvas" class="ceil-rain-canvas" aria-hidden="true"></canvas>
+      <div id="ceil-moon" aria-hidden="true"></div>
       <nav class="ceil-nav">
         <div class="ceil-nav__inner">
           <a href="../index.html" class="ceil-nav__brand">Ceilusion</a>
@@ -1047,8 +1117,8 @@
               為了實現這個願景，我目前正在集結一群帶有瘋狂靈魂與硬底子技術的創作者。團隊正經歷著高強度的實戰淬鍊，我們堅持極致的商業標準與開發紀律，因為唯有如此，才能將我腦海中構築的世界，透過團隊的雙手完美具象化，並震撼地遞交到玩家面前。
             </p>
             <p>
-              <strong
-                >我們要向世界證明：頂級的藝術體驗，本身就是最強大的商業價值。</strong
+              <strong class="ceil-quote-line"
+                >我們要向世界證明，何謂頂級的藝術體驗。</strong
               >
             </p>
           </div>
@@ -1378,6 +1448,386 @@
             }
           });
         }
+      })();
+
+      /* 傾盆大雨 + 地面水花 + 底層水霧：純 Canvas + Vanilla JS，60 FPS，封裝結構防記憶體洩漏 */
+      (function () {
+        var canvas = document.getElementById("ceil-rain-canvas");
+        if (!canvas) return;
+        var ctx = canvas.getContext("2d");
+        var dpr = Math.min(window.devicePixelRatio || 1, 2);
+        var w = 0,
+          h = 0;
+        var windAngleDefault = (20 * Math.PI) / 180;
+        var windDir = -1;
+        var layers = [
+          { n: 500, vyMin: 15, vyMax: 22, lengthMul: 1.8, alphaMin: 0.03, alphaMax: 0.06, vxMul: 0.38 },
+          { n: 400, vyMin: 22, vyMax: 28, lengthMul: 1.7, alphaMin: 0.06, alphaMax: 0.10, vxMul: 0.38 },
+          { n: 250, vyMin: 28, vyMax: 38, lengthMul: 1.6, alphaMin: 0.10, alphaMax: 0.15, vxMul: 0.38 },
+        ];
+        var particles = [];
+        var splashes = [];
+        var SPLASH_MAX = 600;
+        var GRAVITY = 0.42;
+        var SPLASH_LIFE = 12;
+        var SPLASH_RADIUS = 1.2;
+
+        // 環境狀態：由外部 State Machine 駆動
+        var envState = {
+          rainIntensity: 1.0,
+          windAngle: windAngleDefault,
+          fogAlpha: 0.0,
+          lightningEnabled: false,
+        };
+        window.__ceilusionEnvState = envState;
+
+        function rand(a, b) {
+          return a + Math.random() * (b - a);
+        }
+
+        function spawnSplash(x, y) {
+          var n = Math.floor(rand(2, 4.99));
+          var i, s;
+          for (i = 0; i < n && splashes.length < SPLASH_MAX; i++) {
+            s = {
+              x: x + rand(-3, 3),
+              y: y,
+              vx: rand(-2.2, 2.2),
+              vy: rand(-8, -3.2),
+              alpha: rand(0.08, 0.14),
+              life: 0,
+              maxLife: SPLASH_LIFE,
+            };
+            splashes.push(s);
+          }
+        }
+
+        function resize() {
+          w = window.innerWidth;
+          h = window.innerHeight;
+          canvas.width = w * dpr;
+          canvas.height = h * dpr;
+          canvas.style.width = w + "px";
+          canvas.style.height = h + "px";
+          ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+          particles = [];
+          splashes = [];
+          var j, i, cfg, vy, vx, len, a, p;
+          for (j = 0; j < layers.length; j++) {
+            cfg = layers[j];
+            for (i = 0; i < cfg.n; i++) {
+              vy = rand(cfg.vyMin, cfg.vyMax);
+              vx = windDir * vy * Math.tan(envState.windAngle) * cfg.vxMul;
+              len = vy * rand(cfg.lengthMul * 0.9, cfg.lengthMul * 1.1);
+              a = rand(cfg.alphaMin, cfg.alphaMax);
+              p = {
+                x: rand(-50, w + 50),
+                y: rand(-h, h),
+                vy: vy,
+                vx: vx,
+                vxMul: cfg.vxMul,
+                length: len,
+                alpha: a,
+              };
+              particles.push(p);
+            }
+          }
+        }
+
+        function tick() {
+          ctx.clearRect(0, 0, w, h);
+          var i, p, x2, y2, norm, triggerY;
+          triggerY = h * 0.5;
+
+          for (i = 0; i < particles.length; i++) {
+            p = particles[i];
+            // 依目前風向重算水平速度，避免重建粒子
+            p.vx = windDir * p.vy * Math.tan(envState.windAngle) * p.vxMul;
+            p.x += p.vx;
+            p.y += p.vy;
+            if (p.y > h + p.length) {
+              spawnSplash(p.x, h);
+              p.y = -p.length;
+              p.x = rand(-50, w + 50);
+            } else if (p.y > triggerY && Math.random() < 0.0012) {
+              spawnSplash(p.x, p.y);
+            }
+            if (p.y < -p.length) {
+              p.y = h + p.length;
+              p.x = rand(-50, w + 50);
+            }
+            if (p.x < -100) p.x = w + 50;
+            if (p.x > w + 100) p.x = -50;
+          }
+
+          i = 0;
+          while (i < splashes.length) {
+            p = splashes[i];
+            p.vy += GRAVITY;
+            p.x += p.vx;
+            p.y += p.vy;
+            p.life += 1;
+            p.alpha = p.alpha * (1 - p.life / p.maxLife);
+            if (p.life >= p.maxLife || p.alpha <= 0) {
+              splashes.splice(i, 1);
+              continue;
+            }
+            i++;
+          }
+
+          // 依雨量淡出整個雨系統（雨線 + 水花 + 霧）
+          ctx.save();
+          ctx.globalAlpha = envState.rainIntensity;
+
+          for (i = 0; i < particles.length; i++) {
+            p = particles[i];
+            norm = Math.sqrt(p.vx * p.vx + p.vy * p.vy) || 1;
+            x2 = p.x + (p.vx / norm) * p.length;
+            y2 = p.y + (p.vy / norm) * p.length;
+            ctx.beginPath();
+            ctx.moveTo(p.x, p.y);
+            ctx.lineTo(x2, y2);
+            ctx.strokeStyle = "rgba(255,255,255," + p.alpha + ")";
+            ctx.lineWidth = 1;
+            ctx.stroke();
+          }
+
+          for (i = 0; i < splashes.length; i++) {
+            p = splashes[i];
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, SPLASH_RADIUS, 0, Math.PI * 2);
+            ctx.fillStyle = "rgba(255,255,255," + p.alpha + ")";
+            ctx.fill();
+          }
+
+          var fogTop = h * 0.85;
+          var grad = ctx.createLinearGradient(0, fogTop, 0, h);
+          grad.addColorStop(0, "rgba(255,255,255,0)");
+          var fogAlpha = Math.max(0, Math.min(1, envState.fogAlpha || 0));
+          grad.addColorStop(1, "rgba(255,255,255," + 0.05 * fogAlpha + ")");
+          ctx.fillStyle = grad;
+          ctx.fillRect(0, fogTop, w, h - fogTop);
+
+          ctx.restore();
+
+          requestAnimationFrame(tick);
+        }
+
+        resize();
+        window.addEventListener("resize", resize);
+        requestAnimationFrame(tick);
+      })();
+
+      /* IntersectionObserver 駆動：區塊 → 天氣狀態機 */
+      (function () {
+        var root = document.getElementById("ceil-studio-recruit");
+        var moon = document.getElementById("ceil-moon");
+        if (!root || !moon) return;
+
+        var envState = window.__ceilusionEnvState;
+        if (!envState) return;
+
+        function degToRad(d) {
+          return (d * Math.PI) / 180;
+        }
+        function lerp(a, b, t) {
+          return a + (b - a) * t;
+        }
+        function lerpColor(c1, c2, t) {
+          return [
+            lerp(c1[0], c2[0], t),
+            lerp(c1[1], c2[1], t),
+            lerp(c1[2], c2[2], t),
+          ];
+        }
+        function toCssColor(rgb) {
+          return (
+            "rgb(" +
+            Math.round(rgb[0]) +
+            "," +
+            Math.round(rgb[1]) +
+            "," +
+            Math.round(rgb[2]) +
+            ")"
+          );
+        }
+
+        var phaseForSectionId = {
+          about: "phase1",
+          funding: "phase1",
+          roadmap: "phase1",
+          roles: "phase3",
+          benefits: "phase4",
+          contact: "phase4",
+        };
+
+        var phaseConfigs = {
+          phase1: {
+            bgColor: [0, 0, 0],
+            rainIntensity: 1.0,
+            windAngle: degToRad(20),
+            fogAlpha: 0.0,
+            lightningEnabled: false,
+            moonY: 0,
+          },
+          phase2: {
+            bgColor: [30, 41, 59], // #1e293b
+            rainIntensity: 0.3,
+            windAngle: 0,
+            fogAlpha: 0.5,
+            lightningEnabled: false,
+            moonY: 0,
+          },
+          phase3: {
+            bgColor: [15, 23, 42], // #0f172a
+            rainIntensity: 0.0,
+            windAngle: 0,
+            fogAlpha: 0.8,
+            lightningEnabled: true,
+            moonY: 0,
+          },
+          phase4: {
+            bgColor: [2, 6, 23], // #020617
+            rainIntensity: 0.0,
+            windAngle: 0,
+            fogAlpha: 0.3,
+            lightningEnabled: false,
+            moonY: -60, // translateY(-60vh)
+          },
+        };
+
+        var currentState = {
+          bgColor: phaseConfigs.phase1.bgColor.slice(),
+          rainIntensity: phaseConfigs.phase1.rainIntensity,
+          windAngle: phaseConfigs.phase1.windAngle,
+          fogAlpha: phaseConfigs.phase1.fogAlpha,
+          lightningEnabled: phaseConfigs.phase1.lightningEnabled,
+          moonY: phaseConfigs.phase1.moonY,
+        };
+        var targetState = {
+          bgColor: phaseConfigs.phase1.bgColor.slice(),
+          rainIntensity: phaseConfigs.phase1.rainIntensity,
+          windAngle: phaseConfigs.phase1.windAngle,
+          fogAlpha: phaseConfigs.phase1.fogAlpha,
+          lightningEnabled: phaseConfigs.phase1.lightningEnabled,
+          moonY: phaseConfigs.phase1.moonY,
+        };
+
+        var lightningTimer = 0;
+        var activeSectionId = "about";
+
+        var sectionIds = [
+          "about",
+          "funding",
+          "roadmap",
+          "roles",
+          "benefits",
+          "contact",
+        ];
+        var sections = sectionIds
+          .map(function (id) {
+            var el = document.getElementById(id);
+            return el ? { id: id, el: el } : null;
+          })
+          .filter(Boolean);
+
+        if (!sections.length) return;
+
+        var observer = new IntersectionObserver(
+          function (entries) {
+            var bestId = activeSectionId;
+            var bestRatio = -1;
+            entries.forEach(function (entry) {
+              if (entry.intersectionRatio > bestRatio) {
+                bestRatio = entry.intersectionRatio;
+                bestId = entry.target.id;
+              }
+            });
+            if (bestId && bestId !== activeSectionId) {
+              activeSectionId = bestId;
+              var phaseKey = phaseForSectionId[activeSectionId] || "phase1";
+              var cfg = phaseConfigs[phaseKey];
+              if (cfg) {
+                targetState.bgColor = cfg.bgColor.slice();
+                targetState.rainIntensity = cfg.rainIntensity;
+                targetState.windAngle = cfg.windAngle;
+                targetState.fogAlpha = cfg.fogAlpha;
+                targetState.lightningEnabled = cfg.lightningEnabled;
+                targetState.moonY = cfg.moonY;
+              }
+            }
+          },
+          {
+            threshold: [0.3, 0.5, 0.7],
+          },
+        );
+
+        sections.forEach(function (s) {
+          observer.observe(s.el);
+        });
+
+        function animate() {
+          var t = 0.06;
+
+          currentState.bgColor = lerpColor(
+            currentState.bgColor,
+            targetState.bgColor,
+            t,
+          );
+          currentState.rainIntensity = lerp(
+            currentState.rainIntensity,
+            targetState.rainIntensity,
+            t,
+          );
+          currentState.windAngle = lerp(
+            currentState.windAngle,
+            targetState.windAngle,
+            t,
+          );
+          currentState.fogAlpha = lerp(
+            currentState.fogAlpha,
+            targetState.fogAlpha,
+            t,
+          );
+          currentState.moonY = lerp(
+            currentState.moonY,
+            targetState.moonY,
+            t,
+          );
+          currentState.lightningEnabled = targetState.lightningEnabled;
+
+          envState.rainIntensity = currentState.rainIntensity;
+          envState.windAngle = currentState.windAngle;
+          envState.fogAlpha = currentState.fogAlpha;
+          envState.lightningEnabled = currentState.lightningEnabled;
+
+          if (envState.lightningEnabled && Math.random() < 0.005) {
+            lightningTimer = 4;
+          }
+          var bgCss;
+          if (lightningTimer > 0) {
+            bgCss = "#334155";
+            lightningTimer -= 1;
+          } else {
+            bgCss = toCssColor(currentState.bgColor);
+          }
+          root.style.backgroundColor = bgCss;
+
+          var moonOpacity =
+            currentState.moonY <= 0
+              ? Math.max(
+                  0,
+                  Math.min(1, Math.abs(currentState.moonY) / 60),
+                )
+              : 0;
+          moon.style.opacity = String(moonOpacity);
+          // 星光層固定在畫面中心，只用 opacity 表示 Phase 4 的亮度
+          moon.style.transform = "translateX(-50%) translateY(0vh)";
+
+          requestAnimationFrame(animate);
+        }
+
+        animate();
       })();
     </script>
   </body>

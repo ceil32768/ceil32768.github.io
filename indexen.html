@@ -1136,7 +1136,7 @@
               }
             });
           },
-          { threshold: 0.2 },
+          { threshold: 0 },
         );
 
         elements.forEach((el, index) => {
@@ -1171,8 +1171,8 @@
       const projectCards = document.querySelectorAll(".project-card");
       if (projectCards.length > 0) {
         const projectObserverOptions = {
-          threshold: 0.2,
-          rootMargin: "0px 0px -50px 0px",
+          threshold: 0,
+          rootMargin: "0px",
         };
 
         const projectObserver = new IntersectionObserver(function (entries) {

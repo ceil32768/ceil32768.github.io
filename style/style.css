@@ -487,8 +487,11 @@ body main section.aboutme section.tab .aboutme-competition-badges {
 body main section.aboutme section.tab .aboutme-competition-badge {
   padding: 0.95rem 1rem;
   display: flex;
+  flex-direction: column;
   gap: 0.85rem;
   align-items: flex-start;
+  justify-content: space-between;
+  min-height: 140px;
   transition:
     transform 0.22s ease,
     box-shadow 0.22s ease,
@@ -499,6 +502,7 @@ body main section.aboutme section.tab .aboutme-competition-content {
   display: flex;
   flex-direction: column;
   gap: 0.45rem;
+  width: 100%;
 }
 
 body main section.aboutme section.tab .aboutme-competition-title {
@@ -511,6 +515,7 @@ body main section.aboutme section.tab .aboutme-competition-meta {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
+  margin-top: auto; /* push result to bottom-left */
 }
 
 @media (hover: hover) and (pointer: fine) {

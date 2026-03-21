@@ -761,6 +761,14 @@ section.skills .skills-card .skill-title {
   border-bottom: 1px solid rgba(34, 211, 238, 0.25);
   padding-bottom: 1rem;
 }
+section.skills .skills-card .skill-subtitle {
+  margin-top: 0.25rem;
+  margin-bottom: 0.15rem;
+  font-size: 1.05rem;
+  color: #a1a1aa;
+  letter-spacing: 0.04em;
+  font-weight: 700;
+}
 section.skills .skills-card .skill-badges {
   display: flex;
   flex-wrap: wrap;
@@ -787,6 +795,12 @@ section.skills .skills-card .skill-badge:hover {
   color: #22d3ee;
   box-shadow: 0 0 20px rgba(34, 211, 238, 0.4);
   transform: translateY(-2px);
+}
+section.skills .skills-card .skill-badge--learning {
+  border-style: dashed;
+  border-color: rgba(167, 139, 250, 0.6);
+  background: rgba(167, 139, 250, 0.12);
+  color: #ddd6fe;
 }
 
 /* 手機版調整 */

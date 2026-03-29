@@ -960,7 +960,7 @@
     </style>
   </head>
   <body>
-      <div id="ceil-studio-recruit">
+    <div id="ceil-studio-recruit">
       <nav class="ceil-nav">
         <div class="ceil-nav__inner">
           <a href="../index.html" class="ceil-nav__brand">Ceilusion</a>
@@ -1048,7 +1048,7 @@
         <div class="ceil-hero__about">
           <h2 class="ceil-hero__about-title">關於計畫</h2>
           <img
-            src="../img/profile.png"
+            src="../img/profile.jpg"
             alt="Ceil"
             class="ceil-hero__about-image"
           />
@@ -1064,8 +1064,7 @@
               我相信，遊戲是世界上最強大的情緒載體，是第九藝術。成立這間工作室，是因為我有一個跨越極端的創作野心：無論是令人窒息的<span
                 class="ceil-standout"
                 >極致恐懼</span
-              >，還是直擊人心的<span class="ceil-standout"
-                >深刻敘事</span
+              >，還是直擊人心的<span class="ceil-standout">深刻敘事</span
               >，我們致力於打破既有框架，打造出能徹底顛覆玩家認知的遊戲體驗。
             </p>
             <p>
@@ -1170,7 +1169,9 @@
               「財富自由與絕對的創作自由。」
             </blockquote>
             <p class="ceil-phase__desc">
-              當團隊透過市場的成功斬斷資金枷鎖後，Ceilusion 將進入最終的進化型態：為核心成員徹底拔除生存的焦慮。我們不追求成為綁架人生的百年商業帝國，真正的自由包含了「不做的自由」。達成財務目標後想退休享受人生的人，可以毫無牽掛地光榮退役；而選擇留下參與開發的成員，將不再需要向資本與趨勢低頭，能以純粹的熱情與 100% 的自由，去瘋狂實現那些突破天際的遊戲點子。
+              當團隊透過市場的成功斬斷資金枷鎖後，Ceilusion
+              將進入最終的進化型態：為核心成員徹底拔除生存的焦慮。我們不追求成為綁架人生的百年商業帝國，真正的自由包含了「不做的自由」。達成財務目標後想退休享受人生的人，可以毫無牽掛地光榮退役；而選擇留下參與開發的成員，將不再需要向資本與趨勢低頭，能以純粹的熱情與
+              100% 的自由，去瘋狂實現那些突破天際的遊戲點子。
             </p>
           </div>
         </div>
@@ -1415,9 +1416,33 @@
         var windAngleDefault = (20 * Math.PI) / 180;
         var windDir = -1;
         var layers = [
-          { n: 500, vyMin: 15, vyMax: 22, lengthMul: 1.8, alphaMin: 0.03, alphaMax: 0.06, vxMul: 0.38 },
-          { n: 400, vyMin: 22, vyMax: 28, lengthMul: 1.7, alphaMin: 0.06, alphaMax: 0.10, vxMul: 0.38 },
-          { n: 250, vyMin: 28, vyMax: 38, lengthMul: 1.6, alphaMin: 0.10, alphaMax: 0.15, vxMul: 0.38 },
+          {
+            n: 500,
+            vyMin: 15,
+            vyMax: 22,
+            lengthMul: 1.8,
+            alphaMin: 0.03,
+            alphaMax: 0.06,
+            vxMul: 0.38,
+          },
+          {
+            n: 400,
+            vyMin: 22,
+            vyMax: 28,
+            lengthMul: 1.7,
+            alphaMin: 0.06,
+            alphaMax: 0.1,
+            vxMul: 0.38,
+          },
+          {
+            n: 250,
+            vyMin: 28,
+            vyMax: 38,
+            lengthMul: 1.6,
+            alphaMin: 0.1,
+            alphaMax: 0.15,
+            vxMul: 0.38,
+          },
         ];
         var particles = [];
         var splashes = [];
@@ -1743,11 +1768,7 @@
             targetState.fogAlpha,
             t,
           );
-          currentState.moonY = lerp(
-            currentState.moonY,
-            targetState.moonY,
-            t,
-          );
+          currentState.moonY = lerp(currentState.moonY, targetState.moonY, t);
           currentState.lightningEnabled = targetState.lightningEnabled;
 
           envState.rainIntensity = currentState.rainIntensity;
@@ -1769,10 +1790,7 @@
 
           var moonOpacity =
             currentState.moonY <= 0
-              ? Math.max(
-                  0,
-                  Math.min(1, Math.abs(currentState.moonY) / 60),
-                )
+              ? Math.max(0, Math.min(1, Math.abs(currentState.moonY) / 60))
               : 0;
           moon.style.opacity = String(moonOpacity);
           // 星光層固定在畫面中心，只用 opacity 表示 Phase 4 的亮度

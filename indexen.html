@@ -1,1207 +1,893 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Ceil Studio — Home</title>
-    <link rel="stylesheet" href="./style/style.css" />
-    <style>
-      /* Game Project Styles */
-      .projects-section {
-        min-height: 90vh;
-        padding: 3rem 2rem;
-      }
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ceil — Indie Game Developer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400&family=JetBrains+Mono:wght@400;600&family=Inter:wght@400;500&family=Noto+Serif+SC:wght@300;400&display=swap" rel="stylesheet">
+  <style>
+    /* ── TOKENS ── */
+    :root {
+      --bg:        #05020E;
+      --text:      #EDE8FF;
+      --muted:     #9E93C8;
+      --accent:    #B87FFF;
+      --accent-dim:  rgba(184,127,255,0.10);
+      --accent-line: rgba(184,127,255,0.28);
+      --pink:      #E06FC0;
+      --border:    rgba(180,130,255,0.10);
+      --border-hi: rgba(180,130,255,0.35);
+      --card-bg:   rgba(5, 2, 18, 0.30);
+      --card-bg-h: rgba(5, 2, 18, 0.52);
 
-      .projects-container {
-        max-width: 1200px;
-        margin: 0 auto;
-      }
+      --f-display: 'Fraunces', Georgia, serif;
+      --f-brush:   'Noto Serif SC', serif;
+      --f-mono:    'JetBrains Mono', monospace;
+      --f-body:    'Inter', system-ui, sans-serif;
 
-      .projects-section .section-title {
-        text-align: center;
-        font-size: 2.5rem;
-        color: white;
-        margin-bottom: 3rem;
-        text-shadow: 0 0 20px rgba(173, 35, 194, 0.8);
-      }
+      --nav-h: 3.25rem;
+      --max:   1080px;
+      --pad:   clamp(1.25rem, 5vw, 3rem);
+    }
 
-      .projects-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-        gap: 2rem;
-        margin-top: 2rem;
-      }
+    /* ── RESET ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html  { scroll-behavior: smooth; color-scheme: dark; }
+    body  { background: var(--bg); color: var(--text); font-family: var(--f-body); font-size: 1rem; line-height: 1.65; overflow-x: hidden; }
+    a     { color: inherit; text-decoration: none; }
+    img   { display: block; max-width: 100%; }
+    button { font: inherit; cursor: pointer; }
 
-      .project-card {
-        background: rgba(31, 40, 51, 0.6);
-        border: 1px solid rgba(102, 252, 241, 0.3);
-        border-radius: 16px;
-        padding: 1.8rem;
-        backdrop-filter: blur(4px);
-        transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-        cursor: pointer;
-        display: flex;
-        flex-direction: column;
-        gap: 1.2rem;
-        color: white;
-        overflow: hidden;
-        position: relative;
-      }
+    /* ── COSMIC CANVAS — fixed, behind everything ── */
+    #star-field {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+    }
+    /* brush layer — paints stardust over the nebula, behind content */
+    #brush {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+    }
 
-      .project-card::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(
-          90deg,
-          transparent,
-          rgba(102, 252, 241, 0.15),
-          transparent
-        );
-        transition: left 0.6s ease;
-        z-index: 0;
-      }
+    /* all content above canvas */
+    .nav, .hero, .section, footer { position: relative; z-index: 1; }
 
-      .project-card:hover {
-        transform: translateY(-12px);
-        border-color: rgba(102, 252, 241, 0.8);
-        box-shadow:
-          0 20px 40px rgba(173, 35, 194, 0.3),
-          0 0 20px rgba(102, 252, 241, 0.2);
-      }
+    /* ── LAYOUT ── */
+    .wrap    { width: 100%; max-width: var(--max); margin: 0 auto; padding: 0 var(--pad); }
+    .section { padding: clamp(4rem, 10vh, 7rem) 0; }
 
-      .project-card:hover::before {
-        left: 100%;
-      }
+    /* ── EYEBROW ── */
+    .eyebrow {
+      font-family: var(--f-mono);
+      font-size: 0.66rem; font-weight: 600;
+      letter-spacing: 0.24em; text-transform: uppercase;
+      color: var(--accent);
+    }
 
-      .project-card > * {
-        position: relative;
-        z-index: 1;
-      }
+    /* ── SEC HEADER ── */
+    .sec-header { margin-bottom: clamp(2rem, 5vh, 3.5rem); }
+    .sec-title  {
+      font-family: var(--f-display);
+      font-size: clamp(2rem, 5vw, 3.25rem);
+      font-weight: 300; line-height: 1.1;
+      color: var(--text); margin-top: 0.45rem;
+      text-shadow: 0 0 80px rgba(0,0,0,0.95);
+    }
 
-      .project-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: start;
-        gap: 1rem;
-        border-bottom: 1px solid rgba(102, 252, 241, 0.2);
-        padding-bottom: 1rem;
-      }
+    /* ── NAV ── */
+    .nav {
+      position: fixed !important; inset: 0 0 auto 0; z-index: 100 !important;
+      height: var(--nav-h); display: flex; align-items: center;
+      background: rgba(5, 2, 14, 0.70);
+      backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav__inner { display: flex; align-items: center; justify-content: space-between; width: 100%; max-width: var(--max); margin: 0 auto; padding: 0 var(--pad); }
+    .nav__brand { font-family: var(--f-mono); font-size: 0.78rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); }
+    .nav__links { display: flex; align-items: center; gap: 1.75rem; list-style: none; }
+    .nav__links a { font-family: var(--f-mono); font-size: 0.72rem; font-weight: 600; letter-spacing: 0.09em; text-transform: uppercase; color: var(--muted); transition: color 0.18s; }
+    .nav__links a:hover { color: var(--text); }
+    .nav__links .nav-cta { color: var(--accent); border: 1px solid var(--accent-line); padding: 0.28rem 0.75rem; border-radius: 3px; transition: background 0.18s, color 0.18s; }
+    .nav__links .nav-cta:hover { background: var(--accent); color: var(--bg); }
 
-      .project-header h3 {
-        font-size: 1.3rem;
-        margin: 0;
-        color: #66fcf1;
-        flex: 1;
-      }
+    /* ── HERO ── */
+    .hero { min-height: 100svh; display: flex; flex-direction: column; justify-content: center; padding-top: var(--nav-h); padding-bottom: 4rem; }
+    .hero__eyebrow { margin-bottom: 1.4rem; }
+    .hero__name {
+      font-family: var(--f-display);
+      font-size: clamp(5.5rem, 18vw, 13rem);
+      font-weight: 300; line-height: 0.88; letter-spacing: -0.025em; color: var(--text);
+      text-shadow: 0 0 140px rgba(184,127,255,0.55), 0 2px 40px rgba(0,0,0,0.9);
+    }
+    .hero__name .dot { color: var(--accent); }
+    .hero__quote {
+      margin-top: 2.2rem; font-family: var(--f-brush);
+      font-size: clamp(1.25rem, 3vw, 1.9rem); line-height: 1.8;
+      color: rgba(237,232,255,0.88); max-width: 22em;
+      position: relative; padding-left: 1.1em;
+      text-shadow: 0 2px 24px rgba(0,0,0,0.85);
+    }
+    .hero__quote::before { content: ''; position: absolute; left: 0; top: 0.35em; bottom: 0.35em; width: 2px; background: linear-gradient(to bottom, var(--accent), var(--pink)); border-radius: 2px; }
+    /* English gloss of the motto, for the EN page */
+    .hero__quote-en { margin-top: 0.8rem; padding-left: 1.1em; max-width: 30em; font-size: 0.9rem; font-style: italic; color: var(--muted); }
+    /* 「畫筆」 — the words ARE the brush; hover to pick it up */
+    .brush-word {
+      color: var(--accent);
+      cursor: crosshair;
+      border-bottom: 1px dotted var(--accent-line);
+      text-shadow: 0 0 18px rgba(184,127,255,0.5);
+      transition: color 0.3s, text-shadow 0.3s;
+    }
+    .brush-word:hover, .brush-word.armed {
+      color: #fff;
+      border-bottom-color: transparent;
+      text-shadow: 0 0 26px rgba(184,127,255,0.9), 0 0 60px rgba(224,111,192,0.55);
+    }
+    .hero__sub { margin-top: 1.1rem; font-family: var(--f-mono); font-size: 0.7rem; letter-spacing: 0.2em; color: var(--muted); text-shadow: 0 1px 12px rgba(0,0,0,0.8); }
+    .hero__stats { display: flex; gap: clamp(1.5rem, 5vw, 3.5rem); flex-wrap: wrap; margin-top: clamp(2.5rem, 6vh, 4rem); }
+    .stat__num { display: block; font-family: var(--f-mono); font-size: clamp(1.4rem, 3.5vw, 2.2rem); font-weight: 600; color: var(--accent); line-height: 1; text-shadow: 0 0 40px rgba(184,127,255,0.6); }
+    .stat__label { display: block; font-family: var(--f-mono); font-size: 0.59rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-top: 0.35rem; }
+    .hero__scroll { display: inline-flex; align-items: center; gap: 0.5rem; margin-top: clamp(2.5rem, 5vh, 3.5rem); font-family: var(--f-mono); font-size: 0.7rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); transition: color 0.18s; }
+    .hero__scroll:hover { color: var(--text); }
+    .hero__scroll svg { width: 1em; height: 1em; animation: bob 2s ease-in-out infinite; }
+    @keyframes bob { 0%,100%{transform:translateY(0)} 50%{transform:translateY(5px)} }
 
-      .download-badge {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        padding: 0.4rem 0.8rem;
-        border-radius: 20px;
-        font-size: 0.75rem;
-        white-space: nowrap;
-        font-weight: bold;
-        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
-      }
+    /* ── CARDS — minimal dark fill, border only ── */
+    .game-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 1.6rem; display: flex; flex-direction: column; gap: 0.9rem; position: relative; overflow: hidden; transition: border-color 0.25s, background 0.25s; }
+    .game-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--accent), var(--pink)); transform: scaleX(0); transform-origin: left; transition: transform 0.3s ease; }
+    .game-card:hover { border-color: var(--border-hi); background: var(--card-bg-h); }
+    .game-card:hover::before { transform: scaleX(1); }
 
-      .project-stats {
-        display: flex;
-        flex-direction: column;
-        gap: 0.5rem;
-        font-size: 0.9rem;
-        color: #aaa;
-      }
+    .games-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px,1fr)); gap: 1.25rem; }
+    .game-card__head { display: flex; justify-content: space-between; align-items: flex-start; gap: 0.75rem; }
+    .game-card__name { font-family: var(--f-display); font-size: 1.08rem; font-weight: 400; line-height: 1.3; color: var(--text); }
+    .game-card__dl { font-family: var(--f-mono); font-size: 0.65rem; font-weight: 600; color: var(--accent); white-space: nowrap; background: var(--accent-dim); border: 1px solid var(--accent-line); border-radius: 3px; padding: 0.18rem 0.5rem; flex-shrink: 0; }
+    .game-card__meta { font-family: var(--f-mono); font-size: 0.64rem; color: var(--muted); display: flex; flex-direction: column; gap: 0.15rem; }
+    .game-card__desc { font-size: 0.88rem; color: var(--muted); line-height: 1.6; flex: 1; }
+    .game-card__actions { display: flex; gap: 0.6rem; flex-wrap: wrap; }
 
-      .project-stats span {
-        display: flex;
-        align-items: center;
-      }
+    /* ── BUTTONS ── */
+    .btn { display: inline-flex; align-items: center; font-family: var(--f-mono); font-size: 0.68rem; font-weight: 600; letter-spacing: 0.09em; text-transform: uppercase; padding: 0.45rem 0.85rem; border-radius: 4px; border: 1px solid transparent; transition: all 0.18s; }
+    .btn-primary { background: var(--accent-dim); border-color: var(--accent-line); color: var(--accent); }
+    .btn-primary:hover { background: var(--accent); color: var(--bg); }
+    .btn-primary:disabled { opacity: 0.35; cursor: not-allowed; }
+    .btn-primary:disabled:hover { background: var(--accent-dim); color: var(--accent); }
+    .btn-ghost { background: transparent; border-color: var(--border); color: var(--muted); }
+    .btn-ghost:hover { border-color: var(--border-hi); color: var(--text); }
 
-      .project-stats span::before {
-        content: "→";
-        margin-right: 0.5rem;
-        color: #66fcf1;
-      }
+    /* ── ABOUT ── */
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(2rem,6vw,5rem); align-items: start; }
+    @media (max-width: 680px) { .about-grid { grid-template-columns: 1fr; } }
+    .about-bio { font-size: clamp(0.95rem,1.4vw,1.1rem); color: var(--muted); line-height: 1.8; }
+    .about-bio p+p { margin-top: 1.1em; }
+    .about-bio strong { color: var(--text); font-weight: 500; text-shadow: 0 0 30px rgba(0,0,0,0.8); }
+    .skills-panel { display: flex; flex-direction: column; gap: 1.5rem; }
+    .skill-group__label { font-family: var(--f-mono); font-size: 0.62rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.6rem; }
+    .skill-tags { display: flex; flex-wrap: wrap; gap: 0.45rem; }
+    .skill-tag { font-family: var(--f-mono); font-size: 0.67rem; padding: 0.28rem 0.6rem; border: 1px solid var(--border); border-radius: 3px; color: var(--muted); background: var(--card-bg); }
+    .skill-tag--learning { border-color: var(--accent-line); color: rgba(184,127,255,0.8); background: var(--accent-dim); }
 
-      .project-desc {
-        font-size: 1rem;
-        color: #ddd;
-        line-height: 1.6;
-        margin: 0;
-        flex: 1;
-      }
+    /* ── CREDENTIALS ── */
+    .creds-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px,1fr)); gap: 1rem; }
+    .cred-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 6px; padding: 1.1rem 1.25rem; display: flex; flex-direction: column; gap: 0.4rem; transition: border-color 0.2s, background 0.2s; }
+    .cred-card:hover { border-color: var(--border-hi); background: var(--card-bg-h); }
+    .cred-card__year { font-family: var(--f-mono); font-size: 0.62rem; font-weight: 600; letter-spacing: 0.14em; color: var(--accent); }
+    .cred-card__name { font-size: 0.88rem; color: var(--text); line-height: 1.4; }
+    .cred-card__result { font-family: var(--f-mono); font-size: 0.7rem; color: var(--muted); }
 
-      .project-buttons {
-        display: flex;
-        gap: 0.75rem;
-        flex-wrap: wrap;
-      }
+    /* ── ARTICLES ── */
+    .article-list { border: 1px solid var(--border); border-radius: 6px; overflow: hidden; }
+    .article-row { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1.2rem 1.5rem; background: var(--card-bg); transition: background 0.18s; }
+    .article-row+.article-row { border-top: 1px solid var(--border); }
+    .article-row:hover { background: var(--card-bg-h); }
+    .article-row__title { font-size: 0.95rem; color: var(--text); }
+    .article-row__tags { font-family: var(--f-mono); font-size: 0.63rem; color: var(--muted); margin-top: 0.25rem; }
+    .article-row__arrow { font-family: var(--f-mono); font-size: 0.85rem; color: var(--accent); flex-shrink: 0; }
 
-      .project-btn {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        border: none;
-        color: white;
-        padding: 0.9rem 1.8rem;
-        border-radius: 10px;
-        cursor: pointer;
-        font-weight: bold;
-        font-size: 0.95rem;
-        transition: all 0.3s ease;
-        align-self: flex-start;
-        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
-        text-decoration: none;
-        display: inline-block;
-        text-align: center;
-      }
+    /* ── RECRUIT ── */
+    .recruit-inner { max-width: 580px; }
+    .recruit-title { font-family: var(--f-display); font-size: clamp(2.2rem,5.5vw,3.8rem); font-weight: 300; line-height: 1.1; color: var(--text); margin-top: 0.45rem; text-shadow: 0 0 80px rgba(0,0,0,0.9); }
+    .recruit-body { font-size: 1rem; color: var(--muted); line-height: 1.75; margin-top: 1.2rem; margin-bottom: 2rem; }
 
-      .project-btn:hover:not(:disabled) {
-        transform: translateY(-3px);
-        box-shadow: 0 8px 20px rgba(102, 126, 234, 0.5);
-      }
+    /* ── CONNECT ── */
+    .connect-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px,1fr)); gap: 1rem; }
+    .connect-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 6px; padding: 1.1rem 1.25rem; display: flex; flex-direction: column; gap: 0.3rem; transition: border-color 0.18s, background 0.18s; }
+    .connect-card:hover { border-color: var(--border-hi); background: var(--card-bg-h); }
+    .connect-card__type { font-family: var(--f-mono); font-size: 0.6rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); }
+    .connect-card__name { font-size: 0.9rem; font-weight: 500; color: var(--text); }
+    .connect-card__handle { font-family: var(--f-mono); font-size: 0.7rem; color: var(--muted); }
 
-      .project-btn:active:not(:disabled) {
-        transform: translateY(-1px);
-      }
+    /* ── FOOTER ── */
+    footer { padding: 2rem 0; border-top: 1px solid var(--border); background: rgba(5,2,14,0.55); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+    .footer__inner { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+    .footer__copy { font-family: var(--f-mono); font-size: 0.65rem; color: var(--muted); }
 
-      .project-btn:disabled {
-        opacity: 0.6;
-        cursor: not-allowed;
-        background: linear-gradient(135deg, #555 0%, #333 100%);
-      }
+    /* ── REVEAL ── */
+    .reveal { opacity: 0; transform: translateY(18px); transition: opacity 0.55s ease, transform 0.55s ease; }
+    .reveal.in { opacity: 1; transform: translateY(0); }
 
-      .project-btn-trailer {
-        background: linear-gradient(135deg, #66fcf1 0%, #45b7b8 100%);
-        box-shadow: 0 4px 12px rgba(102, 252, 241, 0.3);
-      }
+    @media (prefers-reduced-motion: reduce) {
+      .reveal { opacity: 1; transform: none; transition: none; }
+      .hero__scroll svg { animation: none; }
+    }
+    @media (max-width: 560px) {
+      .nav__links li:not(:last-child):not(:nth-last-child(2)) { display: none; }
+    }
+  </style>
+</head>
+<body>
 
-      .project-btn-trailer:hover {
-        box-shadow: 0 8px 20px rgba(102, 252, 241, 0.5);
-      }
+<canvas id="star-field"></canvas>
+<canvas id="brush"></canvas>
 
-      @media (max-width: 768px) {
-        .projects-grid {
-          grid-template-columns: 1fr;
-        }
+<nav class="nav">
+  <div class="nav__inner">
+    <span class="nav__brand">Ceil Studio</span>
+    <ul class="nav__links">
+      <li><a href="#games">Games</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#connect">Connect</a></li>
+      <li><a href="./index.html">中文</a></li>
+      <li><a href="./recruit/indexen.html" class="nav-cta">Recruit</a></li>
+    </ul>
+  </div>
+</nav>
 
-        .projects-section .section-title {
-          font-size: 1.8rem;
-        }
-
-        .project-card {
-          padding: 1.5rem;
-          gap: 1rem;
-        }
-
-        .project-header {
-          flex-direction: column;
-        }
-
-        .project-header h3 {
-          margin-bottom: 0.5rem;
-        }
-      }
-    </style>
-  </head>
-  <body>
-    <nav class="ceil-nav">
-      <div class="ceil-nav__inner">
-        <a href="./indexen.html" class="ceil-nav__brand">Ceil Studio</a>
-        <ul class="ceil-nav__links">
-          <li><a href="#about" class="active">About</a></li>
-          <li><a href="#games">Games</a></li>
-          <li><a href="#articles">Articles</a></li>
-          <li><a href="#social">Socials</a></li>
-          <li><a href="./recruit/indexen.html">Recruit</a></li>
-        </ul>
-        <a href="./index.html" class="ceil-lang-switch">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <circle cx="12" cy="12" r="10"></circle>
-            <line x1="2" y1="12" x2="22" y2="12"></line>
-            <path
-              d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"
-            ></path>
-          </svg>
-          中文
-        </a>
-      </div>
-    </nav>
-    <main>
-      <section id="about" class="mainarea">
-        <div>
-          <div class="text-content">
-            <h1 class="vlarge">Hi, I'm Ceil</h1>
-            <h2>
-              Name: Yu-Ying Chen (Ceil) <br />Google Play Developer Account:
-              賽西爾cecill <br />Instagram: @ceil32768
-            </h2>
-            <div class="mainarea-intro">
-              <p>
-                Hi, I am Yu-Ying Chen (Ceil). You might find me online as ceil,
-                cecill, ceil32768, or cecill77777. I am a developer who longs
-                for freedom. For me, there are too many rules in the real world.
-                I refuse to be defined by my environment, and I don't want to
-                live within standard answers. My dream is simple: to create a
-                masterpiece that will leave a mark.
-              </p>
-            </div>
-            <!-- <a href="#contact" class="mainarea-cta">Contact</a> -->
-          </div>
-          <img
-            src="./img/profilepic3.png"
-            alt="Profile Picture"
-            class="profile-pic"
-          />
-        </div>
-      </section>
-      <section class="aboutme modernbackground">
-        <section class="tab glass-card">
-          <div class="aboutme-product">
-            <header class="aboutme-hero">
-              <h2 class="aboutme-hero-title">Independent Game Developer</h2>
-              <p class="aboutme-hero-desc">
-                Currently a freshman in the Dept. of CSIE, National Cheng Kung
-                University. Focused on game development. Founder of Ceilusion
-                Studio.
-              </p>
-            </header>
-
-            <section class="aboutme-block aboutme-games">
-              <h3 class="aboutme-section-title">Game Development Experience</h3>
-              <div class="aboutme-games-grid">
-                <article class="aboutme-game-card glass-card">
-                  <div class="aboutme-game-top">
-                    <span class="year-badge">2026</span>
-                    <h4 class="aboutme-game-title">Ceilusion Studio</h4>
-                  </div>
-                  <div class="aboutme-stat-bottom">
-                    <span class="stat-badge">Founder, independent game team</span>
-                  </div>
-                </article>
-
-                <article class="aboutme-game-card glass-card">
-                  <div class="aboutme-game-top">
-                    <span class="year-badge">2025</span>
-                    <h4 class="aboutme-game-title">
-                      Survive In Backrooms - Eerie 2
-                    </h4>
-                  </div>
-                  <div class="aboutme-stat-bottom">
-                    <span class="stat-badge">Downloads &gt; 10k</span>
-                  </div>
-                </article>
-
-                <article class="aboutme-game-card glass-card">
-                  <div class="aboutme-game-top">
-                    <span class="year-badge">2025</span>
-                    <h4 class="aboutme-game-title">
-                      Level Run - Run For Your Life!
-                    </h4>
-                  </div>
-                  <div class="aboutme-stat-bottom">
-                    <span class="stat-badge">Downloads &gt; 5000</span>
-                  </div>
-                </article>
-
-                <article class="aboutme-game-card glass-card">
-                  <div class="aboutme-game-top">
-                    <span class="year-badge">2023</span>
-                    <h4 class="aboutme-game-title">SCP 096 In Backrooms</h4>
-                  </div>
-                  <div class="aboutme-stat-bottom">
-                    <span class="stat-badge">Downloads &gt; 100k</span>
-                  </div>
-                </article>
-
-                <article class="aboutme-game-card glass-card">
-                  <div class="aboutme-game-top">
-                    <span class="year-badge">2023</span>
-                    <h4 class="aboutme-game-title">
-                      Survive In Backrooms - Eerie
-                    </h4>
-                  </div>
-                  <div class="aboutme-stat-bottom">
-                    <span class="stat-badge">Downloads &gt; 10k</span>
-                  </div>
-                </article>
-
-                <article class="aboutme-game-card glass-card">
-                  <div class="aboutme-game-top">
-                    <span class="year-badge">2022</span>
-                    <h4 class="aboutme-game-title">Stop The Time</h4>
-                  </div>
-                  <div class="aboutme-stat-bottom">
-                    <span class="stat-badge">Downloads &gt; 10k</span>
-                  </div>
-                </article>
-
-                <article class="aboutme-game-card glass-card">
-                  <div class="aboutme-game-top">
-                    <span class="year-badge">2021</span>
-                    <h4 class="aboutme-game-title">Killer Runner</h4>
-                  </div>
-                  <div class="aboutme-stat-bottom">
-                    <span class="stat-badge">Delisted (outdated UE version)</span>
-                  </div>
-                </article>
-              </div>
-            </section>
-
-            <section class="aboutme-block aboutme-competition">
-              <h3 class="aboutme-section-title">
-                Competitive Programming &amp; Certifications
-              </h3>
-              <ul class="aboutme-competition-badges">
-                <li class="aboutme-competition-badge glass-card">
-                  <span class="year-badge">2025 3/2</span>
-                  <div class="aboutme-competition-title">
-                    TOI Taiwan Preliminary Selection
-                  </div>
-                  <div class="aboutme-stat-bottom">
-                    <span class="stat-badge">220 points</span>
-                  </div>
-                </li>
-                <li class="aboutme-competition-badge glass-card">
-                  <span class="year-badge">2024 11/16</span>
-                  <div class="aboutme-competition-title">
-                    NCKU Special Selection Group A Programming Exam
-                  </div>
-                  <div class="aboutme-stat-bottom">
-                    <span class="stat-badge"
-                      >8th place (Admitted to NCKU CSIE)</span
-                    >
-                  </div>
-                </li>
-                <li class="aboutme-competition-badge glass-card">
-                  <span class="year-badge">2024 6/16</span>
-                  <div class="aboutme-competition-title">
-                    APCS — College Programming Prerequisite Exam
-                  </div>
-                  <div class="aboutme-stat-bottom">
-                    <span class="stat-badge">Implementation 4 / Concept 4</span>
-                  </div>
-                </li>
-                <li class="aboutme-competition-badge glass-card">
-                  <span class="year-badge">2024 10/15</span>
-                  <div class="aboutme-competition-title">
-                    CPE (College Programming Examination)
-                  </div>
-                  <div class="aboutme-stat-bottom">
-                    <span class="stat-badge">3 problems</span>
-                  </div>
-                </li>
-                <li class="aboutme-competition-badge glass-card">
-                  <span class="year-badge">2024 1/28</span>
-                  <div class="aboutme-competition-title">
-                    C++ (2nd ed.) Syntax Certification
-                  </div>
-                  <div class="aboutme-stat-bottom">
-                    <span class="stat-badge">Passed</span>
-                  </div>
-                </li>
-                <li class="aboutme-competition-badge glass-card">
-                  <span class="year-badge">2023 11/9</span>
-                  <div class="aboutme-competition-title">
-                    Information Month — IT Application Skills Competition
-                  </div>
-                  <div class="aboutme-stat-bottom">
-                    <span class="stat-badge">Winner</span>
-                  </div>
-                </li>
-                <li class="aboutme-competition-badge glass-card">
-                  <span class="year-badge">2023 11/5</span>
-                  <div class="aboutme-competition-title">
-                    Information Technology Subject Capability Competition (Finals)
-                  </div>
-                  <div class="aboutme-stat-bottom">
-                    <span class="stat-badge">Honorable mention</span>
-                  </div>
-                </li>
-                <li class="aboutme-competition-badge glass-card">
-                  <span class="year-badge">2021 8/28</span>
-                  <div class="aboutme-competition-title">
-                    Java 8 Syntax Certification
-                  </div>
-                  <div class="aboutme-stat-bottom">
-                    <span class="stat-badge">Passed</span>
-                  </div>
-                </li>
-              </ul>
-            </section>
-
-            <section class="aboutme-block aboutme-teaching">
-              <h3 class="aboutme-section-title">Teaching Experience</h3>
-              <ul class="aboutme-teaching-list">
-                <li class="aboutme-teaching-item glass-card">
-                  <span class="year-badge">2025 6/21 ~ 2025 8/30</span>
-                  <span class="aboutme-teaching-text">
-                    Kaohsiung Information Training Association (tutor)
-                  </span>
-                  <span class="stat-badge">&gt; 30hr</span>
-                </li>
-                <li class="aboutme-teaching-item glass-card">
-                  <span class="year-badge">2024 10/30 ~ 2025 6/2</span>
-                  <span class="aboutme-teaching-text">
-                    Kaohsiung Chung Cheng High School (competitive programming
-                    training)
-                  </span>
-                  <span class="stat-badge">&gt; 30hr</span>
-                </li>
-              </ul>
-            </section>
-          </div>
-
-          <!-- <div class="aboutme-timeline">
-            <div class="aboutme-timeline-category">
-              <div class="timeline-category-title">Education</div>
-              <ul class="timeline-list">
-                <li class="timeline-entry">
-                  <span class="year-badge">2026</span>
-                  <div class="timeline-entry-body">
-                    <div class="entry-head">
-                      <span class="entry-label">Education</span>
-                      <span class="entry-title">
-                        Enrolled: Dept. of CSIE, National Cheng Kung University
-                        (Freshman / Year 1)
-                      </span>
-                    </div>
-                  </div>
-                </li>
-
-                <li class="timeline-entry">
-                  <span class="year-badge">2026</span>
-                  <div class="timeline-entry-body">
-                    <div class="entry-head">
-                      <span class="entry-label">Certification</span>
-                      <span class="entry-title">C++ / Java Syntax Certification</span>
-                    </div>
-                  </div>
-                </li>
-
-                <li class="timeline-entry">
-                  <span class="year-badge">2026</span>
-                  <div class="timeline-entry-body">
-                    <div class="entry-head">
-                      <span class="entry-label">Teaching</span>
-                      <span class="entry-title">Kaohsiung Chung Cheng High School (training)</span>
-                      <span class="stat-badge">&gt; 30hr</span>
-                    </div>
-                  </div>
-                </li>
-                <li class="timeline-entry">
-                  <span class="year-badge">2026</span>
-                  <div class="timeline-entry-body">
-                    <div class="entry-head">
-                      <span class="entry-label">Teaching</span>
-                      <span class="entry-title">Kaohsiung Information Training Association (tutor)</span>
-                      <span class="stat-badge">&gt; 30hr</span>
-                    </div>
-                  </div>
-                </li>
-              </ul>
-            </div>
-
-            <div class="aboutme-timeline-category">
-              <div class="timeline-category-title">Competitive</div>
-              <ul class="timeline-list">
-                <li class="timeline-entry">
-                  <span class="year-badge">2026</span>
-                  <div class="timeline-entry-body">
-                    <div class="entry-head">
-                      <span class="entry-label">Competitive</span>
-                      <span class="entry-title">APCS - Implementation 4 / Concept 4</span>
-                    </div>
-                  </div>
-                </li>
-                <li class="timeline-entry">
-                  <span class="year-badge">2026</span>
-                  <div class="timeline-entry-body">
-                    <div class="entry-head">
-                      <span class="entry-label">Competitive</span>
-                      <span class="entry-title">TOI Preliminary Selection</span>
-                      <span class="stat-badge">220 points</span>
-                    </div>
-                  </div>
-                </li>
-                <li class="timeline-entry">
-                  <span class="year-badge">2026</span>
-                  <div class="timeline-entry-body">
-                    <div class="entry-head">
-                      <span class="entry-label">Competitive</span>
-                      <span class="entry-title">
-                        NCKU Special Selection Group A Programming Exam
-                      </span>
-                      <span class="stat-badge">8th place</span>
-                    </div>
-                  </div>
-                </li>
-                <li class="timeline-entry">
-                  <span class="year-badge">2026</span>
-                  <div class="timeline-entry-body">
-                    <div class="entry-head">
-                      <span class="entry-label">Competitive</span>
-                      <span class="entry-title">
-                        Information Technology Subject Capability Competition (Finals)
-                      </span>
-                      <span class="stat-badge">Honorable mention</span>
-                    </div>
-                  </div>
-                </li>
-                <li class="timeline-entry">
-                  <span class="year-badge">2026</span>
-                  <div class="timeline-entry-body">
-                    <div class="entry-head">
-                      <span class="entry-label">Competitive</span>
-                      <span class="entry-title">CPE</span>
-                      <span class="stat-badge">3 problems</span>
-                    </div>
-                  </div>
-                </li>
-              </ul>
-            </div>
-
-            <div class="aboutme-timeline-category">
-              <div class="timeline-category-title">Game Development</div>
-              <ul class="timeline-list">
-                <li class="timeline-entry">
-                  <span class="year-badge">2026</span>
-                  <div class="timeline-entry-body">
-                    <div class="entry-head">
-                      <span class="entry-label">Game</span>
-                      <span class="entry-title">Survive In Backrooms - Eerie 2</span>
-                    </div>
-                    <div class="entry-sub">
-                      <span class="stat-badge">Downloads &gt; 5000</span>
-                    </div>
-                  </div>
-                </li>
-                <li class="timeline-entry">
-                  <span class="year-badge">2026</span>
-                  <div class="timeline-entry-body">
-                    <div class="entry-head">
-                      <span class="entry-label">Game</span>
-                      <span class="entry-title">Survive In Backrooms - Eerie</span>
-                    </div>
-                    <div class="entry-sub">
-                      <span class="stat-badge">Downloads &gt; 10k</span>
-                    </div>
-                  </div>
-                </li>
-                <li class="timeline-entry">
-                  <span class="year-badge">2026</span>
-                  <div class="timeline-entry-body">
-                    <div class="entry-head">
-                      <span class="entry-label">Game</span>
-                      <span class="entry-title">SCP 096 In Backrooms</span>
-                    </div>
-                    <div class="entry-sub">
-                      <span class="stat-badge">Downloads &gt; 100k</span>
-                    </div>
-                  </div>
-                </li>
-                <li class="timeline-entry">
-                  <span class="year-badge">2026</span>
-                  <div class="timeline-entry-body">
-                    <div class="entry-head">
-                      <span class="entry-label">Game</span>
-                      <span class="entry-title">Stop The Time</span>
-                    </div>
-                    <div class="entry-sub">
-                      <span class="stat-badge">Downloads &gt; 10k</span>
-                    </div>
-                  </div>
-                </li>
-                <li class="timeline-entry">
-                  <span class="year-badge">2026</span>
-                  <div class="timeline-entry-body">
-                    <div class="entry-head">
-                      <span class="entry-label">Game</span>
-                      <span class="entry-title">Level Run - Run For Your Life!</span>
-                    </div>
-                    <div class="entry-sub">
-                      <span class="stat-badge">Downloads &gt; 5000</span>
-                    </div>
-                  </div>
-                </li>
-                <li class="timeline-entry">
-                  <span class="year-badge">2026</span>
-                  <div class="timeline-entry-body">
-                    <div class="entry-head">
-                      <span class="entry-label">Game</span>
-                      <span class="entry-title">Killer Runner</span>
-                    </div>
-                    <div class="entry-sub">
-                      <span class="stat-badge">Delisted (outdated UE version)</span>
-                    </div>
-                  </div>
-                </li>
-              </ul>
-            </div>
-          </div>
-          -->
-        </section>
-      </section>
-      <section class="skills modernbackground">
-        <div class="skills-card glass-card">
-          <h2 class="skill-title">Skills</h2>
-          <div class="skill-badges">
-            <span class="skill-badge">UE5 Gameplay Blueprint</span>
-            <span class="skill-badge">UE5 UMG</span>
-            <span class="skill-badge">Game Design</span>
-            <span class="skill-badge">Competitive Programming (C++)</span>
-            <span class="skill-badge">Blender (Hard Surface Modeling)</span>
-            <span class="skill-badge">Community Building (YouTube / Discord)</span>
-            <span class="skill-badge">Web Frontend (HTML/CSS/JavaScript)</span>
-            <span class="skill-badge">2D Concept Art</span>
-            <span class="skill-badge">Git &amp; GitHub</span>
-            <span class="skill-badge">Google Play Console &amp; Steamworks</span>
-          </div>
-          <h3 class="skill-subtitle">Focusing on(Still Learning)</h3>
-          <div class="skill-badges">
-            <span class="skill-badge skill-badge--learning"
-              >Game Design Document (GDD)</span
-            >
-            <span class="skill-badge skill-badge--learning">UE5 AI System</span>
-            <span class="skill-badge skill-badge--learning"
-              >UE5 C++ Programming</span
-            >
-            <span class="skill-badge skill-badge--learning">UE5 Audio System</span>
-            <span class="skill-badge skill-badge--learning">UE5 Level Design</span>
-            <span class="skill-badge skill-badge--learning"
-              >UE5 Material System</span
-            >
-          </div>
-        </div>
-      </section>
-
-      <section id="games" class="projects-section modernbackground">
-        <div class="projects-container">
-          <h1 class="section-title">🎮 My Games</h1>
-
-          <div class="projects-grid" id="projectsGrid">
-            <div class="project-card" data-category="survival">
-              <div class="project-header">
-                <h3>Survive In Backrooms - Eerie 2</h3>
-                <span class="download-badge">Downloads > 5000</span>
-              </div>
-              <div class="project-stats">
-                <span>Engine: Unreal Engine 5</span>
-                <span>Genre: First Person Survival Horror</span>
-              </div>
-              <p class="project-desc">
-                Infinite map. You need to survive in the liminal space.
-              </p>
-              <div class="project-buttons">
-                <a
-                  href="https://play.google.com/store/apps/details?id=com.cecill.brev2"
-                  target="_blank"
-                  rel="noopener"
-                  class="project-btn"
-                  >Learn More</a
-                >
-                <a
-                  href="https://www.youtube.com/watch?v=pWkF9mcllNw"
-                  target="_blank"
-                  rel="noopener"
-                  class="project-btn project-btn-trailer"
-                  >Trailer</a
-                >
-              </div>
-            </div>
-
-            <div class="project-card" data-category="action">
-              <div class="project-header">
-                <h3>Survive In Backrooms - Eerie</h3>
-                <span class="download-badge">Downloads > 10k</span>
-              </div>
-              <div class="project-stats">
-                <span>Engine: Unreal Engine 5</span>
-                <span>Genre: First Person Survival Horror</span>
-              </div>
-              <p class="project-desc">Survive in the Backrooms.</p>
-              <div class="project-buttons">
-                <a
-                  href="https://play.google.com/store/apps/details?id=com.YourCompany.Surviveinbackrooms"
-                  target="_blank"
-                  rel="noopener"
-                  class="project-btn"
-                  >Learn More</a
-                >
-              </div>
-            </div>
-
-            <div class="project-card" data-category="horror">
-              <div class="project-header">
-                <h3>Level Run - Run For Your Life!</h3>
-                <span class="download-badge">Downloads > 5000</span>
-              </div>
-              <div class="project-stats">
-                <span>Engine: Unreal Engine 5</span>
-                <span>Genre: First Person Horror Adventure</span>
-              </div>
-              <p class="project-desc">Run Run Run for your life!</p>
-              <div class="project-buttons">
-                <a
-                  href="https://play.google.com/store/apps/details?id=com.cecill.rfyl"
-                  target="_blank"
-                  rel="noopener"
-                  class="project-btn"
-                  >Learn More</a
-                >
-              </div>
-            </div>
-
-            <div class="project-card" data-category="horror">
-              <div class="project-header">
-                <h3>SCP 096 In Backrooms</h3>
-                <span class="download-badge">Downloads > 100k</span>
-              </div>
-              <div class="project-stats">
-                <span>Engine: Unreal Engine 5</span>
-                <span>Genre: First Person Horror Adventure</span>
-              </div>
-              <p class="project-desc">
-                Escape from the dangerous SCP 096 and survive in the Backrooms.
-              </p>
-              <div class="project-buttons">
-                <a
-                  href="https://play.google.com/store/apps/details?id=com.YourCompany.SCP096backroom"
-                  target="_blank"
-                  rel="noopener"
-                  class="project-btn"
-                  >Learn More</a
-                >
-              </div>
-            </div>
-
-            <div class="project-card" data-category="action">
-              <div class="project-header">
-                <h3>Stop The Time</h3>
-                <span class="download-badge">Downloads > 10k</span>
-              </div>
-              <div class="project-stats">
-                <span>Engine: Unreal Engine 4</span>
-                <span>Genre: Action Puzzle</span>
-              </div>
-              <p class="project-desc">Stop time to defeat enemies.</p>
-              <div class="project-buttons">
-                <a
-                  href="https://play.google.com/store/apps/details?id=com.YourCompany.stopthetime"
-                  target="_blank"
-                  rel="noopener"
-                  class="project-btn"
-                  >Learn More</a
-                >
-                <a
-                  href="https://www.youtube.com/watch?v=S65KUswQyeI"
-                  target="_blank"
-                  rel="noopener"
-                  class="project-btn project-btn-trailer"
-                  >Trailer</a
-                >
-              </div>
-            </div>
-
-            <div class="project-card" data-category="action">
-              <div class="project-header">
-                <h3>Killer Runner</h3>
-                <span class="download-badge">Delisted (Outdated Version)</span>
-              </div>
-              <div class="project-stats">
-                <span>Engine: Unreal Engine 4</span>
-                <span>Genre: Action Parkour</span>
-              </div>
-              <p class="project-desc">
-                Attack and move forward, a parkour game avoiding pursuers.
-              </p>
-              <div class="project-buttons">
-                <button class="project-btn" disabled>Delisted</button>
-                <a
-                  href="https://www.youtube.com/watch?v=XXuYUCpT-ww"
-                  target="_blank"
-                  rel="noopener"
-                  class="project-btn project-btn-trailer"
-                  >Trailer</a
-                >
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section id="articles" class="social-section modernbackground">
-        <div class="social-container">
-          <h2 class="social-section-title">Articles & Notes</h2>
-          <div
-            class="social-links"
-            style="grid-template-columns: repeat(auto-fill, minmax(280px, 1fr))"
-          >
-            <a
-              href="./articles/article1.html"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="social-card"
-            >
-              <span class="social-icon">📄</span>
-              <h3>114 NCKU CSIE Special Selection (心得)</h3>
-              <p>
-                Experience sharing: timeline, application, interview & results
-                (中文)
-              </p>
-              <p class="social-desc">Admission · Special Selection</p>
-            </a>
-          </div>
-        </div>
-      </section>
-
-      <section id="recruit-cta">
-        <div class="glass-card">
-          <h2 class="section-title">Join Ceil Studio</h2>
-          <p class="recruit-cta-lead">
-            We are looking for passionate developers with a crazy soul to build
-            the next legendary horror game masterpiece together.<br />
-            This isn't just a job; it's a gamble for dreams and financial
-            freedom.
-          </p>
-          <a
-            href="./recruit/indexen.html"
-            class="project-btn recruit-cta-btn"
-          >
-            View Recruitment Details
-          </a>
-        </div>
-      </section>
-
-      <section id="social" class="social-section modernbackground">
-        <div class="social-container">
-          <h2 class="social-section-title">Links</h2>
-          <div class="social-links">
-            <a
-              href="https://play.google.com/store/apps/dev?id=6647403418196319688"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="social-card"
-            >
-              <span class="social-icon">📱</span>
-              <h3>Google Play</h3>
-              <p>賽西爾cecill</p>
-              <p class="social-desc">Developer Account</p>
-            </a>
-            <a
-              href="https://www.instagram.com/ceil32768/"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="social-card"
-            >
-              <span class="social-icon">📱</span>
-              <h3>Instagram</h3>
-              <p>@ceil32768</p>
-              <p class="social-desc">Personal Account</p>
-            </a>
-            <a
-              href="https://www.youtube.com/@cecillbackrooms/featured"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="social-card"
-            >
-              <span class="social-icon">🎥</span>
-              <h3>YouTube</h3>
-              <p>@cecillbackrooms</p>
-              <p class="social-desc">Main Channel</p>
-            </a>
-            <a
-              href="https://www.youtube.com/@cecill2520"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="social-card"
-            >
-              <span class="social-icon">🎥</span>
-              <h3>YouTube</h3>
-              <p>@cecill2520</p>
-              <p class="social-desc">Second Channel</p>
-            </a>
-            <a
-              href="mailto:qerpzzea@gmail.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="social-card"
-            >
-              <span class="social-icon">📧</span>
-              <h3>Contact Email</h3>
-              <p>Via Contact Form</p>
-              <p class="social-desc">Business Inquiries</p>
-            </a>
-          </div>
-        </div>
-      </section>
-    </main>
-    <div class="foot">
-      <p>&copy; 2026 Ceil Studio. All rights reserved.</p>
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="wrap">
+    <p class="eyebrow hero__eyebrow">Indie Game Developer</p>
+    <h1 class="hero__name">Ceil<span class="dot">.</span></h1>
+    <blockquote class="hero__quote">
+      給我足夠多的<span class="brush-word" id="brush-word">畫筆</span>，<br>我能為你創造整個世界
+    </blockquote>
+    <p class="hero__quote-en">“Give me enough brushes, and I'll create a whole world for you.”</p>
+    <p class="hero__sub">Indie Game Developer · Founder of Ceilusion Studio</p>
+    <div class="hero__stats">
+      <div class="stat"><span class="stat__num" data-count="100000" data-suffix="+">0</span><span class="stat__label">Total Downloads</span></div>
+      <div class="stat"><span class="stat__num" data-count="6">0</span><span class="stat__label">Games Shipped</span></div>
+      <div class="stat"><span class="stat__num">2021</span><span class="stat__label">First Release</span></div>
+      <div class="stat"><span class="stat__num" data-count="30" data-suffix="hr+">0</span><span class="stat__label">Teaching Hours</span></div>
     </div>
+    <a href="#games" class="hero__scroll">
+      View Work
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+    </a>
+  </div>
+</section>
 
-    <script>
-      // ===== Scroll Spy with Smooth Scroll =====
-      (function () {
-        // Get all navigation links that point to sections
-        const navLinks = document.querySelectorAll('nav a[href^="#"]');
-        const sections = document.querySelectorAll("section[id]");
+<!-- ── GAMES ── -->
+<section id="games" class="section">
+  <div class="wrap">
+    <div class="sec-header reveal"><p class="eyebrow">Games</p><h2 class="sec-title">Shipped Games</h2></div>
+    <div class="games-grid">
+      <div class="game-card reveal">
+        <div class="game-card__head"><h3 class="game-card__name">Survive In Backrooms — Eerie 2</h3><span class="game-card__dl">&gt; 5,000</span></div>
+        <div class="game-card__meta"><span>Unreal Engine 5</span><span>First-Person Survival Horror</span></div>
+        <p class="game-card__desc">An endless map — survive in the boundless liminal space.</p>
+        <div class="game-card__actions">
+          <a href="https://play.google.com/store/apps/details?id=com.cecill.brev2" target="_blank" rel="noopener" class="btn btn-primary">Google Play</a>
+          <a href="https://www.youtube.com/watch?v=pWkF9mcllNw" target="_blank" rel="noopener" class="btn btn-ghost">Trailer</a>
+        </div>
+      </div>
+      <div class="game-card reveal">
+        <div class="game-card__head"><h3 class="game-card__name">Survive In Backrooms — Eerie</h3><span class="game-card__dl">&gt; 10,000</span></div>
+        <div class="game-card__meta"><span>Unreal Engine 5</span><span>First-Person Survival Horror</span></div>
+        <p class="game-card__desc">Survive in the Backrooms.</p>
+        <div class="game-card__actions">
+          <a href="https://play.google.com/store/apps/details?id=com.YourCompany.Surviveinbackrooms" target="_blank" rel="noopener" class="btn btn-primary">Google Play</a>
+        </div>
+      </div>
+      <div class="game-card reveal">
+        <div class="game-card__head"><h3 class="game-card__name">Level Run — Run For Your Life!</h3><span class="game-card__dl">&gt; 5,000</span></div>
+        <div class="game-card__meta"><span>Unreal Engine 5</span><span>First-Person Horror Adventure</span></div>
+        <p class="game-card__desc">Run for your life!</p>
+        <div class="game-card__actions">
+          <a href="https://play.google.com/store/apps/details?id=com.cecill.rfyl" target="_blank" rel="noopener" class="btn btn-primary">Google Play</a>
+        </div>
+      </div>
+      <div class="game-card reveal">
+        <div class="game-card__head"><h3 class="game-card__name">SCP 096 In Backrooms</h3><span class="game-card__dl">&gt; 100,000</span></div>
+        <div class="game-card__meta"><span>Unreal Engine 5</span><span>First-Person Horror Adventure</span></div>
+        <p class="game-card__desc">Escape the relentless SCP-096 and survive in the Backrooms.</p>
+        <div class="game-card__actions">
+          <a href="https://play.google.com/store/apps/details?id=com.YourCompany.SCP096backroom" target="_blank" rel="noopener" class="btn btn-primary">Google Play</a>
+        </div>
+      </div>
+      <div class="game-card reveal">
+        <div class="game-card__head"><h3 class="game-card__name">Stop The Time</h3><span class="game-card__dl">&gt; 10,000</span></div>
+        <div class="game-card__meta"><span>Unreal Engine 4</span><span>Action Puzzle</span></div>
+        <p class="game-card__desc">Freeze time and take down your enemies.</p>
+        <div class="game-card__actions">
+          <a href="https://play.google.com/store/apps/details?id=com.YourCompany.stopthetime" target="_blank" rel="noopener" class="btn btn-primary">Google Play</a>
+          <a href="https://www.youtube.com/watch?v=S65KUswQyeI" target="_blank" rel="noopener" class="btn btn-ghost">Trailer</a>
+        </div>
+      </div>
+      <div class="game-card reveal">
+        <div class="game-card__head"><h3 class="game-card__name">Killer Runner</h3><span class="game-card__dl" style="opacity:.4">Delisted</span></div>
+        <div class="game-card__meta"><span>Unreal Engine 4</span><span>Action Parkour</span></div>
+        <p class="game-card__desc">Strike, push forward, and outrun your pursuers.</p>
+        <div class="game-card__actions">
+          <button class="btn btn-primary" disabled>Delisted</button>
+          <a href="https://www.youtube.com/watch?v=XXuYUCpT-ww" target="_blank" rel="noopener" class="btn btn-ghost">Trailer</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-        // Map to store section ID -> nav link
-        const sectionToLinkMap = new Map();
-        navLinks.forEach((link) => {
-          const href = link.getAttribute("href");
-          if (href && href.startsWith("#")) {
-            const sectionId = href.substring(1);
-            sectionToLinkMap.set(sectionId, link);
-          }
-        });
+<!-- ── ABOUT ── -->
+<section id="about" class="section">
+  <div class="wrap">
+    <div class="sec-header reveal"><p class="eyebrow">About</p><h2 class="sec-title">About Me</h2></div>
+    <div class="about-grid">
+      <div class="about-bio reveal">
+        <p>I'm <strong>Yu-Ying Chen (Ceil)</strong>, a first-year Computer Science &amp; Information Engineering student at National Cheng Kung University, and founder of <strong>Ceilusion Studio</strong>.</p>
+        <p>Since my first release in 2021, my games have passed <strong>100,000 downloads</strong> — all built solo, in my spare time, without a team.</p>
+        <p>The real world has too many rules. I won't be defined by my circumstances, or live inside standard answers. My dream is simple: to build one landmark game that leaves a mark.</p>
+      </div>
+      <div class="skills-panel reveal">
+        <div>
+          <p class="skill-group__label">Core Skills</p>
+          <div class="skill-tags">
+            <span class="skill-tag">UE5 Blueprint</span><span class="skill-tag">UE5 UMG</span>
+            <span class="skill-tag">Game Design</span><span class="skill-tag">Competitive C++</span>
+            <span class="skill-tag">Blender Hard Surface</span><span class="skill-tag">Web Frontend</span>
+            <span class="skill-tag">Git & GitHub</span><span class="skill-tag">Google Play Console</span>
+          </div>
+        </div>
+        <div>
+          <p class="skill-group__label">Learning</p>
+          <div class="skill-tags">
+            <span class="skill-tag skill-tag--learning">UE5 C++</span>
+            <span class="skill-tag skill-tag--learning">UE5 AI System</span>
+            <span class="skill-tag skill-tag--learning">Level Design</span>
+            <span class="skill-tag skill-tag--learning">GDD</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-        // Function to update active state
-        function setActiveLink(targetSectionId) {
-          navLinks.forEach((link) => {
-            link.classList.remove("active");
-          });
-          const targetLink = sectionToLinkMap.get(targetSectionId);
-          if (targetLink) {
-            targetLink.classList.add("active");
-          }
-        }
+<!-- ── CREDENTIALS ── -->
+<section id="credentials" class="section">
+  <div class="wrap">
+    <div class="sec-header reveal"><p class="eyebrow">Credentials</p><h2 class="sec-title">Competitions &amp; Certifications</h2></div>
+    <div class="creds-grid">
+      <div class="cred-card reveal"><span class="cred-card__year">2025 · 03</span><span class="cred-card__name">TOI Taiwan Preliminary Selection</span><span class="cred-card__result">220 points</span></div>
+      <div class="cred-card reveal"><span class="cred-card__year">2024 · 11</span><span class="cred-card__name">NCKU Special Selection (Group A) Coding Exam</span><span class="cred-card__result">8th — admitted to NCKU CSIE</span></div>
+      <div class="cred-card reveal"><span class="cred-card__year">2024 · 06</span><span class="cred-card__name">APCS Programming Prerequisite Exam</span><span class="cred-card__result">Impl 4 / Concept 4</span></div>
+      <div class="cred-card reveal"><span class="cred-card__year">2024 · 10</span><span class="cred-card__name">CPE Collegiate Programming Exam</span><span class="cred-card__result">3 problems</span></div>
+      <div class="cred-card reveal"><span class="cred-card__year">2024 · 01</span><span class="cred-card__name">C++ Syntax Certification (2nd ed.)</span><span class="cred-card__result">Passed</span></div>
+      <div class="cred-card reveal"><span class="cred-card__year">2023 · 11</span><span class="cred-card__name">Information Month IT Skills Contest</span><span class="cred-card__result">Winner</span></div>
+      <div class="cred-card reveal"><span class="cred-card__year">2023 · 11</span><span class="cred-card__name">IT Subject Ability Contest (Finals)</span><span class="cred-card__result">Honorable Mention</span></div>
+      <div class="cred-card reveal"><span class="cred-card__year">2021 · 08</span><span class="cred-card__name">Java 8 Syntax Certification</span><span class="cred-card__result">Passed</span></div>
+    </div>
+  </div>
+</section>
 
-        // Click handler: Immediately set active + smooth scroll
-        navLinks.forEach((link) => {
-          link.addEventListener("click", function (e) {
-            e.preventDefault();
-            const href = this.getAttribute("href");
-            if (href && href.startsWith("#")) {
-              const targetId = href.substring(1);
-              const targetSection = document.getElementById(targetId);
+<!-- ── ARTICLES ── -->
+<section id="articles" class="section">
+  <div class="wrap">
+    <div class="sec-header reveal"><p class="eyebrow">Writing</p><h2 class="sec-title">Writing</h2></div>
+    <div class="article-list reveal">
+      <a href="./articles/article1.html" target="_blank" rel="noopener" class="article-row">
+        <div>
+          <div class="article-row__title">Getting into NCKU CSIE via Special Selection</div>
+          <div class="article-row__tags">Admissions · Special Selection · Time Management · Portfolio &amp; Interview · Coding Exam · in Chinese</div>
+        </div>
+        <span class="article-row__arrow">→</span>
+      </a>
+    </div>
+  </div>
+</section>
 
-              if (targetSection) {
-                // Immediately set active state (don't wait for scroll)
-                setActiveLink(targetId);
+<!-- ── RECRUIT ── -->
+<section class="section">
+  <div class="wrap">
+    <div class="recruit-inner reveal">
+      <p class="eyebrow">Open Positions</p>
+      <h2 class="recruit-title">Join Ceilusion Studio</h2>
+      <p class="recruit-body">I'm looking for passionate developers to build the next landmark game together. This isn't just a job — it's a bet on a dream.</p>
+      <a href="./recruit/indexen.html" class="btn btn-primary" style="font-size:.8rem;padding:.65rem 1.4rem">View open roles →</a>
+    </div>
+  </div>
+</section>
 
-                // Then smooth scroll
-                targetSection.scrollIntoView({
-                  behavior: "smooth",
-                  block: "start",
-                });
-              }
-            }
-          });
-        });
+<!-- ── CONNECT ── -->
+<section id="connect" class="section">
+  <div class="wrap">
+    <div class="sec-header reveal"><p class="eyebrow">Connect</p><h2 class="sec-title">Connect</h2></div>
+    <div class="connect-grid">
+      <a href="https://play.google.com/store/apps/dev?id=6647403418196319688" target="_blank" rel="noopener" class="connect-card reveal"><span class="connect-card__type">Developer</span><span class="connect-card__name">Google Play</span><span class="connect-card__handle">賽西爾cecill</span></a>
+      <a href="https://www.instagram.com/ceil32768/" target="_blank" rel="noopener" class="connect-card reveal"><span class="connect-card__type">Personal</span><span class="connect-card__name">Instagram</span><span class="connect-card__handle">@ceil32768</span></a>
+      <a href="https://www.youtube.com/@cecillbackrooms/featured" target="_blank" rel="noopener" class="connect-card reveal"><span class="connect-card__type">Main Channel</span><span class="connect-card__name">YouTube</span><span class="connect-card__handle">@cecillbackrooms</span></a>
+      <a href="https://www.youtube.com/@cecill2520" target="_blank" rel="noopener" class="connect-card reveal"><span class="connect-card__type">Second Channel</span><span class="connect-card__name">YouTube</span><span class="connect-card__handle">@cecill2520</span></a>
+      <a href="mailto:qerpzzea@gmail.com" class="connect-card reveal"><span class="connect-card__type">Business</span><span class="connect-card__name">Email</span><span class="connect-card__handle">qerpzzea@gmail.com</span></a>
+    </div>
+  </div>
+</section>
 
-        // Scroll Spy: Use IntersectionObserver to detect section in viewport center
-        const observerOptions = {
-          root: null, // viewport
-          rootMargin: "-50% 0px -50% 0px", // Only trigger when section dominates center
-          threshold: 0,
-        };
+<footer>
+  <div class="wrap">
+    <div class="footer__inner">
+      <span class="footer__copy">© 2026 Ceil Studio. All rights reserved.</span>
+      <span class="footer__copy">Instagram: @ceil32768</span>
+    </div>
+  </div>
+</footer>
 
-        const observer = new IntersectionObserver((entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              const sectionId = entry.target.id;
-              if (sectionId && sectionToLinkMap.has(sectionId)) {
-                setActiveLink(sectionId);
-              }
-            }
-          });
-        }, observerOptions);
+<!-- ── Three.js cosmic background ── -->
+<script type="importmap">
+{ "imports": { "three": "https://unpkg.com/three@0.163.0/build/three.module.js" } }
+</script>
 
-        // Observe all sections
-        sections.forEach((section) => {
-          if (section.id && sectionToLinkMap.has(section.id)) {
-            observer.observe(section);
-          }
-        });
+<script type="module">
+import * as THREE from 'three';
 
-        // Set initial active state based on first visible section
-        const checkInitialSection = () => {
-          const viewportCenter = window.innerHeight / 2;
-          let activeSectionId = null;
-          let minDistance = Infinity;
+/* ── Nebula fragment shader
+   Two uniforms: time (animation) + scroll (0→1, drives color zone + sampling shift)
+   Palette has 5 keyframes blended across 4 segments of the scroll range.
+── */
+const NEBULA_FRAG = `
+  varying vec3 vP;
+  uniform float time;
+  uniform float scroll;
 
-          sections.forEach((section) => {
-            if (section.id && sectionToLinkMap.has(section.id)) {
-              const rect = section.getBoundingClientRect();
-              const sectionCenter = rect.top + rect.height / 2;
-              const distance = Math.abs(sectionCenter - viewportCenter);
+  float hash(vec3 p){ p=fract(p*0.3183099+0.1); p*=17.0; return fract(p.x*p.y*p.z*(p.x+p.y+p.z)); }
+  float noise(vec3 x){
+    vec3 i=floor(x), f=fract(x); f=f*f*(3.0-2.0*f);
+    return mix(
+      mix(mix(hash(i),         hash(i+vec3(1,0,0)),f.x), mix(hash(i+vec3(0,1,0)),hash(i+vec3(1,1,0)),f.x), f.y),
+      mix(mix(hash(i+vec3(0,0,1)),hash(i+vec3(1,0,1)),f.x), mix(hash(i+vec3(0,1,1)),hash(i+vec3(1,1,1)),f.x), f.y),
+    f.z);
+  }
+  float fbm(vec3 p){ float v=0.0,a=0.5; for(int i=0;i<5;i++){ v+=a*noise(p); p*=2.0; a*=0.5; } return v; }
 
-              // Check if section is in viewport
-              if (rect.top < window.innerHeight && rect.bottom > 0) {
-                if (distance < minDistance) {
-                  minDistance = distance;
-                  activeSectionId = section.id;
-                }
-              }
-            }
-          });
+  /* ── palette keyframes (base / deep / mid / hi) — const globals, no dynamic indexing ──
+     kf0: violet-purple (hero)       kf1: cold indigo-blue (games)
+     kf2: teal-indigo (about/cred)   kf3: magenta (articles/recruit)
+     kf4: crimson-violet (connect)
+  ── */
+  const vec3 BASE0=vec3(0.018,0.010,0.055); const vec3 DEEP0=vec3(0.08,0.04,0.24); const vec3 MID0=vec3(0.36,0.10,0.76); const vec3 HI0=vec3(0.78,0.18,0.55);
+  const vec3 BASE1=vec3(0.008,0.015,0.060); const vec3 DEEP1=vec3(0.04,0.06,0.32); const vec3 MID1=vec3(0.14,0.22,0.82); const vec3 HI1=vec3(0.40,0.28,0.90);
+  const vec3 BASE2=vec3(0.008,0.030,0.055); const vec3 DEEP2=vec3(0.04,0.12,0.28); const vec3 MID2=vec3(0.12,0.40,0.72); const vec3 HI2=vec3(0.30,0.60,0.88);
+  const vec3 BASE3=vec3(0.030,0.008,0.055); const vec3 DEEP3=vec3(0.18,0.04,0.22); const vec3 MID3=vec3(0.72,0.08,0.55); const vec3 HI3=vec3(0.95,0.25,0.60);
+  const vec3 BASE4=vec3(0.040,0.008,0.040); const vec3 DEEP4=vec3(0.22,0.03,0.18); const vec3 MID4=vec3(0.65,0.06,0.42); const vec3 HI4=vec3(0.92,0.18,0.38);
 
-          if (activeSectionId) {
-            setActiveLink(activeSectionId);
-          }
-        };
+  void main(){
+    vec3 d = normalize(vP);
 
-        // Set initial state on page load
-        if (document.readyState === "loading") {
-          document.addEventListener("DOMContentLoaded", checkInitialSection);
+    /* shift fbm sampling as scroll advances — moves through nebula space */
+    vec3 shift = vec3(scroll * 2.2, scroll * 1.0, scroll * 0.5);
+    float n  = fbm(d * 2.1 + shift + vec3(0.0, 0.0, time * 0.016));
+    float n2 = fbm(d * 4.8 + shift * 0.5 + vec3(time * 0.010, 0.0, 0.0));
+    float cloud = smoothstep(0.38, 0.92, n * 0.65 + n2 * 0.35);
+
+    /* 4-segment palette blend via if/else (GLSL ES 1.00 safe — no dynamic array index).
+       seg in [0,3]; t = s4 - seg so t reaches 1.0 at scroll=1.0 (fixes off-by-one). */
+    float s4  = clamp(scroll, 0.0, 1.0) * 4.0;
+    float seg = min(floor(s4), 3.0);
+    float t   = s4 - seg;
+
+    vec3 base, deep, mid, hi;
+    if (seg < 0.5) {
+      base = mix(BASE0, BASE1, t); deep = mix(DEEP0, DEEP1, t); mid = mix(MID0, MID1, t); hi = mix(HI0, HI1, t);
+    } else if (seg < 1.5) {
+      base = mix(BASE1, BASE2, t); deep = mix(DEEP1, DEEP2, t); mid = mix(MID1, MID2, t); hi = mix(HI1, HI2, t);
+    } else if (seg < 2.5) {
+      base = mix(BASE2, BASE3, t); deep = mix(DEEP2, DEEP3, t); mid = mix(MID2, MID3, t); hi = mix(HI2, HI3, t);
+    } else {
+      base = mix(BASE3, BASE4, t); deep = mix(DEEP3, DEEP4, t); mid = mix(MID3, MID4, t); hi = mix(HI3, HI4, t);
+    }
+
+    vec3 col = mix(deep, mid, smoothstep(0.0, 1.0, n));
+    col = mix(col, hi, smoothstep(0.50, 1.0, n2));
+
+    gl_FragColor = vec4(base + col * cloud * 0.62, 1.0);
+  }
+`;
+
+/* ── Cosmos — wrapped so a WebGL failure degrades to the body's solid background ── */
+(function initCosmos() {
+  const canvas = document.getElementById('star-field');
+
+  let renderer;
+  try {
+    renderer = new THREE.WebGLRenderer({ canvas, antialias: false });
+  } catch (err) {
+    canvas.style.display = 'none';   // fall back to body's solid --bg
+    console.warn('[cosmos] WebGL unavailable — using solid background.', err);
+    return;
+  }
+  renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+
+  const scene  = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(72, innerWidth / innerHeight, 1, 4000);
+  camera.rotation.order = 'YXZ';   // set once, not per-frame
+
+  /* Nebula skybox */
+  const nebU = { time: { value: 0 }, scroll: { value: 0 } };
+  scene.add(new THREE.Mesh(
+    new THREE.SphereGeometry(2000, 48, 48),
+    new THREE.ShaderMaterial({
+      uniforms: nebU,
+      vertexShader: `varying vec3 vP; void main(){ vP=position; gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0); }`,
+      fragmentShader: NEBULA_FRAG,
+      side: THREE.BackSide, depthWrite: false,
+    })
+  ));
+
+  /* Star field — 4000 points */
+  const N   = 4000;
+  const pos = new Float32Array(N * 3);
+  const col = new Float32Array(N * 3);
+  const siz = new Float32Array(N);
+  const pal = [
+    [1.0,1.0,1.0],[1.0,1.0,1.0],[1.0,1.0,1.0],
+    [0.72,0.60,1.0],[0.90,0.70,1.0],[1.0,0.75,0.90],
+  ];
+  for (let i = 0; i < N; i++) {
+    const r  = 600 + Math.random() * 1200;
+    const th = Math.random() * Math.PI * 2;
+    const ph = Math.acos(2 * Math.random() - 1);
+    pos[i*3]   = r * Math.sin(ph) * Math.cos(th);
+    pos[i*3+1] = r * Math.sin(ph) * Math.sin(th);
+    pos[i*3+2] = r * Math.cos(ph);
+    const c = pal[Math.random() * pal.length | 0];
+    col[i*3] = c[0]; col[i*3+1] = c[1]; col[i*3+2] = c[2];
+    siz[i] = 0.8 + Math.random() * 2.8;
+  }
+  const sg = new THREE.BufferGeometry();
+  sg.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+  sg.setAttribute('color',    new THREE.BufferAttribute(col, 3));
+  sg.setAttribute('aSize',    new THREE.BufferAttribute(siz, 1));
+
+  const starU = { time: { value: 0 } };
+  scene.add(new THREE.Points(sg, new THREE.ShaderMaterial({
+    uniforms: starU, transparent: true, depthWrite: false,
+    blending: THREE.AdditiveBlending, vertexColors: true,
+    vertexShader: `
+      attribute float aSize; varying vec3 vC; varying float vT; uniform float time;
+      void main(){
+        vC = color;
+        vT = 0.55 + 0.45 * sin(time*1.4 + position.x*0.04 + position.z*0.03);
+        vec4 mv = modelViewMatrix * vec4(position, 1.0);
+        gl_PointSize = aSize * (340.0 / -mv.z);
+        gl_Position  = projectionMatrix * mv;
+      }`,
+    fragmentShader: `
+      varying vec3 vC; varying float vT;
+      void main(){
+        float d = length(gl_PointCoord - vec2(0.5));
+        if(d > 0.5) discard;
+        gl_FragColor = vec4(vC, smoothstep(0.5, 0.0, d) * vT);
+      }`,
+  })));
+
+  /* ── Resize ── */
+  function resize() {
+    renderer.setSize(innerWidth, innerHeight, false);
+    camera.aspect = innerWidth / innerHeight;
+    camera.updateProjectionMatrix();
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  /* ── Input (skipped entirely under reduced motion) ── */
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let mx = 0, my = 0, targetScroll = 0;
+
+  if (!reduced) {
+    window.addEventListener('mousemove', e => {
+      mx = (e.clientX / innerWidth  - 0.5) * 2;
+      my = (e.clientY / innerHeight - 0.5) * 2;
+    });
+    window.addEventListener('scroll', () => {
+      const max = document.body.scrollHeight - innerHeight;
+      if (max > 0) targetScroll = scrollY / max;
+    }, { passive: true });
+  }
+
+  /* ── Loop ── */
+  let t = 0, smoothScroll = 0, camOrbit = 0, camY = 0, camX = 0;
+
+  (function loop() {
+    requestAnimationFrame(loop);
+
+    if (!reduced) {
+      t += 0.007;
+      /* slow lerp — palette transition feels like drifting through space */
+      smoothScroll += (targetScroll - smoothScroll) * 0.022;
+      /* camera: scroll orbit + mouse parallax */
+      camOrbit += (smoothScroll * (Math.PI / 2.2) - camOrbit) * 0.04;
+      camY     += (mx * 0.06 - camY) * 0.06;
+      camX     += (-my * 0.04 - camX) * 0.06;
+      camera.rotation.y = camOrbit + camY;
+      camera.rotation.x = camX;
+    }
+    /* reduced motion: t & smoothScroll stay 0 → static hero-palette nebula, no orbit */
+
+    nebU.time.value   = t;
+    nebU.scroll.value = smoothScroll;
+    starU.time.value  = t;
+
+    renderer.render(scene, camera);
+  })();
+})();
+</script>
+
+<script>
+/* ── Count-up ── */
+function countUp(el) {
+  const target = parseInt(el.dataset.count, 10);
+  const suffix = el.dataset.suffix || '';
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    el.textContent = target.toLocaleString('en') + suffix;
+    return;
+  }
+  const t0 = performance.now(), dur = 1300;
+  (function tick(now) {
+    const p = Math.min((now - t0) / dur, 1);
+    const e = 1 - Math.pow(1 - p, 3);
+    el.textContent = Math.round(e * target).toLocaleString('en') + suffix;
+    if (p < 1) requestAnimationFrame(tick);
+  })(t0);
+}
+
+/* ── Scroll reveal ── */
+const revealObs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); revealObs.unobserve(e.target); } });
+}, { threshold: 0.1, rootMargin: '0px 0px -28px 0px' });
+
+const countObs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { countUp(e.target); countObs.unobserve(e.target); } });
+}, { threshold: 0.6 });
+
+document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
+document.querySelectorAll('[data-count]').forEach(el => countObs.observe(el));
+</script>
+
+<script>
+/* ══════════════════════════════════════════════════════════════
+   #1 — THE BRUSH (ink → stars)
+   「畫筆」 is the brush: hover the words to pick it up, then draw
+   anywhere on the page. A calligraphic ink stroke flows — thick
+   when slow, thin when fast, tapered — and as it dries it crystallizes
+   into stardust that drifts up into the cosmos. Brush → ink → worlds.
+   Skipped under reduced motion and on touch/coarse pointers.
+══════════════════════════════════════════════════════════════ */
+(function brush() {
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  if (!matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+
+  const canvas = document.getElementById('brush');
+  const ctx = canvas.getContext('2d');
+
+  /* same cosmos palette as the WebGL stars */
+  const COLORS = [
+    [255, 255, 255], [255, 255, 255],
+    [200, 170, 255], [184, 127, 255],
+    [224, 111, 192], [150, 200, 255],
+  ];
+
+  /* tight glow: energy concentrated at the centre, fast falloff (not a fuzzy blob) */
+  function makeGlow(c) {
+    const s = 64, off = document.createElement('canvas');
+    off.width = off.height = s;
+    const o = off.getContext('2d');
+    const g = o.createRadialGradient(s/2, s/2, 0, s/2, s/2, s/2);
+    g.addColorStop(0,    `rgba(${c[0]},${c[1]},${c[2]},1)`);
+    g.addColorStop(0.10, `rgba(${c[0]},${c[1]},${c[2]},0.55)`);
+    g.addColorStop(0.30, `rgba(${c[0]},${c[1]},${c[2]},0.12)`);
+    g.addColorStop(1,    `rgba(${c[0]},${c[1]},${c[2]},0)`);
+    o.fillStyle = g; o.fillRect(0, 0, s, s);
+    return off;
+  }
+  const GLOW = COLORS.map(makeGlow);
+
+  /* 4-point diffraction flare — what actually makes the eye read "star" */
+  function makeFlare() {
+    const s = 128, c = s / 2, off = document.createElement('canvas');
+    off.width = off.height = s;
+    const o = off.getContext('2d');
+    o.globalCompositeOperation = 'lighter';
+    let g = o.createLinearGradient(0, 0, 0, s);   // vertical spike
+    g.addColorStop(0, 'rgba(255,255,255,0)');
+    g.addColorStop(0.5, 'rgba(255,255,255,1)');
+    g.addColorStop(1, 'rgba(255,255,255,0)');
+    o.fillStyle = g; o.fillRect(c - 1, 0, 2, s);
+    g = o.createLinearGradient(0, 0, s, 0);       // horizontal spike
+    g.addColorStop(0, 'rgba(255,255,255,0)');
+    g.addColorStop(0.5, 'rgba(255,255,255,1)');
+    g.addColorStop(1, 'rgba(255,255,255,0)');
+    o.fillStyle = g; o.fillRect(0, c - 1, s, 2);
+    g = o.createRadialGradient(c, c, 0, c, c, 9); // bright central pop
+    g.addColorStop(0, 'rgba(255,255,255,1)');
+    g.addColorStop(1, 'rgba(255,255,255,0)');
+    o.fillStyle = g; o.beginPath(); o.arc(c, c, 9, 0, 7); o.fill();
+    return off;
+  }
+  const FLARE = makeFlare();
+
+  function resize() {
+    const DPR = Math.min(devicePixelRatio, 2);
+    canvas.width  = innerWidth  * DPR;
+    canvas.height = innerHeight * DPR;
+    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+  }
+  resize();
+  addEventListener('resize', resize);
+
+  /* ── state ── */
+  const ink   = [];   // ribbon points: {x, y, w, life, max, shed}
+  const stars = [];   // stardust the ink resolves into
+  const INK_MAX = 170, STAR_MAX = 260;
+  const INK_LIFE = 1100;            // ms an ink point stays before drying out
+
+  let curX = -1, curY = -1, armed = false;
+  let lastX = 0, lastY = 0, lastT = 0, hasLast = false;
+
+  function addStar(x, y, v) {
+    if (stars.length >= STAR_MAX) stars.shift();
+    const a = Math.random() * Math.PI * 2;
+    const sp = v != null ? v : 0.03 + Math.random() * 0.14;
+    stars.push({
+      x, y,
+      vx: Math.cos(a) * sp,
+      vy: Math.sin(a) * sp - 0.05,            // gentle upward release
+      life: 0, max: 800 + Math.random() * 900,
+      size: 0.6 + Math.random() * 1.5,
+      tw: Math.random() * Math.PI * 2,
+      tws: 0.004 + Math.random() * 0.006,     // per-star twinkle speed
+      si: Math.random() * GLOW.length | 0,
+      spike: Math.random() < 0.4,             // ~40% get diffraction spikes
+    });
+  }
+
+  function addInk(x, y, w) {
+    if (ink.length >= INK_MAX) ink.shift();
+    ink.push({ x, y, w, life: 0, max: INK_LIFE, shed: false });
+  }
+
+  /* the brush IS the word 「畫筆」 — hover it to pick it up */
+  const word = document.getElementById('brush-word');
+  function arm() {
+    if (armed) return;
+    armed = true;
+    word.classList.add('armed');
+    /* dip the brush — a little ink shed from the words as you grasp it */
+    const r = word.getBoundingClientRect();
+    for (let i = 0; i < 14; i++) {
+      addStar(r.left + Math.random() * r.width, r.top + Math.random() * r.height, 0.04 + Math.random() * 0.12);
+    }
+    hasLast = false;
+  }
+  if (word) word.addEventListener('mouseenter', arm);
+
+  /* ── lay ink with speed-driven width (slow = thick/wet, fast = thin/dry) ── */
+  addEventListener('mousemove', e => {
+    curX = e.clientX; curY = e.clientY;
+    const now = performance.now();
+    if (!armed) { hasLast = false; return; }
+    if (!hasLast) { lastX = curX; lastY = curY; lastT = now; hasLast = true; addInk(curX, curY, 3); return; }
+
+    const dx = curX - lastX, dy = curY - lastY;
+    const dist = Math.hypot(dx, dy);
+    if (dist < 2) return;
+
+    const dt = Math.max(now - lastT, 8);
+    const speed = dist / dt;                   // px/ms
+    const w = Math.max(2, 13 - speed * 7);     // calligraphic width 2..13
+
+    /* subdivide long moves so the ribbon stays continuous */
+    const steps = Math.max(1, Math.ceil(dist / 6));
+    for (let s = 1; s <= steps; s++) {
+      const f = s / steps;
+      addInk(lastX + dx * f, lastY + dy * f, w);
+    }
+    lastX = curX; lastY = curY; lastT = now;
+  });
+  addEventListener('mouseleave', () => { hasLast = false; });
+
+  /* ── render ── */
+  let prev = performance.now();
+  (function loop(now) {
+    requestAnimationFrame(loop);
+    const dt = Math.min(now - prev, 50); prev = now;
+
+    ctx.clearRect(0, 0, innerWidth, innerHeight);
+    ctx.globalCompositeOperation = 'lighter';
+    ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+
+    /* age ink; as it dries (>55% life) it crystallizes into a star */
+    for (let i = ink.length - 1; i >= 0; i--) {
+      const p = ink[i];
+      p.life += dt;
+      if (p.life >= p.max) { ink.splice(i, 1); continue; }
+      if (!p.shed && p.life > p.max * 0.55 && Math.random() < 0.5) {
+        p.shed = true; addStar(p.x, p.y);
+      }
+    }
+
+    /* draw the ribbon: a wide soft glow pass, then a bright wet core */
+    for (let pass = 0; pass < 2; pass++) {
+      for (let i = 1; i < ink.length; i++) {
+        const a = ink[i - 1], b = ink[i];
+        if (Math.hypot(b.x - a.x, b.y - a.y) > 28) continue;  // break across pen lifts
+        const fade = 1 - b.life / b.max;
+        if (fade <= 0) continue;
+        const wet = Math.max(0, 1 - b.life / (b.max * 0.5));  // wet→dry highlight
+        const w = (a.w + b.w) * 0.5;
+        if (pass === 0) {
+          ctx.strokeStyle = `rgba(150,110,235,${0.10 * fade})`;
+          ctx.lineWidth = w * 2.8;
         } else {
-          checkInitialSection();
+          const rr = (200 + 55 * wet) | 0, gg = (170 + 60 * wet) | 0;
+          ctx.strokeStyle = `rgba(${rr},${gg},255,${(0.30 + 0.42 * wet) * fade})`;
+          ctx.lineWidth = w;
         }
-      })();
+        ctx.beginPath();
+        ctx.moveTo(a.x, a.y);
+        ctx.lineTo(b.x, b.y);
+        ctx.stroke();
+      }
+    }
 
-      // ===== Table Row Interaction =====
-      const tableRows = document.querySelectorAll(".tab table tr");
-      tableRows.forEach((row, index) => {
-        row.style.cursor = "pointer";
-        row.style.transition = "all 0.3s ease";
+    /* stardust the ink resolved into — tight glow + diffraction flare + pinpoint core */
+    for (let i = stars.length - 1; i >= 0; i--) {
+      const p = stars[i];
+      p.life += dt;
+      if (p.life >= p.max) { stars.splice(i, 1); continue; }
+      p.x += p.vx * dt; p.y += p.vy * dt;
+      p.vx *= 0.985; p.vy *= 0.985;
+      const t = p.life / p.max;
+      const f = t < 0.18 ? t / 0.18 : 1 - (t - 0.18) / 0.82;
+      const tw = 0.45 + 0.55 * Math.sin(p.tw + now * p.tws);   // pronounced twinkle
+      const a = Math.max(0, f) * Math.max(0.1, tw);
 
-        row.addEventListener("mouseenter", function () {
-          this.style.backgroundColor = "rgba(34, 211, 238, 0.1)";
-          this.style.transform = "scale(1.02)";
-          this.style.paddingLeft = "10px";
-        });
+      const gd = p.size * 5;                                   // small tight glow
+      ctx.globalAlpha = a;
+      ctx.drawImage(GLOW[p.si], p.x - gd/2, p.y - gd/2, gd, gd);
 
-        row.addEventListener("mouseleave", function () {
-          this.style.backgroundColor = "transparent";
-          this.style.transform = "scale(1)";
-          this.style.paddingLeft = "0px";
-        });
-      });
-
-      // ===== Animation Definitions =====
-      if (!document.querySelector("style[data-animation]")) {
-        const style = document.createElement("style");
-        style.setAttribute("data-animation", "true");
-        style.textContent = `
-          .skill-badge {
-            animation: slideIn 0.6s ease-out forwards;
-          }
-
-          @keyframes slideIn {
-            from {
-              opacity: 0;
-              transform: translateX(-20px);
-            }
-            to {
-              opacity: 1;
-              transform: translateX(0);
-            }
-          }
-
-          /* Improve Table Interaction */
-          .tab table tr {
-            position: relative;
-          }
-
-          .tab table tr::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: linear-gradient(90deg, #22d3ee, #0891b2);
-            transition: width 0.3s ease;
-          }
-
-          .tab table tr:hover::after {
-            width: 100%;
-          }
-        `;
-        document.head.appendChild(style);
+      if (p.spike) {                                           // star-cross flare
+        const fd = p.size * 16;
+        ctx.globalAlpha = a * 0.6;
+        ctx.drawImage(FLARE, p.x - fd/2, p.y - fd/2, fd, fd);
       }
 
-      // ===== Nav Links Interaction =====
-      const navLinks = document.querySelectorAll("nav a");
-      navLinks.forEach((link) => {
-        link.addEventListener("mouseenter", function () {
-          this.style.textShadow = "0 0 10px rgba(102, 252, 241, 0.8)";
-        });
+      ctx.globalAlpha = a;                                     // crisp hot pinpoint
+      ctx.fillStyle = '#fff';
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, Math.max(0.6, p.size * 0.45), 0, 7);
+      ctx.fill();
+    }
+    ctx.globalAlpha = 1;
 
-        link.addEventListener("mouseleave", function () {
-          this.style.textShadow = "none";
-        });
-      });
+    /* wet brush-tip bead so the loaded brush is visible even when still */
+    if (armed && curX >= 0) {
+      const g = ctx.createRadialGradient(curX, curY, 0, curX, curY, 15);
+      g.addColorStop(0,   'rgba(255,255,255,0.85)');
+      g.addColorStop(0.3, 'rgba(210,180,255,0.45)');
+      g.addColorStop(1,   'rgba(210,180,255,0)');
+      ctx.fillStyle = g;
+      ctx.beginPath(); ctx.arc(curX, curY, 15, 0, Math.PI * 2); ctx.fill();
+    }
 
-      // ===== Add Scroll Animation =====
-      function addScrollAnimation() {
-        const elements = document.querySelectorAll(".skill-badge, .tab");
-        const scrollObserver = new IntersectionObserver(
-          (entries) => {
-            entries.forEach((entry, index) => {
-              if (entry.isIntersecting) {
-                entry.target.style.opacity = "1";
-                entry.target.style.transform = "translateY(0)";
-              }
-            });
-          },
-          { threshold: 0 },
-        );
-
-        elements.forEach((el, index) => {
-          el.style.opacity = "0";
-          el.style.transform = "translateY(20px)";
-          el.style.transition = `opacity 0.5s ease ${index * 0.1}s, transform 0.5s ease ${index * 0.1}s`;
-          scrollObserver.observe(el);
-        });
-      }
-
-      addScrollAnimation();
-
-      // ===== Header Area Interaction =====
-      const mainArea = document.querySelector(".mainarea");
-      if (mainArea) {
-        const heading = mainArea.querySelector(".vlarge");
-        if (heading) {
-          heading.style.cursor = "default";
-          heading.style.transition = "text-shadow 0.3s ease";
-
-          mainArea.addEventListener("mouseenter", function () {
-            heading.style.textShadow = "0 0 30px rgba(102, 126, 234, 0.8)";
-          });
-
-          mainArea.addEventListener("mouseleave", function () {
-            heading.style.textShadow = "none";
-          });
-        }
-      }
-
-      // ===== Game Project Scroll Animation =====
-      const projectCards = document.querySelectorAll(".project-card");
-      if (projectCards.length > 0) {
-        const projectObserverOptions = {
-          threshold: 0,
-          rootMargin: "0px",
-        };
-
-        const projectObserver = new IntersectionObserver(function (entries) {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              entry.target.style.opacity = "1";
-              entry.target.style.transform = "translateY(0)";
-            }
-          });
-        }, projectObserverOptions);
-
-        projectCards.forEach((card) => {
-          card.style.opacity = "0";
-          card.style.transform = "translateY(20px)";
-          card.style.transition = "opacity 0.6s ease, transform 0.6s ease";
-          projectObserver.observe(card);
-        });
-      }
-    </script>
-  </body>
+    ctx.globalCompositeOperation = 'source-over';
+  })(prev);
+})();
+</script>
+</body>
 </html>

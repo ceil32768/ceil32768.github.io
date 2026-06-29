@@ -659,8 +659,8 @@ document.querySelectorAll('[data-count]').forEach(el => countObs.observe(el));
 <script>
 /* ══════════════════════════════════════════════════════════════
    #1 — THE BRUSH (ink → stars)
-   「畫筆」 is the brush: hover the words to pick it up, then draw on
-   the hero. A calligraphic ink stroke flows from the cursor — thick
+   「畫筆」 is the brush: hover the words to pick it up, then draw
+   anywhere on the page. A calligraphic ink stroke flows — thick
    when slow, thin when fast, tapered — and as it dries it crystallizes
    into stardust that drifts up into the cosmos. Brush → ink → worlds.
    Skipped under reduced motion and on touch/coarse pointers.
@@ -679,19 +679,44 @@ document.querySelectorAll('[data-count]').forEach(el => countObs.observe(el));
     [224, 111, 192], [150, 200, 255],
   ];
 
-  /* pre-render one soft-glow sprite per colour → fast drawImage, smooth on weak GPUs */
-  function makeSprite(c) {
+  /* tight glow: energy concentrated at the centre, fast falloff (not a fuzzy blob) */
+  function makeGlow(c) {
     const s = 64, off = document.createElement('canvas');
     off.width = off.height = s;
     const o = off.getContext('2d');
     const g = o.createRadialGradient(s/2, s/2, 0, s/2, s/2, s/2);
     g.addColorStop(0,    `rgba(${c[0]},${c[1]},${c[2]},1)`);
-    g.addColorStop(0.35, `rgba(${c[0]},${c[1]},${c[2]},0.5)`);
+    g.addColorStop(0.10, `rgba(${c[0]},${c[1]},${c[2]},0.55)`);
+    g.addColorStop(0.30, `rgba(${c[0]},${c[1]},${c[2]},0.12)`);
     g.addColorStop(1,    `rgba(${c[0]},${c[1]},${c[2]},0)`);
     o.fillStyle = g; o.fillRect(0, 0, s, s);
     return off;
   }
-  const SPRITES = COLORS.map(makeSprite);
+  const GLOW = COLORS.map(makeGlow);
+
+  /* 4-point diffraction flare — what actually makes the eye read "star" */
+  function makeFlare() {
+    const s = 128, c = s / 2, off = document.createElement('canvas');
+    off.width = off.height = s;
+    const o = off.getContext('2d');
+    o.globalCompositeOperation = 'lighter';
+    let g = o.createLinearGradient(0, 0, 0, s);   // vertical spike
+    g.addColorStop(0, 'rgba(255,255,255,0)');
+    g.addColorStop(0.5, 'rgba(255,255,255,1)');
+    g.addColorStop(1, 'rgba(255,255,255,0)');
+    o.fillStyle = g; o.fillRect(c - 1, 0, 2, s);
+    g = o.createLinearGradient(0, 0, s, 0);       // horizontal spike
+    g.addColorStop(0, 'rgba(255,255,255,0)');
+    g.addColorStop(0.5, 'rgba(255,255,255,1)');
+    g.addColorStop(1, 'rgba(255,255,255,0)');
+    o.fillStyle = g; o.fillRect(0, c - 1, s, 2);
+    g = o.createRadialGradient(c, c, 0, c, c, 9); // bright central pop
+    g.addColorStop(0, 'rgba(255,255,255,1)');
+    g.addColorStop(1, 'rgba(255,255,255,0)');
+    o.fillStyle = g; o.beginPath(); o.arc(c, c, 9, 0, 7); o.fill();
+    return off;
+  }
+  const FLARE = makeFlare();
 
   function resize() {
     const DPR = Math.min(devicePixelRatio, 2);
@@ -711,8 +736,6 @@ document.querySelectorAll('[data-count]').forEach(el => countObs.observe(el));
   let curX = -1, curY = -1, armed = false;
   let lastX = 0, lastY = 0, lastT = 0, hasLast = false;
 
-  const heroActive = () => scrollY < innerHeight * 0.85;
-
   function addStar(x, y, v) {
     if (stars.length >= STAR_MAX) stars.shift();
     const a = Math.random() * Math.PI * 2;
@@ -722,9 +745,11 @@ document.querySelectorAll('[data-count]').forEach(el => countObs.observe(el));
       vx: Math.cos(a) * sp,
       vy: Math.sin(a) * sp - 0.05,            // gentle upward release
       life: 0, max: 800 + Math.random() * 900,
-      size: 0.7 + Math.random() * 1.8,
+      size: 0.6 + Math.random() * 1.5,
       tw: Math.random() * Math.PI * 2,
-      si: Math.random() * SPRITES.length | 0,
+      tws: 0.004 + Math.random() * 0.006,     // per-star twinkle speed
+      si: Math.random() * GLOW.length | 0,
+      spike: Math.random() < 0.4,             // ~40% get diffraction spikes
     });
   }
 
@@ -746,19 +771,13 @@ document.querySelectorAll('[data-count]').forEach(el => countObs.observe(el));
     }
     hasLast = false;
   }
-  function disarm() {
-    if (!armed) return;
-    armed = false;
-    word.classList.remove('armed');
-    hasLast = false;
-  }
   if (word) word.addEventListener('mouseenter', arm);
 
   /* ── lay ink with speed-driven width (slow = thick/wet, fast = thin/dry) ── */
   addEventListener('mousemove', e => {
     curX = e.clientX; curY = e.clientY;
     const now = performance.now();
-    if (!armed || !heroActive()) { hasLast = false; return; }
+    if (!armed) { hasLast = false; return; }
     if (!hasLast) { lastX = curX; lastY = curY; lastT = now; hasLast = true; addInk(curX, curY, 3); return; }
 
     const dx = curX - lastX, dy = curY - lastY;
@@ -778,8 +797,6 @@ document.querySelectorAll('[data-count]').forEach(el => countObs.observe(el));
     lastX = curX; lastY = curY; lastT = now;
   });
   addEventListener('mouseleave', () => { hasLast = false; });
-  /* put the brush down once you leave the hero */
-  addEventListener('scroll', () => { if (!heroActive()) disarm(); }, { passive: true });
 
   /* ── render ── */
   let prev = performance.now();
@@ -825,7 +842,7 @@ document.querySelectorAll('[data-count]').forEach(el => countObs.observe(el));
       }
     }
 
-    /* stardust the ink resolved into */
+    /* stardust the ink resolved into — tight glow + diffraction flare + pinpoint core */
     for (let i = stars.length - 1; i >= 0; i--) {
       const p = stars[i];
       p.life += dt;
@@ -834,10 +851,24 @@ document.querySelectorAll('[data-count]').forEach(el => countObs.observe(el));
       p.vx *= 0.985; p.vy *= 0.985;
       const t = p.life / p.max;
       const f = t < 0.18 ? t / 0.18 : 1 - (t - 0.18) / 0.82;
-      const tw = 0.7 + 0.3 * Math.sin(p.tw + now * 0.005);
-      ctx.globalAlpha = Math.max(0, f) * tw;
-      const d = p.size * 9;
-      ctx.drawImage(SPRITES[p.si], p.x - d/2, p.y - d/2, d, d);
+      const tw = 0.45 + 0.55 * Math.sin(p.tw + now * p.tws);   // pronounced twinkle
+      const a = Math.max(0, f) * Math.max(0.1, tw);
+
+      const gd = p.size * 5;                                   // small tight glow
+      ctx.globalAlpha = a;
+      ctx.drawImage(GLOW[p.si], p.x - gd/2, p.y - gd/2, gd, gd);
+
+      if (p.spike) {                                           // star-cross flare
+        const fd = p.size * 16;
+        ctx.globalAlpha = a * 0.6;
+        ctx.drawImage(FLARE, p.x - fd/2, p.y - fd/2, fd, fd);
+      }
+
+      ctx.globalAlpha = a;                                     // crisp hot pinpoint
+      ctx.fillStyle = '#fff';
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, Math.max(0.6, p.size * 0.45), 0, 7);
+      ctx.fill();
     }
     ctx.globalAlpha = 1;
 

@@ -49,6 +49,15 @@
       z-index: 0;
       pointer-events: none;
     }
+    /* brush layer — paints stardust over the nebula, behind content */
+    #brush {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+    }
 
     /* all content above canvas */
     .nav, .hero, .section, footer { position: relative; z-index: 1; }
@@ -109,6 +118,19 @@
       text-shadow: 0 2px 24px rgba(0,0,0,0.85);
     }
     .hero__quote::before { content: ''; position: absolute; left: 0; top: 0.35em; bottom: 0.35em; width: 2px; background: linear-gradient(to bottom, var(--accent), var(--pink)); border-radius: 2px; }
+    /* 「畫筆」 — the words ARE the brush; hover to pick it up */
+    .brush-word {
+      color: var(--accent);
+      cursor: crosshair;
+      border-bottom: 1px dotted var(--accent-line);
+      text-shadow: 0 0 18px rgba(184,127,255,0.5);
+      transition: color 0.3s, text-shadow 0.3s;
+    }
+    .brush-word:hover, .brush-word.armed {
+      color: #fff;
+      border-bottom-color: transparent;
+      text-shadow: 0 0 26px rgba(184,127,255,0.9), 0 0 60px rgba(224,111,192,0.55);
+    }
     .hero__sub { margin-top: 1.1rem; font-family: var(--f-mono); font-size: 0.7rem; letter-spacing: 0.2em; color: var(--muted); text-shadow: 0 1px 12px rgba(0,0,0,0.8); }
     .hero__stats { display: flex; gap: clamp(1.5rem, 5vw, 3.5rem); flex-wrap: wrap; margin-top: clamp(2.5rem, 6vh, 4rem); }
     .stat__num { display: block; font-family: var(--f-mono); font-size: clamp(1.4rem, 3.5vw, 2.2rem); font-weight: 600; color: var(--accent); line-height: 1; text-shadow: 0 0 40px rgba(184,127,255,0.6); }
@@ -204,6 +226,7 @@
 <body>
 
 <canvas id="star-field"></canvas>
+<canvas id="brush"></canvas>
 
 <nav class="nav">
   <div class="nav__inner">
@@ -224,7 +247,7 @@
     <p class="eyebrow hero__eyebrow">Indie Game Developer</p>
     <h1 class="hero__name">Ceil<span class="dot">.</span></h1>
     <blockquote class="hero__quote">
-      給我足夠多的畫筆，<br>我能為你創造整個世界
+      給我足夠多的<span class="brush-word" id="brush-word">畫筆</span>，<br>我能為你創造整個世界
     </blockquote>
     <p class="hero__sub">獨立遊戲開發者 · Ceilusion Studio 創辦人</p>
     <div class="hero__stats">
@@ -631,6 +654,206 @@ const countObs = new IntersectionObserver(entries => {
 
 document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
 document.querySelectorAll('[data-count]').forEach(el => countObs.observe(el));
+</script>
+
+<script>
+/* ══════════════════════════════════════════════════════════════
+   #1 — THE BRUSH (ink → stars)
+   「畫筆」 is the brush: hover the words to pick it up, then draw on
+   the hero. A calligraphic ink stroke flows from the cursor — thick
+   when slow, thin when fast, tapered — and as it dries it crystallizes
+   into stardust that drifts up into the cosmos. Brush → ink → worlds.
+   Skipped under reduced motion and on touch/coarse pointers.
+══════════════════════════════════════════════════════════════ */
+(function brush() {
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  if (!matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+
+  const canvas = document.getElementById('brush');
+  const ctx = canvas.getContext('2d');
+
+  /* same cosmos palette as the WebGL stars */
+  const COLORS = [
+    [255, 255, 255], [255, 255, 255],
+    [200, 170, 255], [184, 127, 255],
+    [224, 111, 192], [150, 200, 255],
+  ];
+
+  /* pre-render one soft-glow sprite per colour → fast drawImage, smooth on weak GPUs */
+  function makeSprite(c) {
+    const s = 64, off = document.createElement('canvas');
+    off.width = off.height = s;
+    const o = off.getContext('2d');
+    const g = o.createRadialGradient(s/2, s/2, 0, s/2, s/2, s/2);
+    g.addColorStop(0,    `rgba(${c[0]},${c[1]},${c[2]},1)`);
+    g.addColorStop(0.35, `rgba(${c[0]},${c[1]},${c[2]},0.5)`);
+    g.addColorStop(1,    `rgba(${c[0]},${c[1]},${c[2]},0)`);
+    o.fillStyle = g; o.fillRect(0, 0, s, s);
+    return off;
+  }
+  const SPRITES = COLORS.map(makeSprite);
+
+  function resize() {
+    const DPR = Math.min(devicePixelRatio, 2);
+    canvas.width  = innerWidth  * DPR;
+    canvas.height = innerHeight * DPR;
+    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+  }
+  resize();
+  addEventListener('resize', resize);
+
+  /* ── state ── */
+  const ink   = [];   // ribbon points: {x, y, w, life, max, shed}
+  const stars = [];   // stardust the ink resolves into
+  const INK_MAX = 170, STAR_MAX = 260;
+  const INK_LIFE = 1100;            // ms an ink point stays before drying out
+
+  let curX = -1, curY = -1, armed = false;
+  let lastX = 0, lastY = 0, lastT = 0, hasLast = false;
+
+  const heroActive = () => scrollY < innerHeight * 0.85;
+
+  function addStar(x, y, v) {
+    if (stars.length >= STAR_MAX) stars.shift();
+    const a = Math.random() * Math.PI * 2;
+    const sp = v != null ? v : 0.03 + Math.random() * 0.14;
+    stars.push({
+      x, y,
+      vx: Math.cos(a) * sp,
+      vy: Math.sin(a) * sp - 0.05,            // gentle upward release
+      life: 0, max: 800 + Math.random() * 900,
+      size: 0.7 + Math.random() * 1.8,
+      tw: Math.random() * Math.PI * 2,
+      si: Math.random() * SPRITES.length | 0,
+    });
+  }
+
+  function addInk(x, y, w) {
+    if (ink.length >= INK_MAX) ink.shift();
+    ink.push({ x, y, w, life: 0, max: INK_LIFE, shed: false });
+  }
+
+  /* the brush IS the word 「畫筆」 — hover it to pick it up */
+  const word = document.getElementById('brush-word');
+  function arm() {
+    if (armed) return;
+    armed = true;
+    word.classList.add('armed');
+    /* dip the brush — a little ink shed from the words as you grasp it */
+    const r = word.getBoundingClientRect();
+    for (let i = 0; i < 14; i++) {
+      addStar(r.left + Math.random() * r.width, r.top + Math.random() * r.height, 0.04 + Math.random() * 0.12);
+    }
+    hasLast = false;
+  }
+  function disarm() {
+    if (!armed) return;
+    armed = false;
+    word.classList.remove('armed');
+    hasLast = false;
+  }
+  if (word) word.addEventListener('mouseenter', arm);
+
+  /* ── lay ink with speed-driven width (slow = thick/wet, fast = thin/dry) ── */
+  addEventListener('mousemove', e => {
+    curX = e.clientX; curY = e.clientY;
+    const now = performance.now();
+    if (!armed || !heroActive()) { hasLast = false; return; }
+    if (!hasLast) { lastX = curX; lastY = curY; lastT = now; hasLast = true; addInk(curX, curY, 3); return; }
+
+    const dx = curX - lastX, dy = curY - lastY;
+    const dist = Math.hypot(dx, dy);
+    if (dist < 2) return;
+
+    const dt = Math.max(now - lastT, 8);
+    const speed = dist / dt;                   // px/ms
+    const w = Math.max(2, 13 - speed * 7);     // calligraphic width 2..13
+
+    /* subdivide long moves so the ribbon stays continuous */
+    const steps = Math.max(1, Math.ceil(dist / 6));
+    for (let s = 1; s <= steps; s++) {
+      const f = s / steps;
+      addInk(lastX + dx * f, lastY + dy * f, w);
+    }
+    lastX = curX; lastY = curY; lastT = now;
+  });
+  addEventListener('mouseleave', () => { hasLast = false; });
+  /* put the brush down once you leave the hero */
+  addEventListener('scroll', () => { if (!heroActive()) disarm(); }, { passive: true });
+
+  /* ── render ── */
+  let prev = performance.now();
+  (function loop(now) {
+    requestAnimationFrame(loop);
+    const dt = Math.min(now - prev, 50); prev = now;
+
+    ctx.clearRect(0, 0, innerWidth, innerHeight);
+    ctx.globalCompositeOperation = 'lighter';
+    ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+
+    /* age ink; as it dries (>55% life) it crystallizes into a star */
+    for (let i = ink.length - 1; i >= 0; i--) {
+      const p = ink[i];
+      p.life += dt;
+      if (p.life >= p.max) { ink.splice(i, 1); continue; }
+      if (!p.shed && p.life > p.max * 0.55 && Math.random() < 0.5) {
+        p.shed = true; addStar(p.x, p.y);
+      }
+    }
+
+    /* draw the ribbon: a wide soft glow pass, then a bright wet core */
+    for (let pass = 0; pass < 2; pass++) {
+      for (let i = 1; i < ink.length; i++) {
+        const a = ink[i - 1], b = ink[i];
+        if (Math.hypot(b.x - a.x, b.y - a.y) > 28) continue;  // break across pen lifts
+        const fade = 1 - b.life / b.max;
+        if (fade <= 0) continue;
+        const wet = Math.max(0, 1 - b.life / (b.max * 0.5));  // wet→dry highlight
+        const w = (a.w + b.w) * 0.5;
+        if (pass === 0) {
+          ctx.strokeStyle = `rgba(150,110,235,${0.10 * fade})`;
+          ctx.lineWidth = w * 2.8;
+        } else {
+          const rr = (200 + 55 * wet) | 0, gg = (170 + 60 * wet) | 0;
+          ctx.strokeStyle = `rgba(${rr},${gg},255,${(0.30 + 0.42 * wet) * fade})`;
+          ctx.lineWidth = w;
+        }
+        ctx.beginPath();
+        ctx.moveTo(a.x, a.y);
+        ctx.lineTo(b.x, b.y);
+        ctx.stroke();
+      }
+    }
+
+    /* stardust the ink resolved into */
+    for (let i = stars.length - 1; i >= 0; i--) {
+      const p = stars[i];
+      p.life += dt;
+      if (p.life >= p.max) { stars.splice(i, 1); continue; }
+      p.x += p.vx * dt; p.y += p.vy * dt;
+      p.vx *= 0.985; p.vy *= 0.985;
+      const t = p.life / p.max;
+      const f = t < 0.18 ? t / 0.18 : 1 - (t - 0.18) / 0.82;
+      const tw = 0.7 + 0.3 * Math.sin(p.tw + now * 0.005);
+      ctx.globalAlpha = Math.max(0, f) * tw;
+      const d = p.size * 9;
+      ctx.drawImage(SPRITES[p.si], p.x - d/2, p.y - d/2, d, d);
+    }
+    ctx.globalAlpha = 1;
+
+    /* wet brush-tip bead so the loaded brush is visible even when still */
+    if (armed && curX >= 0) {
+      const g = ctx.createRadialGradient(curX, curY, 0, curX, curY, 15);
+      g.addColorStop(0,   'rgba(255,255,255,0.85)');
+      g.addColorStop(0.3, 'rgba(210,180,255,0.45)');
+      g.addColorStop(1,   'rgba(210,180,255,0)');
+      ctx.fillStyle = g;
+      ctx.beginPath(); ctx.arc(curX, curY, 15, 0, Math.PI * 2); ctx.fill();
+    }
+
+    ctx.globalCompositeOperation = 'source-over';
+  })(prev);
+})();
 </script>
 </body>
 </html>

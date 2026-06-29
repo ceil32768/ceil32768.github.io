@@ -134,21 +134,6 @@ const CEIL_RECRUIT_ROLES_EN = [
         text:
           'Ensures scripts and footage are rights-clean (e.g. Wiki citations under CC). Enforces the publishing calendar so marketing ships on time.',
       },
-      {
-        label: 'Compensation — dual revenue share:',
-        text:
-          'In addition to Ceil Studio game net profit, receives 60% of actual YouTube AdSense revenue from the official channel operated on behalf of the studio, as exclusive performance bonus.',
-      },
-      {
-        label: 'Compensation — account sovereignty:',
-        text:
-          'Channel ownership, brand IP, and credentials remain 100% with the founder (Ceil). Work is done via YouTube Editor role only—no requests for highest-level access.',
-      },
-      {
-        label: 'Compensation — payout & termination:',
-        text:
-          'Revenue is paid to the studio account by YouTube first; the studio settles monthly or quarterly. The 60% is an in-role labor bonus; on exit, resignation, or termination, revenue share ends immediately with no claim on future channel earnings.',
-      },
     ],
   },
 

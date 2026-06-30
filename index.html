@@ -145,6 +145,24 @@
     .hero__scroll svg { width: 1em; height: 1em; animation: bob 2s ease-in-out infinite; }
     @keyframes bob { 0%,100%{transform:translateY(0)} 50%{transform:translateY(5px)} }
 
+    /* ── HERO ENTRANCE「落筆成界」── only while JS adds .intro (desktop + motion);
+       under reduced-motion / no-hover the IIFE never adds .intro, so all shows normally */
+    @keyframes heroRise { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+    @keyframes qRise    { from { opacity: 0; transform: translateY(8px);  } to { opacity: 1; transform: none; } }
+    @keyframes barDraw  { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+    .hero.intro .hero__eyebrow,
+    .hero.intro .hero__name,
+    .hero.intro .hero__scroll,
+    .hero.intro .hero__sub { opacity: 0; }
+    .hero.intro .hero__eyebrow.play,
+    .hero.intro .hero__name.play,
+    .hero.intro .hero__scroll.play { animation: heroRise 0.6s cubic-bezier(.22,.7,.2,1) forwards; }
+    .hero.intro .hero__sub.revealed { opacity: 1; }
+    .hero.intro .hero__quote::before { transform: scaleY(0); transform-origin: top center; }
+    .hero.intro .hero__quote.play::before { animation: barDraw 0.5s ease forwards; }
+    .q-char { display: inline-block; opacity: 0; }
+    .q-char.play { animation: qRise 0.5s ease forwards; }
+
     /* ── CARDS — minimal dark fill, border only ── */
     .game-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 1.6rem; display: flex; flex-direction: column; gap: 0.9rem; position: relative; overflow: hidden; transition: border-color 0.25s, background 0.25s; }
     .game-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--accent), var(--pink)); transform: scaleX(0); transform-origin: left; transition: transform 0.3s ease; }
@@ -423,6 +441,7 @@ const NEBULA_FRAG = `
   varying vec3 vP;
   uniform float time;
   uniform float scroll;
+  uniform float birth;
 
   float hash(vec3 p){ p=fract(p*0.3183099+0.1); p*=17.0; return fract(p.x*p.y*p.z*(p.x+p.y+p.z)); }
   float noise(vec3 x){
@@ -474,7 +493,7 @@ const NEBULA_FRAG = `
     vec3 col = mix(deep, mid, smoothstep(0.0, 1.0, n));
     col = mix(col, hi, smoothstep(0.50, 1.0, n2));
 
-    gl_FragColor = vec4(base + col * cloud * 0.62, 1.0);
+    gl_FragColor = vec4((base + col * cloud * 0.62) * smoothstep(0.12, 0.85, birth), 1.0);
   }
 `;
 
@@ -497,7 +516,7 @@ const NEBULA_FRAG = `
   camera.rotation.order = 'YXZ';   // set once, not per-frame
 
   /* Nebula skybox */
-  const nebU = { time: { value: 0 }, scroll: { value: 0 } };
+  const nebU = { time: { value: 0 }, scroll: { value: 0 }, birth: { value: 0 } };
   scene.add(new THREE.Mesh(
     new THREE.SphereGeometry(2000, 48, 48),
     new THREE.ShaderMaterial({
@@ -513,6 +532,7 @@ const NEBULA_FRAG = `
   const pos = new Float32Array(N * 3);
   const col = new Float32Array(N * 3);
   const siz = new Float32Array(N);
+  const dly = new Float32Array(N);
   const pal = [
     [1.0,1.0,1.0],[1.0,1.0,1.0],[1.0,1.0,1.0],
     [0.72,0.60,1.0],[0.90,0.70,1.0],[1.0,0.75,0.90],
@@ -527,31 +547,39 @@ const NEBULA_FRAG = `
     const c = pal[Math.random() * pal.length | 0];
     col[i*3] = c[0]; col[i*3+1] = c[1]; col[i*3+2] = c[2];
     siz[i] = 0.8 + Math.random() * 2.8;
+    dly[i] = Math.random() * 0.55;            // staggered ignition time for the burst
   }
   const sg = new THREE.BufferGeometry();
   sg.setAttribute('position', new THREE.BufferAttribute(pos, 3));
   sg.setAttribute('color',    new THREE.BufferAttribute(col, 3));
   sg.setAttribute('aSize',    new THREE.BufferAttribute(siz, 1));
+  sg.setAttribute('aDelay',   new THREE.BufferAttribute(dly, 1));
 
-  const starU = { time: { value: 0 } };
+  const starU = { time: { value: 0 }, birth: { value: 0 } };
   scene.add(new THREE.Points(sg, new THREE.ShaderMaterial({
     uniforms: starU, transparent: true, depthWrite: false,
     blending: THREE.AdditiveBlending, vertexColors: true,
     vertexShader: `
-      attribute float aSize; varying vec3 vC; varying float vT; uniform float time;
+      attribute float aSize; attribute float aDelay;
+      varying vec3 vC; varying float vA; uniform float time; uniform float birth;
       void main(){
         vC = color;
-        vT = 0.55 + 0.45 * sin(time*1.4 + position.x*0.04 + position.z*0.03);
-        vec4 mv = modelViewMatrix * vec4(position, 1.0);
-        gl_PointSize = aSize * (340.0 / -mv.z);
+        float tw = 0.55 + 0.45 * sin(time*1.4 + position.x*0.04 + position.z*0.03);
+        /* staggered birth: each star drifts out from the centre and fades in smoothly — no flash, no pop */
+        float lt   = clamp((birth - aDelay) / max(0.001, 1.0 - aDelay), 0.0, 1.0);
+        float ease = 1.0 - pow(1.0 - lt, 3.0);
+        float radf = mix(0.10, 1.0, ease);
+        vA = ease * tw;
+        vec4 mv = modelViewMatrix * vec4(position * radf, 1.0);
+        gl_PointSize = min(aSize * (340.0 / -mv.z), 70.0);
         gl_Position  = projectionMatrix * mv;
       }`,
     fragmentShader: `
-      varying vec3 vC; varying float vT;
+      varying vec3 vC; varying float vA;
       void main(){
         float d = length(gl_PointCoord - vec2(0.5));
         if(d > 0.5) discard;
-        gl_FragColor = vec4(vC, smoothstep(0.5, 0.0, d) * vT);
+        gl_FragColor = vec4(vC, smoothstep(0.5, 0.0, d) * vA);
       }`,
   })));
 
@@ -579,6 +607,10 @@ const NEBULA_FRAG = `
     }, { passive: true });
   }
 
+  /* ── Big Bang: cosmos bursts from a singularity into the starfield on load ── */
+  let birth = reduced ? 1 : 0;
+  const bangStart = performance.now(), BANG_MS = 2600;
+
   /* ── Loop ── */
   let t = 0, smoothScroll = 0, camOrbit = 0, camY = 0, camX = 0;
 
@@ -595,12 +627,18 @@ const NEBULA_FRAG = `
       camX     += (-my * 0.04 - camX) * 0.06;
       camera.rotation.y = camOrbit + camY;
       camera.rotation.x = camX;
+      if (birth < 1) {
+        const p = Math.min((performance.now() - bangStart) / BANG_MS, 1);
+        birth = 1 - Math.pow(1 - p, 3);
+      }
     }
-    /* reduced motion: t & smoothScroll stay 0 → static hero-palette nebula, no orbit */
+    /* reduced motion: birth=1 instantly → cosmos fully present, no bang, rays hidden */
 
     nebU.time.value   = t;
     nebU.scroll.value = smoothScroll;
+    nebU.birth.value  = birth;
     starU.time.value  = t;
+    starU.birth.value = birth;
 
     renderer.render(scene, camera);
   })();
@@ -755,58 +793,92 @@ document.querySelectorAll('[data-count]').forEach(el => countObs.observe(el));
   }
   if (word) word.addEventListener('mouseenter', arm);
 
-  /* Concept 1 — the line reverses on you: it first boasts 「我幾乎什麼都知道」,
-     then the claim is punctured into dust and reforms as 「我一無所知」.
-     The reader lives the Socratic flip: presumed knowledge → knowing nothing. */
-  const creed = document.querySelector('.hero__sub');
-  if (creed) {
-    const BOAST = '我以為我知道的已經夠多了';
-    const TRUTH = creed.textContent;   // 「我唯一知道的就是我一無所知」 (from HTML, no-JS fallback)
+  /* ── Hero entrance「落筆成界」+ creed reversal ──
+     Load enacts the motto: cosmos is there → name appears → motto is written
+     stroke by stroke → the creed reverses on you. (Skipped under reduced-motion /
+     no-hover: this whole IIFE returns early, .intro is never added, all shows normally.) */
+  const hero     = document.querySelector('.hero');
+  const eyebrow  = document.querySelector('.hero__eyebrow');
+  const heroName = document.querySelector('.hero__name');
+  const quote    = document.querySelector('.hero__quote');
+  const scrollC  = document.querySelector('.hero__scroll');
+  const creed    = document.querySelector('.hero__sub');
 
-    const build = (text) => {
-      creed.textContent = '';
-      const spans = [];
-      for (const ch of text) {
-        const s = document.createElement('span');
-        s.className = 'creed-char';
-        s.textContent = ch;
-        creed.appendChild(s);
-        spans.push(s);
+  /* split the motto into per-character spans (keeps #brush-word + <br> intact) */
+  const qchars = [];
+  if (quote) {
+    const wrapText = (node, parent) => {
+      const frag = document.createDocumentFragment();
+      for (const ch of node.textContent) {
+        const s = document.createElement('span'); s.className = 'q-char'; s.textContent = ch;
+        frag.appendChild(s); qchars.push(s);
       }
-      return spans;
+      parent.replaceChild(frag, node);
     };
-    const fadeIn = (spans) => {
-      spans.forEach(s => s.classList.add('enter'));
-      requestAnimationFrame(() => requestAnimationFrame(() =>
-        spans.forEach(s => s.classList.remove('enter'))));
-    };
+    [...quote.childNodes].forEach(node => {
+      if (node.nodeType === 3) wrapText(node, quote);
+      else if (node.nodeType === 1 && node.id === 'brush-word')
+        [...node.childNodes].forEach(inner => { if (inner.nodeType === 3) wrapText(inner, node); });
+    });
+  }
 
-    let playing = false;
-    function playReversal() {
-      if (playing) return;
-      playing = true;
-      creed.classList.add('boast');
-      fadeIn(build(BOAST));
-      setTimeout(() => {
-        creed.querySelectorAll('.creed-char').forEach(c => {
-          const ang = Math.random() * Math.PI * 2, dist = 12 + Math.random() * 30;
-          c.style.setProperty('--dx', (Math.cos(ang) * dist).toFixed(1) + 'px');
-          c.style.setProperty('--dy', (Math.sin(ang) * dist - 10).toFixed(1) + 'px');
-          c.style.setProperty('--dr', (Math.random() * 44 - 22).toFixed(1) + 'deg');
-          const r = c.getBoundingClientRect();
-          addStar(r.left + r.width / 2, r.top + r.height / 2, 0.03 + Math.random() * 0.08);
-          c.classList.add('scatter');
-        });
-        setTimeout(() => {
-          creed.classList.remove('boast');
-          fadeIn(build(TRUTH));
-          playing = false;
-        }, 650);
-      }, 1300);
-    }
+  /* creed reversal: boasts 「我以為我知道的畫筆已經夠多了」(brush = knowledge),
+     punctured into 「我一無所知」 */
+  const BOAST = '我以為我知道的畫筆已經夠多了';
+  const TRUTH = creed ? creed.textContent : '';
+  const buildCreed = (text) => {
+    creed.textContent = '';
+    const spans = [];
+    for (const ch of text) { const s = document.createElement('span'); s.className = 'creed-char'; s.textContent = ch; creed.appendChild(s); spans.push(s); }
+    return spans;
+  };
+  const fadeInCreed = (spans) => {
+    spans.forEach(s => s.classList.add('enter'));
+    requestAnimationFrame(() => requestAnimationFrame(() => spans.forEach(s => s.classList.remove('enter'))));
+  };
+  let cPlaying = false;
+  function playReversal() {
+    if (!creed || cPlaying) return;
+    cPlaying = true;
+    creed.classList.add('revealed', 'boast');
+    fadeInCreed(buildCreed(BOAST));
+    setTimeout(() => {
+      creed.querySelectorAll('.creed-char').forEach(c => {
+        const ang = Math.random() * Math.PI * 2, dist = 12 + Math.random() * 30;
+        c.style.setProperty('--dx', (Math.cos(ang) * dist).toFixed(1) + 'px');
+        c.style.setProperty('--dy', (Math.sin(ang) * dist - 10).toFixed(1) + 'px');
+        c.style.setProperty('--dr', (Math.random() * 44 - 22).toFixed(1) + 'deg');
+        const r = c.getBoundingClientRect();
+        addStar(r.left + r.width / 2, r.top + r.height / 2, 0.03 + Math.random() * 0.08);
+        c.classList.add('scatter');
+      });
+      setTimeout(() => { creed.classList.remove('boast'); fadeInCreed(buildCreed(TRUTH)); cPlaying = false; }, 650);
+    }, 1300);
+  }
+  if (creed) creed.addEventListener('mouseenter', playReversal);
 
-    playReversal();                                  // play once on load
-    creed.addEventListener('mouseenter', playReversal);  // replay on hover
+  /* orchestrate the load sequence */
+  if (hero) {
+    hero.classList.add('intro');
+    requestAnimationFrame(() => {
+      let t = 160;
+      if (eyebrow)  setTimeout(() => eyebrow.classList.add('play'), t);
+      t += 230;
+      if (heroName) setTimeout(() => heroName.classList.add('play'), t);
+      t += 300;
+      if (quote)    setTimeout(() => quote.classList.add('play'), t);   // brush "dips": the accent bar draws down
+      t += 220;
+      let ct = t;                                                       // motto written stroke by stroke
+      qchars.forEach(c => {
+        setTimeout(() => c.classList.add('play'), ct);
+        ct += (c.textContent === '，') ? 300 : 45;                       // pause between the two lines
+      });
+      const tail = ct + 250;
+      if (scrollC)  setTimeout(() => scrollC.classList.add('play'), tail);
+      setTimeout(playReversal, tail + 150);                            // creed reverses last
+    });
+  } else {
+    playReversal();
   }
 
   /* ── lay ink with speed-driven width (slow = thick/wet, fast = thin/dry) ── */

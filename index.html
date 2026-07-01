@@ -131,12 +131,6 @@
       border-bottom-color: transparent;
       text-shadow: 0 0 26px rgba(184,127,255,0.9), 0 0 60px rgba(224,111,192,0.55);
     }
-    .hero__sub { margin-top: 1.1rem; width: fit-content; min-height: 1.4em; font-family: var(--f-mono); font-size: 0.7rem; letter-spacing: 0.2em; color: var(--muted); text-shadow: 0 1px 12px rgba(0,0,0,0.8); cursor: default; transition: color 0.6s ease; }
-    .hero__sub.boast { color: rgba(237,232,255,0.95); }   /* the confident claim — bright */
-    /* 「我幾乎什麼都知道」→ scatters to dust →「我一無所知」: presumed knowledge, punctured */
-    .hero__sub .creed-char { display: inline-block; transition: transform 0.6s cubic-bezier(.22,.7,.2,1), opacity 0.5s ease; }
-    .hero__sub .creed-char.scatter { transform: translate(var(--dx,0), var(--dy,0)) rotate(var(--dr,0)); opacity: 0; }
-    .hero__sub .creed-char.enter { opacity: 0; transform: translateY(6px); }
     .hero__stats { display: flex; gap: clamp(1.5rem, 5vw, 3.5rem); flex-wrap: wrap; margin-top: clamp(2.5rem, 6vh, 4rem); }
     .stat__num { display: block; font-family: var(--f-mono); font-size: clamp(1.4rem, 3.5vw, 2.2rem); font-weight: 600; color: var(--accent); line-height: 1; text-shadow: 0 0 40px rgba(184,127,255,0.6); }
     .stat__label { display: block; font-family: var(--f-mono); font-size: 0.59rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-top: 0.35rem; }
@@ -152,12 +146,10 @@
     @keyframes barDraw  { from { transform: scaleY(0); } to { transform: scaleY(1); } }
     .hero.intro .hero__eyebrow,
     .hero.intro .hero__name,
-    .hero.intro .hero__scroll,
-    .hero.intro .hero__sub { opacity: 0; }
+    .hero.intro .hero__scroll { opacity: 0; }
     .hero.intro .hero__eyebrow.play,
     .hero.intro .hero__name.play,
     .hero.intro .hero__scroll.play { animation: heroRise 0.6s cubic-bezier(.22,.7,.2,1) forwards; }
-    .hero.intro .hero__sub.revealed { opacity: 1; }
     .hero.intro .hero__quote::before { transform: scaleY(0); transform-origin: top center; }
     .hero.intro .hero__quote.play::before { animation: barDraw 0.5s ease forwards; }
     .q-char { display: inline-block; opacity: 0; }
@@ -192,6 +184,32 @@
     .about-bio { max-width: 40em; font-size: clamp(0.95rem,1.4vw,1.1rem); color: var(--muted); line-height: 1.8; }
     .about-bio p+p { margin-top: 1.1em; }
     .about-bio strong { color: var(--text); font-weight: 500; text-shadow: 0 0 30px rgba(0,0,0,0.8); }
+
+    /* ── SKILLS — step back, see the dark (scroll-driven scale) ──
+       Default (no-JS / reduced / mobile): a normal readable section —
+       eyebrow + skill cluster + the truth line. JS adds .scale-active for the
+       sticky scroll-driven pull-back on desktop. */
+    .scale-sec { position: relative; z-index: 1; }
+    .scale-stage { max-width: var(--max); margin: 0 auto; padding: clamp(3.5rem,9vh,6rem) var(--pad); display: flex; flex-direction: column; align-items: center; gap: clamp(1.8rem,5vh,3rem); text-align: center; }
+    .scale-cluster-wrap { position: relative; z-index: 1; display: flex; align-items: center; justify-content: center; }
+    .scale-bloom { position: absolute; left: 50%; top: 50%; width: 150%; height: 190%; transform: translate(-50%,-50%); background: radial-gradient(ellipse at center, rgba(184,127,255,0.32), rgba(184,127,255,0.08) 45%, transparent 70%); filter: blur(36px); pointer-events: none; z-index: 0; }
+    /* 「實在」— a vast cosmic orb; the whole of what is, revealed as your skills shrink */
+    .scale-realm { position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%) scale(0.7); border-radius: 50%; opacity: 0; z-index: 0; pointer-events: none;
+      background: radial-gradient(circle at 50% 40%, rgba(46,30,86,0.55), rgba(14,8,34,0.82) 56%, rgba(6,3,16,0.92) 100%);
+      box-shadow: inset 0 0 100px rgba(184,127,255,0.14), inset 0 -40px 90px rgba(0,0,0,0.55), 0 0 130px rgba(184,127,255,0.16);
+      border: 1px solid rgba(184,127,255,0.20); }
+    /* the orb is named 「實在」 — fades in a beat AFTER everything settles; sits behind the speck */
+    .scale-realm-label { position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); z-index: 0; white-space: nowrap; pointer-events: none; font-family: var(--f-display); font-size: clamp(2.6rem, 8vw, 5rem); font-weight: 300; letter-spacing: 0.18em; color: rgba(237,232,255,0.95); text-shadow: 0 0 44px rgba(184,127,255,0.4); opacity: 0; transition: opacity 1.6s ease 0.4s; }
+    .scale-active.named .scale-realm-label { opacity: 0.4; }
+    .scale-cluster { position: relative; z-index: 1; display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center; max-width: 560px; transform-origin: center center; will-change: transform; }
+    /* skill = a glowing star with a label */
+    .skill-star { font-family: var(--f-mono); font-size: 0.74rem; padding: 0.38rem 0.8rem; border: 1px solid var(--accent-line); border-radius: 4px; color: var(--text); background: rgba(184,127,255,0.07); text-shadow: 0 0 12px rgba(184,127,255,0.35); box-shadow: 0 0 18px rgba(184,127,255,0.10); transition: color 0.2s, border-color 0.2s, box-shadow 0.2s; }
+    .skill-star:hover { border-color: var(--accent); box-shadow: 0 0 24px rgba(184,127,255,0.4); }
+    .scale-lines { position: relative; display: flex; align-items: center; justify-content: center; min-height: 1.3em; }
+    .scale-line { font-family: var(--f-display); font-size: clamp(1.5rem,4vw,2.4rem); font-weight: 300; line-height: 1.2; color: var(--text); text-shadow: 0 0 70px rgba(0,0,0,0.95); margin: 0; }
+    .scale-line--boast { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; opacity: 0; }  /* overlays truth; shown only while scrolling */
+    /* active: a single full-screen scene; the pull-back auto-plays on enter */
+    .scale-active .scale-stage { min-height: 100svh; justify-content: center; overflow: hidden; padding-top: calc(var(--nav-h) + 1rem); }
 
     /* ── CREDENTIALS ── */
     .creds-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px,1fr)); gap: 1rem; }
@@ -267,7 +285,6 @@
     <blockquote class="hero__quote">
       給我足夠多的<span class="brush-word" id="brush-word">畫筆</span>，<br>我能為你創造整個世界
     </blockquote>
-    <p class="hero__sub">我唯一知道的就是我一無所知</p>
     <a href="#games" class="hero__scroll">
       查看作品
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
@@ -341,7 +358,41 @@
   <div class="wrap">
     <div class="sec-header reveal"><p class="eyebrow">About</p><h2 class="sec-title">關於我</h2></div>
     <div class="about-bio reveal">
-      <p>Hi, 我是陳宥穎 (Ceil)，目前就讀成功大學資訊工程學系。網路上你可能會用 ceil、cecill、ceil32768、cecill77777 來找到我。我是一個極度嚮往自由的開發者。對我來說，現實世界的規則太多。我不願被環境定義，更不想活在標準答案裡。我的夢想很簡單，做出一款足以留名的大作。</p>
+      <p>Hi，我是陳宥穎(Ceil)，目前就讀成功大學資訊工程學系，網路上你可能會用 ceil、cecill、ceil32768、cecill77777來找到我，我的人生第一哲學是絕對的自由至上，並在達成自由後去自由地追求真理</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── SKILLS — step back, see the dark (scroll-driven scale) ── -->
+<section id="skills" class="scale-sec">
+  <div class="scale-stage" id="scale-stage">
+    <p class="eyebrow scale-eyebrow">Skills</p>
+    <div class="scale-lines">
+      <p class="scale-line scale-line--truth">我唯一知道的就是我一無所知</p>
+      <p class="scale-line scale-line--boast">我知道什麼</p>
+    </div>
+    <div class="scale-cluster-wrap">
+      <div class="scale-realm" id="scale-realm"></div>
+      <div class="scale-bloom" id="scale-bloom"></div>
+      <div class="scale-realm-label" id="scale-realm-label">Reality</div>
+      <div class="scale-cluster" id="scale-cluster">
+        <span class="skill-star">UE5 Gameplay Blueprint</span>
+        <span class="skill-star">UE5 UMG</span>
+        <span class="skill-star">Game Design</span>
+        <span class="skill-star">Competitive Programming (C++)</span>
+        <span class="skill-star">Blender (Hard Surface Modeling)</span>
+        <span class="skill-star">Community Building (YouTube / Discord)</span>
+        <span class="skill-star">Web Frontend (HTML/CSS/JavaScript)</span>
+        <span class="skill-star">2D Concept Art</span>
+        <span class="skill-star">Git &amp; GitHub</span>
+        <span class="skill-star">Google Play Console &amp; Steamworks</span>
+        <span class="skill-star">Game Design Document (GDD)</span>
+        <span class="skill-star">UE5 AI System</span>
+        <span class="skill-star">UE5 C++ Programming</span>
+        <span class="skill-star">UE5 Audio System</span>
+        <span class="skill-star">UE5 Level Design</span>
+        <span class="skill-star">UE5 Material System</span>
+      </div>
     </div>
   </div>
 </section>
@@ -772,6 +823,7 @@ document.querySelectorAll('[data-count]').forEach(el => countObs.observe(el));
       spike: Math.random() < 0.4,             // ~40% get diffraction spikes
     });
   }
+  window.__ceilDust = addStar;   // expose so the skills-crumble can shed dust that rises into stars
 
   function addInk(x, y, w) {
     if (ink.length >= INK_MAX) ink.shift();
@@ -793,16 +845,15 @@ document.querySelectorAll('[data-count]').forEach(el => countObs.observe(el));
   }
   if (word) word.addEventListener('mouseenter', arm);
 
-  /* ── Hero entrance「落筆成界」+ creed reversal ──
+  /* ── Hero entrance「落筆成界」──
      Load enacts the motto: cosmos is there → name appears → motto is written
-     stroke by stroke → the creed reverses on you. (Skipped under reduced-motion /
-     no-hover: this whole IIFE returns early, .intro is never added, all shows normally.) */
+     stroke by stroke. (Skipped under reduced-motion / no-hover: this whole IIFE
+     returns early, .intro is never added, everything shows normally.) */
   const hero     = document.querySelector('.hero');
   const eyebrow  = document.querySelector('.hero__eyebrow');
   const heroName = document.querySelector('.hero__name');
   const quote    = document.querySelector('.hero__quote');
   const scrollC  = document.querySelector('.hero__scroll');
-  const creed    = document.querySelector('.hero__sub');
 
   /* split the motto into per-character spans (keeps #brush-word + <br> intact) */
   const qchars = [];
@@ -822,63 +873,25 @@ document.querySelectorAll('[data-count]').forEach(el => countObs.observe(el));
     });
   }
 
-  /* creed reversal: boasts 「我以為我知道的畫筆已經夠多了」(brush = knowledge),
-     punctured into 「我一無所知」 */
-  const BOAST = '我以為我知道的畫筆已經夠多了';
-  const TRUTH = creed ? creed.textContent : '';
-  const buildCreed = (text) => {
-    creed.textContent = '';
-    const spans = [];
-    for (const ch of text) { const s = document.createElement('span'); s.className = 'creed-char'; s.textContent = ch; creed.appendChild(s); spans.push(s); }
-    return spans;
-  };
-  const fadeInCreed = (spans) => {
-    spans.forEach(s => s.classList.add('enter'));
-    requestAnimationFrame(() => requestAnimationFrame(() => spans.forEach(s => s.classList.remove('enter'))));
-  };
-  let cPlaying = false;
-  function playReversal() {
-    if (!creed || cPlaying) return;
-    cPlaying = true;
-    creed.classList.add('revealed', 'boast');
-    fadeInCreed(buildCreed(BOAST));
-    setTimeout(() => {
-      creed.querySelectorAll('.creed-char').forEach(c => {
-        const ang = Math.random() * Math.PI * 2, dist = 12 + Math.random() * 30;
-        c.style.setProperty('--dx', (Math.cos(ang) * dist).toFixed(1) + 'px');
-        c.style.setProperty('--dy', (Math.sin(ang) * dist - 10).toFixed(1) + 'px');
-        c.style.setProperty('--dr', (Math.random() * 44 - 22).toFixed(1) + 'deg');
-        const r = c.getBoundingClientRect();
-        addStar(r.left + r.width / 2, r.top + r.height / 2, 0.03 + Math.random() * 0.08);
-        c.classList.add('scatter');
-      });
-      setTimeout(() => { creed.classList.remove('boast'); fadeInCreed(buildCreed(TRUTH)); cPlaying = false; }, 650);
-    }, 1300);
-  }
-  if (creed) creed.addEventListener('mouseenter', playReversal);
-
   /* orchestrate the load sequence */
   if (hero) {
     hero.classList.add('intro');
     requestAnimationFrame(() => {
-      let t = 160;
+      let t = 140;
       if (eyebrow)  setTimeout(() => eyebrow.classList.add('play'), t);
-      t += 230;
+      t += 200;
       if (heroName) setTimeout(() => heroName.classList.add('play'), t);
-      t += 300;
+      t += 260;
       if (quote)    setTimeout(() => quote.classList.add('play'), t);   // brush "dips": the accent bar draws down
-      t += 220;
+      t += 180;
       let ct = t;                                                       // motto written stroke by stroke
       qchars.forEach(c => {
         setTimeout(() => c.classList.add('play'), ct);
-        ct += (c.textContent === '，') ? 300 : 45;                       // pause between the two lines
+        ct += (c.textContent === '，') ? 160 : 30;                       // shorter line pause
       });
-      const tail = ct + 250;
+      const tail = ct + 220;
       if (scrollC)  setTimeout(() => scrollC.classList.add('play'), tail);
-      setTimeout(playReversal, tail + 150);                            // creed reverses last
     });
-  } else {
-    playReversal();
   }
 
   /* ── lay ink with speed-driven width (slow = thick/wet, fast = thin/dry) ── */
@@ -992,6 +1005,84 @@ document.querySelectorAll('[data-count]').forEach(el => countObs.observe(el));
 
     ctx.globalCompositeOperation = 'source-over';
   })(prev);
+})();
+</script>
+
+<script>
+/* ══════════════════════════════════════════════════════════════
+   SKILLS — step back, see the dark (scroll-driven)
+   Scrolling through the tall section drives a "pull back": the skill
+   cluster shrinks from filling the view to a small, still-readable
+   island; its bloom recedes to reveal the deep cosmos; and the line
+   crossfades 「我以為我知道的畫筆已經夠多了」→「我一無所知」.
+   Humility from scale — the skills stay, but see how small against the dark.
+   Skipped under reduced-motion / narrow screens → static readable section.
+══════════════════════════════════════════════════════════════ */
+(function () {
+  const sec     = document.getElementById('skills');
+  const cluster = document.getElementById('scale-cluster');
+  const bloom   = document.getElementById('scale-bloom');
+  if (!sec || !cluster) return;
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches || innerWidth < 760) return;
+
+  const boast = sec.querySelector('.scale-line--boast');
+  const truth = sec.querySelector('.scale-line--truth');
+  const wrap  = sec.querySelector('.scale-cluster-wrap');
+  const realm = document.getElementById('scale-realm');
+  sec.classList.add('scale-active');
+
+  const clamp = (v, a, b) => (v < a ? a : v > b ? b : v);
+  const lerp  = (a, b, t) => a + (b - a) * t;
+
+  let naturalH = 300, sphereD = 500;
+  function measure() {
+    naturalH = cluster.offsetHeight || naturalH;
+    sphereD  = Math.min(innerHeight * 0.55, innerWidth * 0.85);
+    if (realm) { realm.style.width = sphereD + 'px'; realm.style.height = sphereD + 'px'; }
+  }
+  measure();
+  addEventListener('resize', measure);
+
+  /* time-driven pull-back: auto-plays once on enter. The cluster shrinks to a
+     tiny knot against the site's own cosmos — small against the vast. */
+  const DUR = 3800, HOLD = 0.22;      // hold full-size (readable) for the first ~22%
+  let p = 0, playing = false, startT = 0, settled = false;
+
+  function frame(now) {
+    requestAnimationFrame(frame);
+    if (settled) return;
+    const r = sec.getBoundingClientRect();
+    if (r.bottom < 0 || r.top > innerHeight) return;
+
+    if (playing) {
+      const el = (now - startT) / DUR;
+      p = clamp((el - HOLD) / (1 - HOLD), 0, 1);
+      if (el >= 1) { playing = false; settled = true; sec.classList.add('named'); }
+    }
+
+    const shrink = Math.pow(p, 1.8);
+    cluster.style.transform = 'scale(' + lerp(1.0, 0.08, shrink).toFixed(3) + ')';
+    /* the box grows to sphere size → the 實在 orb is revealed around the tiny skills,
+       the line stays above it */
+    if (wrap) wrap.style.minHeight = lerp(naturalH, sphereD, p).toFixed(0) + 'px';
+    if (realm) {
+      const ez = p < 0.5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2;
+      realm.style.opacity   = (clamp((p - 0.3) / 0.5, 0, 1) * 0.45).toFixed(3);
+      realm.style.transform = 'translate(-50%,-50%) scale(' + lerp(0.7, 1, ez).toFixed(3) + ')';
+    }
+    if (bloom) {
+      bloom.style.opacity   = lerp(0.85, 0.0, clamp(p * 1.6, 0, 1)).toFixed(3);
+      bloom.style.transform = 'translate(-50%,-50%) scale(' + lerp(1.0, 0.32, shrink).toFixed(3) + ')';
+    }
+    if (boast) boast.style.opacity = clamp(1 - (p - 0.35) / 0.2, 0, 1).toFixed(3);
+    if (truth) truth.style.opacity = clamp((p - 0.55) / 0.2, 0, 1).toFixed(3);
+  }
+
+  const obs = new IntersectionObserver(es => es.forEach(x => {
+    if (x.isIntersecting && !playing && p === 0) { playing = true; startT = performance.now(); obs.disconnect(); }
+  }), { threshold: 0.55 });
+  obs.observe(sec);
+  requestAnimationFrame(frame);
 })();
 </script>
 </body>

@@ -251,6 +251,15 @@
       .reveal { opacity: 1; transform: none; transition: none; }
       .hero__scroll svg { animation: none; }
     }
+    @media (max-width: 640px) {
+      /* the pull-back animation plays on phones too — shrink the full-size
+         cluster so it fits inside the viewport before it collapses to a speck */
+      .scale-active .scale-stage { padding-top: calc(var(--nav-h) + 0.5rem); }
+      .scale-cluster { gap: 0.4rem; max-width: 100%; }
+      .skill-star { font-size: 0.6rem; padding: 0.3rem 0.55rem; }
+      .scale-line { font-size: clamp(1.25rem, 6vw, 1.8rem); }
+      .scale-realm-label { font-size: clamp(2rem, 12vw, 3.4rem); }
+    }
     @media (max-width: 560px) {
       .nav__links li:not(:last-child):not(:nth-last-child(2)) { display: none; }
     }
@@ -948,14 +957,15 @@ document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
    On enter, the skill cluster shrinks to a tiny knot; a vast orb ("Reality")
    is revealed around it; the line crossfades "What do I know" →
    "All I know is that I know nothing". Humility from scale.
-   Skipped under reduced-motion / narrow screens → static readable section.
+   Plays on phones too (mobile chips shrink via CSS); only reduced-motion
+   falls back to the static readable section.
 ══════════════════════════════════════════════════════════════ */
 (function () {
   const sec     = document.getElementById('skills');
   const cluster = document.getElementById('scale-cluster');
   const bloom   = document.getElementById('scale-bloom');
   if (!sec || !cluster) return;
-  if (matchMedia('(prefers-reduced-motion: reduce)').matches || innerWidth < 760) return;
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
   const boast = sec.querySelector('.scale-line--boast');
   const truth = sec.querySelector('.scale-line--truth');
